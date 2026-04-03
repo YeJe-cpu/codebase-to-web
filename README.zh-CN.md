@@ -1,42 +1,28 @@
 # Web Learning GitHub
 
-跑在 Cursor、Claude Code、Windsurf、OpenClaw 等环境里的 Agent skill。对准 GitHub 上的 Agent Skill 仓库，可生成单个自包含 HTML：沿着「你怎么操作」和「宿主 / 模型 / Agent 在背后做什么」把路径铺开。适合学习与捋清调用关系，不是把业务代码一键变成可上线网站的工具。
+## 这是啥，适合谁
+
+跑在 **Cursor、Claude Code、Windsurf、OpenClaw** 等环境里的 Agent skill：对准 GitHub 上的 **Agent Skill 仓库**，生成 **单个自包含 HTML**，沿「你怎么操作」和「宿主 / 模型在背后读什么」把路径铺开——适合 **学习与捋清调用关系**，不是把业务代码一键变成上线网站。
+
+**适合谁？** Vibe coder、常刷 GitHub、想搞清某个 skill 仓 **怎么装、怎么触发、文件谁先谁后** 的人。README 往往写得很概括，真实入口在 Hook、`references/` 或子命令里；这一页用 **可滚动的单文件** 把路径和幕后机制放在一起，少啃一堆 Markdown 标签页。
 
 English：[README.md](README.md) · 仓库：[YeJe-cpu/web-learning-github](https://github.com/YeJe-cpu/web-learning-github)
 
-## 演示（长什么样）
-
-以下为针对**本仓库**生成的 **中文** 界面截图与录屏（源文件：[`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html)）。克隆后本地打开即可；顶部可切换 **English / 中文**，组件路径区支持 **下一条 · 全部播放 · 重播**。
-
-![总览 — 标题区、用法提示、仓库信息、大白话与交付物（中文）](./assets/demo-zh-hero.png)
-
-![组件路径交互 — 下一条 / 全部播放 / 重播（中文，GIF）](./assets/demo-zh-interaction.gif)
-
-![分步旅程双列与目录树片段（中文）](./assets/demo-zh-steps-tree.png)
-
 ---
 
-## 适合谁？
+## 演示 & 生成的页面里有什么
 
-Vibe coder、以及常刷 GitHub、想搞清某个 skill 仓怎么装、怎么触发、文件加载顺序的人。
+下面三张图是 **本仓库** 示例页 [`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html) 的 **中文** 界面（克隆后本地双击打开即可）。**先看图，再看文字。** 页顶可 **English / 中文** 切换；组件路径区有 **下一条 · 全部播放 · 重播**（fd-pass 版式）。
 
-README 往往写得很概括，真实入口在 Hook、`references/` 或子命令里——这一页用可滚动的单文件把路径和幕后机制放在一起。
+![总览 — 标题区、用法提示、仓库信息、大白话与交付物（中文）](assets/demo-zh-hero.png)
 
----
+![组件路径交互 — 下一条 / 全部播放 / 重播（中文，GIF）](assets/demo-zh-interaction.gif)
 
-## 生成的页面长什么样？
+![分步旅程双列与目录树片段（中文）](assets/demo-zh-steps-tree.png)
 
-产出是单个 HTML（无需打包）。常见结构：
+**这一页里通常包括：** 仓库 meta（链接、Star、Fork、创建时间）、大白话、**可步进的组件路径**（步数随真实仓库，非固定条数）、**宽屏双列**「表面上 / 背后」、目录树、README 式要点。默认视觉 **Lab·Canonical**（暖色、清晰版心），纪律上可参考 [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。首次若拉 Google Fonts 需联网，之后可离线依赖缓存。
 
-- 仓库信息（链接、Star、Fork、时间；页脚可写快照说明）
-- 一两句大白话
-- 可步进的组件路径（用户 → 宿主 → 读到哪份 `SKILL.md` / `references/` → 下一步）— 步数随真实仓库变化
-- 表面上 / 背后的分步说明
-- 目录树
-- 简短的 README 侧写（需求、传播、注意点）
-- 默认版式代号 Lab·Canonical（暖色、清晰版心），纪律上可参考 [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。首次打开若用 Google Fonts 可能要联网，之后可依赖缓存离线看。
-
-更短的示例页见 [`web/demo.html`](web/demo.html)。与上图一致的 **fd-pass 完整版式** 请打开 **`web/YeJe-cpu-web-learning-github.html`**。
+更短的示例见 [`web/demo.html`](web/demo.html)。与截图一致的完整 walkthrough 即 **`web/YeJe-cpu-web-learning-github.html`**。
 
 ---
 

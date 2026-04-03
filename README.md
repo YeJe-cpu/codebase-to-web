@@ -1,42 +1,28 @@
 # Web Learning GitHub
 
-An agent skill for Cursor, Claude Code, Windsurf, OpenClaw, and similar hosts. Point it at an Agent Skill repo on GitHub: you get a single self-contained HTML file that traces the UI/UX path—what you do in the product, and what the host, model, and agents do underneath. Meant for learning and getting oriented, not for turning code into a shipped web app.
+## What it is & who it’s for
 
-中文说明：[README.zh-CN.md](README.zh-CN.md) · Repository: [YeJe-cpu/web-learning-github](https://github.com/YeJe-cpu/web-learning-github)
+An **agent skill** for **Cursor, Claude Code, Windsurf, OpenClaw**, and similar hosts: point it at an **Agent Skill repo on GitHub** and get a **single self-contained HTML** that traces the UI/UX path—what you do in the product vs what the host and model load next. Meant for **learning and orientation**, not for turning an app codebase into a shipped web product.
 
-## Demo (what you get)
+**Who is it for?** Vibe coders and anyone on GitHub who wants to see **where to install**, **what triggers the skill**, and **which files load in what order**. READMEs are often high-level while real entrypoints sit under hooks, `references/`, or subcommands—this page is **one scrollable map** instead of many small Markdown hops.
 
-Below is the **English** walkthrough for this repo, generated as [`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html). Clone and open locally; **English / 中文** toggle at the top, **Next · Play all · Reset** on the component path.
-
-![Overview — hero, meta, plain-language intro, deliverables (English)](./assets/demo-en-hero.png)
-
-![Component path bubbles and two-column step journey (English)](./assets/demo-en-path-steps.png)
-
-![Playback controls — Next, Play all, Reset (English, GIF)](./assets/demo-en-interaction.gif)
+中文：[README.zh-CN.md](README.zh-CN.md) · Repository: [YeJe-cpu/web-learning-github](https://github.com/YeJe-cpu/web-learning-github)
 
 ---
 
-## Who is this for?
+## Demo & what’s inside the page
 
-Vibe coders and anyone browsing GitHub who want to understand how a skill repo is wired: where to install it, what triggers it, and which files load in what order.
+Three captures below show the **English** UI of this repo’s sample [`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html) (open locally after clone). **Images first, text after.** Toggle **English / 中文** at the top; the component path has **Next · Play all · Reset** (fd-pass layout).
 
-Also useful when the README is high-level but the real entrypoints live under hooks, `references/`, or subcommands—you get one scrollable page instead of many small Markdown hops.
+![Overview — hero, meta, plain-language intro, deliverables (English)](assets/demo-en-hero.png)
 
----
+![Component path bubbles and two-column step journey (English)](assets/demo-en-path-steps.png)
 
-## What the page looks like
+![Playback — Next, Play all, Reset (English, GIF)](assets/demo-en-interaction.gif)
 
-Output is one HTML file (no bundler). Typical sections:
+**Typical sections in that HTML:** repo meta (link, stars, forks, created time), plain-language blurb, a **step-through component path** (message count follows the **real** repo—not fixed), **two-column** surface vs backstage on wide screens, tree, README-flavoured bullets. Defaults follow **Lab·Canonical** (warm editorial) and [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) discipline. First load may fetch Google Fonts; then you can use it offline from cache.
 
-- Repo meta (link, stars, forks, created time; optional snapshot note in the footer)
-- Short plain-language intro
-- Step-through component path (user → host → which `SKILL.md` / `references/` → next agent step)—length follows the real repo
-- Surface vs backstage steps for each phase
-- Repository tree
-- Short README context bullets (demand, spread, caveats)
-- Typography and layout follow our default design token Lab·Canonical (warm editorial style); ideas align with [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design). First load may fetch Google Fonts; after that it can work offline from cache.
-
-A shorter bilingual sample lives at [`web/demo.html`](web/demo.html). For the full fd-pass layout (as in the screenshots), use **`web/YeJe-cpu-web-learning-github.html`**.
+Shorter sample: [`web/demo.html`](web/demo.html). Full walkthrough matching the screenshots: **`web/YeJe-cpu-web-learning-github.html`**.
 
 ---
 
