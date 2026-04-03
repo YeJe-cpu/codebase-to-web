@@ -21,9 +21,10 @@ If the user **explicitly** asks for **both languages in one HTML** with a **UI s
 
 ## File output rules
 
-- **Default:** one repo → one file → **`web/<owner>-<repo>.html`** (or a directory the user specifies).
+- **Published OSS skill bundle (this repo):** one repo → one file → **`web/<owner>-<repo>.html`** (or a directory the user specifies).
+- **Author local lab (multi-project workspace):** when the user asks to keep generated walkthroughs **out of the skill repo** or under their **OSS lab folder**, also write (or only write) **`30_resources/oss-skill-lab/<owner>-<repo>.html`** relative to the parent workspace that holds `web-learning-github/` and `30_resources/` — adjust the path if their tree differs; **do not** imply that path exists for every downloader of the skill.
 - **Multiple repos** in one request, or explicit “single tabbed page”: you may emit one combined HTML; if no preference, **prefer separate files**.
-- Keep outputs under an agreed folder; **default `web/`**.
+- Agree the output directory in chat if **both** `web/` and lab paths apply; **default for strangers cloning the skill remains `web/`**.
 
 ## Hosts (for journey/install copy)
 
@@ -48,13 +49,20 @@ If unknown, say **“host / agent IDE”** instead of a single brand.
 6. **Repo tree** — `pre.tree` monospace.
 7. **README bullets** — demand / distribution / moat / compliance, one each.
 
-## Visuals
+## Visuals & layout (FD‑pass shell)
 
-Read `references/ui-tokens.md` (Lab·Canonical default) and `references/frontend-design-notes.md`. Variants A/B only when the user asks or wants a “wildcard” look.
+Match the **frontend-design / fd-pass** lab shell unless the user asks otherwise:
+
+- **Page:** `.shell`, gradient page background, `.hint`, `.meta-bar`, `.plain`, `.blurb`, `.section-title`, `.readme-box`, `footer.note` (see repo sample `web/YeJe-cpu-web-learning-github.html` or any `*.fd-pass.html` lab reference).
+- **Component path:** `.path-wrap` → `.chat-window` → `.chat-messages` (stacked avatar bubbles), `.chat-typing` with **`#<chatWindowId>-typing-avatar`**, `.chat-controls` with **Next**, **Play all** (auto-advance), **Reset**, and **`.chat-progress`** (`index / total`).
+- **Steps:** `.step` + **`.grid2`** (≥720px two columns): `.card.user` (“surface”) and `.card.back` (“backstage”).
+- **Tree:** `pre.tree` with optional `.f` / `.n` spans for paths vs notes.
+
+Read `references/ui-tokens.md` (Lab·Canonical tokens) and `references/frontend-design-notes.md`. **Variants A/B** only when the user asks for a “wildcard” palette.
 
 ## Chat widget
 
-Per `.chat-window`: `typing-avatar` id = `{chatWindowId}-typing-avatar`; messages start `display:none`; progress from `.chat-message` count.
+Per `.chat-window`: `typing-avatar` id = `{chatWindowId}-typing-avatar`; `.chat-message` elements start `display:none`; **`initChat`-style** controls: step forward, play all, reset; progress from `.chat-message` count.
 
 ## More
 

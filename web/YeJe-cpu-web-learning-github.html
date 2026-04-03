@@ -1,63 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" class="is-en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YeJe-cpu/web-learning-github — skill walkthrough</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YeJe-cpu/web-learning-github · Web Learning GitHub walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --page-bg: #e8e2d8;
       --surface: #fffdf8;
+      --surface-warm: #faf6ee;
+      --border: #cfc6b8;
+      --text: #1a1714;
+      --muted: #5a534a;
       --accent: #9c4221;
       --accent-light: #ffedd5;
       --code-bg: #25201c;
-      --text: #1c1917;
-      --muted: #57534e;
+      --radius: 14px;
+      --shadow: 0 2px 20px rgba(26, 23, 20, 0.06);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Source Sans 3", "PingFang SC", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Source Sans 3", system-ui, sans-serif;
-      background: var(--page-bg);
+      font-family: var(--font-body);
+      background: linear-gradient(168deg, #f3efe6 0%, var(--page-bg) 42%, #dfd8cd 100%);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.72;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
     }
     .shell {
       max-width: min(52rem, calc(100vw - 2.5rem));
       margin: 0 auto;
       padding: clamp(2.5rem, 6vw, 4rem) clamp(1.35rem, 4vw, 2.25rem) clamp(4rem, 8vw, 5.5rem);
     }
-    header.top {
+    .topbar {
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
       gap: 1rem;
-      margin-bottom: 1.75rem;
-    }
-    .title-block h1 {
-      font-family: Fraunces, Georgia, serif;
-      font-size: clamp(1.45rem, 4vw, 2rem);
-      font-weight: 700;
-      margin: 0 0 0.35rem;
-      color: var(--accent);
-    }
-    .title-block .sub {
-      margin: 0;
-      font-size: 0.95rem;
-      color: var(--muted);
-      max-width: 44rem;
+      margin-bottom: 0.5rem;
     }
     .lang-switch {
       display: flex;
-      gap: 0;
       background: var(--surface);
-      padding: 0.2rem;
+      border: 1px solid var(--border);
       border-radius: 10px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      padding: 0.2rem;
+      box-shadow: var(--shadow);
       flex-shrink: 0;
     }
     .lang-switch button {
@@ -75,382 +71,410 @@
       color: var(--accent);
       font-weight: 600;
     }
-    .panel {
-      background: var(--surface);
-      border-radius: 12px;
-      padding: 1.25rem 1.4rem;
-      margin-bottom: 1.35rem;
-      box-shadow: 0 2px 14px rgba(28,25,23,.06);
+    .block-i18n { display: none; }
+    html.is-en .block-i18n.en { display: block; }
+    html.is-zh .block-i18n.zh { display: block; }
+    html.is-en .inline-i18n.en { display: inline; }
+    html.is-zh .inline-i18n.zh { display: inline; }
+    .inline-i18n { display: none; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 5vw, 2.55rem);
+      font-weight: 700;
+      margin: 0 0 0.7rem;
+      letter-spacing: -0.035em;
+      line-height: 1.11;
     }
-    .panel h2 {
-      font-family: Fraunces, serif;
-      font-size: 1.2rem;
-      margin: 0 0 0.75rem;
-      color: var(--accent);
+    .subtitle {
+      color: var(--muted);
+      margin: 0 0 1.35rem;
+      font-size: 1.03rem;
       max-width: 44rem;
+      line-height: 1.78;
+      font-weight: 400;
     }
+    .hint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.65rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+    .hint strong { color: var(--text); }
     .meta-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem 1.5rem;
-      font-size: 0.92rem;
-      color: var(--muted);
-      align-items: baseline;
-    }
-    .meta-bar a { color: var(--accent); font-weight: 600; }
-    .meta-bar strong { color: var(--text); }
-    .i18n-block { display: none; }
-    html.is-en .i18n-block.i18n-en { display: block; }
-    html.is-zh .i18n-block.i18n-zh { display: block; }
-    .chat-window {
-      background: #fafaf9;
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-      border: 1px solid #e7e5e4;
-    }
-    .chat-controls {
-      margin-bottom: 0.75rem;
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
       align-items: center;
+      gap: 0.55rem 1.25rem;
+      margin-bottom: 1.15rem;
+      padding: 1.1rem 1.35rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.87rem;
+      box-shadow: var(--shadow);
     }
-    .chat-controls button {
-      font-family: inherit;
-      font-size: 0.88rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 600;
-    }
-    .chat-controls button.secondary {
-      background: #e7e5e4;
-      color: var(--text);
-    }
-    .chat-message {
-      margin: 0.55rem 0;
-      padding: 0.65rem 0.95rem;
-      border-radius: 10px;
-      max-width: 94%;
-      display: none;
-    }
-    .chat-message[data-sender="user"] {
+    .meta-bar a { color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 2px solid var(--accent-light); }
+    .meta-bar a:hover { border-color: var(--accent); }
+    .stat { color: var(--muted); }
+    .stat b { color: var(--text); font-weight: 700; }
+    .plain {
+      font-size: 0.93rem;
+      color: var(--muted);
+      margin: 0 0 1.1rem;
+      padding: 0.95rem 1.15rem;
       background: var(--accent-light);
+      border-radius: 12px;
       border-left: 4px solid var(--accent);
     }
-    .chat-message[data-sender="host"],
-    .chat-message[data-sender="model"] {
-      background: #f5f5f4;
-      margin-left: 1rem;
-      border-right: 4px solid #78716c;
+    .plain strong { color: var(--text); }
+    .blurb { background: var(--surface-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.35rem; margin-bottom: 1.35rem; }
+    .blurb p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .blurb p + p { margin-top: 0.55rem; }
+    .blurb code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface); padding: 0.1em 0.35em; border-radius: 4px; }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.28rem;
+      margin: 2.5rem 0 0.95rem;
+      letter-spacing: -0.025em;
     }
-    .chat-message .who {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
+    .grid2 { display: grid; gap: 0.75rem; }
+    @media (min-width: 720px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.15rem; font-size: 0.9rem; box-shadow: 0 1px 10px rgba(26, 23, 20, 0.04); }
+    .card h4 { margin: 0 0 0.45rem; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .card.user h4 { color: var(--accent); }
+    .card.back h4 { color: var(--accent); }
+    .card p, .card ul { margin: 0; color: var(--text); opacity: 0.94; }
+    .card ul { padding-left: 1.1rem; }
+    .card li { margin-bottom: 0.35rem; }
+    .path-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; }
+    .path-wrap { margin-bottom: 1.85rem; }
+    .chat-window { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow); }
+    .chat-messages {
+      padding: 1.25rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      min-height: 160px;
+      background: linear-gradient(180deg, #faf7f0 0%, var(--surface) 100%);
     }
-    .chat-message .i18n-en, .chat-message .i18n-zh { display: none; }
-    html.is-en .chat-message .i18n-en { display: block; }
-    html.is-zh .chat-message .i18n-zh { display: block; }
-    #wlgh-journey-typing-avatar {
-      display: none;
-      margin: 0.35rem 0 0.35rem 1rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    #wlgh-journey-typing-avatar.is-visible { display: flex; align-items: center; gap: 0.35rem; }
-    .dot {
-      width: 6px;
-      height: 6px;
+    .chat-message { display: none; align-items: flex-end; gap: 0.65rem; animation: fadeSlideUp 0.4s ease; }
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: var(--muted);
-      animation: bounce 1.2s infinite ease-in-out both;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+      font-family: var(--font-display);
     }
-    .dot:nth-child(2) { animation-delay: 0.15s; }
-    .dot:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.75); opacity: 0.5; }
-      40% { transform: scale(1); opacity: 1; }
-    }
-    .step { margin: 1rem 0; }
-    .step h3 { font-family: Fraunces, serif; font-size: 1.05rem; margin: 0 0 0.45rem; }
-    .surface, .backstage {
-      padding: 0.72rem 0.95rem;
-      border-radius: 8px;
-      margin: 0.4rem 0;
-      font-size: 0.96rem;
-    }
-    .surface { background: #fef3c7; border-left: 3px solid #d97706; }
-    .backstage { background: #e0e7ff; border-left: 3px solid #4f46e5; }
-    pre.tree {
-      background: var(--code-bg);
-      color: #e7e5e4;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.8rem;
-      line-height: 1.45;
-      margin: 0.5rem 0 0;
-    }
-    ul.readme { margin: 0.4rem 0 0; padding-left: 1.15rem; font-size: 0.95rem; max-width: 44rem; }
-    footer.note { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); max-width: 52rem; }
+    .chat-bubble { max-width: 84%; background: var(--surface); border: 1px solid var(--border); border-radius: 14px 14px 14px 4px; padding: 0.65rem 0.9rem; box-shadow: 0 2px 10px rgba(26, 23, 20, 0.05); }
+    .chat-sender { display: block; font-size: 0.62rem; font-weight: 700; margin-bottom: 0.25rem; letter-spacing: 0.06em; font-family: var(--font-mono); text-transform: uppercase; }
+    .chat-bubble p { margin: 0; font-size: 0.88rem; line-height: 1.62; color: var(--text); }
+    .chat-typing { display: none; align-items: center; gap: 0.5rem; padding: 0 1.3rem 0.55rem; }
+    .chat-typing-dots { display: flex; gap: 5px; background: var(--surface); border: 1px solid var(--border); padding: 0.5rem 0.8rem; border-radius: 12px; }
+    .typing-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: tb 1.3s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes tb { 0%, 60%, 100% { opacity: 0.35; } 30% { opacity: 1; transform: translateY(-2px); } }
+    .chat-controls { padding: 0.85rem 1.25rem; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; background: var(--surface-warm); }
+    .chat-controls .btn { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; padding: 0.5rem 0.9rem; border-radius: 10px; border: 2px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+    .chat-controls .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .chat-progress { margin-left: auto; font-size: 0.74rem; color: var(--muted); font-family: var(--font-mono); }
+    .chat-progress .prog-en, .chat-progress .prog-zh { display: none; }
+    html.is-en .chat-progress .prog-en { display: inline; }
+    html.is-zh .chat-progress .prog-zh { display: inline; }
+    .tree { font-family: var(--font-mono); font-size: 0.78rem; background: var(--code-bg); border: 1px solid #3d3530; border-radius: 12px; padding: 1.1rem 1.25rem; overflow-x: auto; color: #d6cfc7; line-height: 1.5; margin: 0.5rem 0 1rem; }
+    .tree .f { color: #7eb8ff; }
+    .tree .n { color: #9c958c; }
+    .step { margin-bottom: 1.35rem; padding-left: 1.15rem; border-left: 3px solid var(--accent); }
+    .step-head { font-family: var(--font-display); font-weight: 600; font-size: 1.06rem; margin-bottom: 0.6rem; letter-spacing: -0.02em; }
+    .readme-box { background: var(--surface-warm); border: 1px dashed var(--accent); border-radius: var(--radius); padding: 1.1rem 1.25rem; font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; }
+    .readme-box h4 { margin: 0 0 0.55rem; font-size: 0.82rem; color: var(--text); font-family: var(--font-display); font-weight: 700; }
+    .readme-box ul { margin: 0; padding-left: 1.15rem; }
+    .readme-box li { margin-bottom: 0.4rem; }
+    footer.note { margin-top: 3rem; padding-top: 1.6rem; border-top: 1px solid var(--border); font-size: 0.84rem; color: var(--muted); max-width: 52rem; }
+    footer.note code { font-family: var(--font-mono); font-size: 0.88em; }
   </style>
 </head>
 <body>
   <div class="shell">
-    <header class="top">
-      <div class="title-block">
+    <div class="topbar">
+      <div>
         <h1>YeJe-cpu/web-learning-github</h1>
-        <p class="sub i18n-block i18n-en">Web Learning GitHub — Agent Skill repo rendered as one scrollable HTML: who does what after install and trigger (learning orientation, not a ship scaffold).</p>
-        <p class="sub i18n-block i18n-zh">Web Learning GitHub — 将 Agent Skill 仓库收成单页 HTML：安装与触发之后谁调用谁（偏于学习与摸底，不是上线脚手架）。</p>
+        <p class="subtitle block-i18n en">Agent skill → one self-contained HTML walkthrough: install and trigger, then <strong>who loads whom</strong>. Learning / orientation—not a ship scaffold. Bilingual toggle for screenshots or sharing.</p>
+        <p class="subtitle block-i18n zh">Agent skill → 单文件 HTML 路径说明：安装与触发后<strong>谁加载谁</strong>。偏学习与摸底，不是上线脚手架。中英切换便于截屏或传阅。</p>
       </div>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" id="btn-en" aria-pressed="true">English</button>
         <button type="button" id="btn-zh" aria-pressed="false">中文</button>
       </div>
-    </header>
+    </div>
 
-    <section class="panel" aria-label="GitHub meta">
-      <h2 class="i18n-block i18n-en">GitHub meta</h2>
-      <h2 class="i18n-block i18n-zh">GitHub 信息</h2>
-      <div class="meta-bar">
-        <a href="https://github.com/YeJe-cpu/web-learning-github">github.com/YeJe-cpu/web-learning-github</a>
-        <span><strong>Stars</strong> · 0</span>
-        <span><strong>Forks</strong> · 0</span>
-        <span><strong>Created (UTC)</strong> · 2026-04-03T07:27:25Z</span>
-      </div>
-      <p class="i18n-block i18n-en" style="margin:0.75rem 0 0;font-size:0.9rem;color:var(--muted)">Stats from GitHub API when this page was generated. Refresh by regenerating the file.</p>
-      <p class="i18n-block i18n-zh" style="margin:0.75rem 0 0;font-size:0.9rem;color:var(--muted)">Star 等数据来自生成此页时的 GitHub API；更新请重新生成 HTML。</p>
-    </section>
+    <div class="hint block-i18n en"><strong>How to use this page:</strong> play the <strong>component path</strong> (Next / Play all) → read the two-column steps → skim the tree and README notes. Stars / forks / created are a GitHub API snapshot at generation time.</div>
+    <div class="hint block-i18n zh"><strong>怎么用本页：</strong>先播放<strong>组件路径</strong>（下一条 / 全部播放）→ 读双列分步 → 对照目录树与 README 简析。Star / Fork / 创建时间为生成时的 API 快照。</div>
 
-    <section class="panel">
-      <h2 class="i18n-block i18n-en">What you get</h2>
-      <h2 class="i18n-block i18n-zh">产出是什么</h2>
-      <p class="i18n-block i18n-en" style="margin:0;max-width:44rem">One self-contained HTML (no bundler): meta bar, short blurbs, a <strong>component path</strong> you can play like chat, then <strong>surface vs backstage</strong> steps, repo tree, and README-flavoured bullets—default path <code>web/&lt;owner&gt;-&lt;repo&gt;.html</code>.</p>
-      <p class="i18n-block i18n-zh" style="margin:0;max-width:44rem">单个自包含 HTML（无打包）：元信息栏、短文说明、可像聊天一样播放的<strong>组件路径</strong>、<strong>表面上 / 背后</strong> 分步、目录树、以及类似 README 的要点——默认文件名 <code>web/&lt;owner&gt;-&lt;repo&gt;.html</code>。</p>
-    </section>
+    <div class="meta-bar">
+      <a href="https://github.com/YeJe-cpu/web-learning-github" target="_blank" rel="noopener">YeJe-cpu/web-learning-github</a>
+      <span class="stat">⭐ <b>0</b></span>
+      <span class="stat"><span class="inline-i18n en">Fork</span><span class="inline-i18n zh">Fork</span> <b>0</b></span>
+      <span class="stat"><span class="inline-i18n en">Created</span><span class="inline-i18n zh">创建</span> <b>2026-04-03</b> <span class="inline-i18n en">(UTC)</span><span class="inline-i18n zh">（UTC）</span></span>
+    </div>
 
-    <section class="panel">
-      <h2 class="i18n-block i18n-en">Component path (play)</h2>
-      <h2 class="i18n-block i18n-zh">组件路径（播放）</h2>
-      <p class="i18n-block i18n-en" style="margin:0 0 1rem;font-size:0.92rem;color:var(--muted)">Happy path for this repository, as if you asked the skill to map <strong>YeJe-cpu/web-learning-github</strong>.</p>
-      <p class="i18n-block i18n-zh" style="margin:0 0 1rem;font-size:0.92rem;color:var(--muted)">本仓库的 happy path：假设你在对话里让 skill 解析 <strong>YeJe-cpu/web-learning-github</strong>。</p>
+    <p class="plain block-i18n en"><strong>In plain words:</strong> Point this skill at an <strong>Agent Skill repo on GitHub</strong>; you get a scrollable map of user ↔ host (e.g. <strong>Cursor</strong>) ↔ model ↔ <code>SKILL.md</code> / <code>references/</code>—so vibe coders see the wiring without opening ten Markdown tabs.</p>
+    <p class="plain block-i18n zh"><strong>大白话：</strong>把本 skill 对准 GitHub 上的 <strong>Agent Skill 仓</strong>，得到一张可滚动的「你 ↔ 宿主（如 <strong>Cursor</strong>）↔ 模型 ↔ <code>SKILL.md</code> / <code>references/</code>」地图，少啃十几个 Markdown 标签页。</p>
 
-      <div class="chat-window" id="wlgh-journey">
+    <div class="blurb">
+      <p class="block-i18n en"><strong>Deliverable:</strong> One HTML file (no bundler); default path <code>web/&lt;owner&gt;-&lt;repo&gt;.html</code> in the published skill bundle. Optional lab copy under <code>30_resources/oss-skill-lab/</code> for the author’s workspace. Typography: Lab·Canonical (Fraunces + Source Sans 3), fd-pass layout.</p>
+      <p class="block-i18n zh"><strong>交付物：</strong>单文件 HTML（无打包）；开源包里默认 <code>web/&lt;owner&gt;-&lt;repo&gt;.html</code>。维护者本机可另存 <code>30_resources/oss-skill-lab/</code>。版式：fd-pass 壳 + Lab·Canonical 字体。</p>
+      <p class="block-i18n en"><strong>Install (README):</strong> copy <code>web-learning-github/</code> to <code>.agents/skills/</code> (or Claude Code / OpenClaw paths per docs).</p>
+      <p class="block-i18n zh"><strong>安装（README 摘要）：</strong>将 <code>web-learning-github/</code> 拷入 <code>.agents/skills/</code>（或其它宿主约定路径）。</p>
+    </div>
+
+    <div class="path-wrap">
+      <div class="path-label block-i18n en">Component path (this repo · happy path)</div>
+      <div class="path-label block-i18n zh">组件路径（本仓库 · 顺利路径）</div>
+      <div class="chat-window" id="chat-wlgh">
+        <div class="chat-messages">
+          <div class="chat-message" data-sender="u">
+            <div class="chat-avatar" style="background:#9c4221" title="You">U</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#9c4221"><span class="inline-i18n en">You</span><span class="inline-i18n zh">用户</span></span>
+              <p class="block-i18n en">Copy <code>web-learning-github</code> into <code>.agents/skills/</code>. Generate a <strong>bilingual</strong> walkthrough for <strong>YeJe-cpu/web-learning-github</strong>—fd-pass layout, I’ll screenshot for README.</p>
+              <p class="block-i18n zh">把 <code>web-learning-github</code> 放进 <code>.agents/skills/</code>。为 <strong>YeJe-cpu/web-learning-github</strong> 生成<strong>中英双栏说明页</strong>（fd-pass 版式），我要截进 README。</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="host">
+            <div class="chat-avatar" style="background:#4f46e5" title="Host">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#4f46e5">Cursor</span>
+              <p class="block-i18n en">Loads <code>SKILL.md</code> → section order, fd-pass shell rules, file output (<code>web/</code> vs lab folder) from user chat.</p>
+              <p class="block-i18n zh">加载 <code>SKILL.md</code> → 章节顺序、fd-pass 壳、以及对话里约定的落盘路径（<code>web/</code> 或实验室目录）。</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="m">
+            <div class="chat-avatar" style="background:#7c3aed" title="Model">M</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#7c3aed"><span class="inline-i18n en">Model</span><span class="inline-i18n zh">模型</span></span>
+              <p class="block-i18n en">Reads <code>references/workflow.md</code>, <code>ui-tokens.md</code>; calls GitHub API for stars / forks / <code>created_at</code>.</p>
+              <p class="block-i18n zh">读取 <code>references/workflow.md</code>、<code>ui-tokens.md</code>；请求 GitHub API 取 star / fork / 创建时间。</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="m2">
+            <div class="chat-avatar" style="background:#0369a1">↯</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#0369a1"><span class="inline-i18n en">Emit</span><span class="inline-i18n zh">产出</span></span>
+              <p class="block-i18n en">Writes <code>web/YeJe-cpu-web-learning-github.html</code> (and optional <code>30_resources/oss-skill-lab/…</code>): meta bar, chat with <strong>Next · Play all · Reset</strong>, <strong>grid2</strong> steps, tree, readme box.</p>
+              <p class="block-i18n zh">写入 <code>web/YeJe-cpu-web-learning-github.html</code>（及可选 <code>30_resources/oss-skill-lab/…</code>）：元信息条、带<strong>下一条·全部播放·重播</strong>的聊天区、<strong>双列</strong>分步、树与 README 框。</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="u">
+            <div class="chat-avatar" style="background:#9c4221" title="You">U</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#9c4221"><span class="inline-i18n en">You</span><span class="inline-i18n zh">用户</span></span>
+              <p class="block-i18n en">Open the HTML locally, toggle <strong>EN / 中文</strong>, optional <strong>Play all</strong>, capture screenshot → paste into <code>README.md</code> / <code>assets/</code>.</p>
+              <p class="block-i18n zh">本地打开 HTML，切换<strong>英 / 中</strong>，可<strong>全部播放</strong>后截屏 → 贴到 <code>README.md</code> 或 <code>assets/</code>。</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="tail">
+            <div class="chat-avatar" style="background:#059669">✓</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:#047857"><span class="inline-i18n en">Note</span><span class="inline-i18n zh">提示</span></span>
+              <p class="block-i18n en">First open may fetch Google Fonts; then the file can work offline from cache. Regenerate when the repo structure jumps.</p>
+              <p class="block-i18n zh">首次打开会拉 Google Fonts，之后可依赖缓存离线使用。目录大变时建议重新生成本页。</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-typing">
+          <div class="chat-avatar" id="chat-wlgh-typing-avatar">?</div>
+          <div class="chat-typing-dots"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
+        </div>
         <div class="chat-controls">
-          <button type="button" id="journey-play" class="i18n-block i18n-en">Play</button>
-          <button type="button" id="journey-play-zh" class="i18n-block i18n-zh">播放</button>
-          <button type="button" id="journey-reset" class="secondary i18n-block i18n-en">Reset</button>
-          <button type="button" id="journey-reset-zh" class="secondary i18n-block i18n-zh">重播</button>
-        </div>
-        <div id="wlgh-journey-typing-avatar" aria-hidden="true">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="i18n-block i18n-en" style="display:inline">Typing…</span>
-          <span class="i18n-block i18n-zh" style="display:inline">输入中…</span>
-        </div>
-
-        <div class="chat-message" data-sender="user">
-          <div class="who"><span class="i18n-en">You</span><span class="i18n-zh">你</span></div>
-          <div class="i18n-en">I copied <code>web-learning-github</code> into <code>.agents/skills/</code>. Turn <strong>YeJe-cpu/web-learning-github</strong> into one bilingual HTML with EN / 中文 toggle—I need a screenshot for the README demo section.</div>
-          <div class="i18n-zh">我已把 <code>web-learning-github</code> 放到 <code>.agents/skills/</code>。请把 <strong>YeJe-cpu/web-learning-github</strong> 做成带 **英 / 中** 切换的单页 HTML——我要截屏放进 README 的 Demo 区块。</div>
-        </div>
-        <div class="chat-message" data-sender="host">
-          <div class="who">Cursor</div>
-          <div class="i18n-en">Loads <code>SKILL.md</code> → section order, optional bilingual toggle, Lab·Canonical tokens in <code>references/ui-tokens.md</code>.</div>
-          <div class="i18n-zh">加载 <code>SKILL.md</code> → 章节顺序、可选中英切换、在 <code>references/ui-tokens.md</code> 中取 Lab·Canonical 版式。</div>
-        </div>
-        <div class="chat-message" data-sender="model">
-          <div class="who"><span class="i18n-en">Model</span><span class="i18n-zh">模型</span></div>
-          <div class="i18n-en">Reads <code>references/workflow.md</code> (path first, don’t bury journey), <code>references/frontend-design-notes.md</code>, then fetches <code>GET /repos/YeJe-cpu/web-learning-github</code> for stars / forks / <code>created_at</code>.</div>
-          <div class="i18n-zh">阅读 <code>references/workflow.md</code>（路径优先）、<code>references/frontend-design-notes.md</code>，再请求 <code>GET /repos/YeJe-cpu/web-learning-github</code> 取 star / fork / 创建时间。</div>
-        </div>
-        <div class="chat-message" data-sender="model">
-          <div class="who"><span class="i18n-en">Model</span><span class="i18n-zh">模型</span></div>
-          <div class="i18n-en">Builds the step-through bubbles (this widget: <code>#wlgh-journey</code> + <code>#wlgh-journey-typing-avatar</code>), then surface/backstage, tree from disk layout, README bullets.</div>
-          <div class="i18n-zh">拼装逐步气泡（本控件：<code>#wlgh-journey</code> 与 <code>#wlgh-journey-typing-avatar</code>），再写表面/背后、目录树与 README 式要点。</div>
-        </div>
-        <div class="chat-message" data-sender="user">
-          <div class="who"><span class="i18n-en">You</span><span class="i18n-zh">你</span></div>
-          <div class="i18n-en">Open <code>web/YeJe-cpu-web-learning-github.html</code> locally, toggle language, capture a screenshot → paste into <code>README.md</code> / <code>assets/</code>.</div>
-          <div class="i18n-zh">本地打开 <code>web/YeJe-cpu-web-learning-github.html</code>，切换语言后截屏 → 粘贴到 <code>README.md</code> 或 <code>assets/</code>。</div>
+          <button type="button" class="btn chat-next"><span class="inline-i18n en">Next</span><span class="inline-i18n zh">下一条</span></button>
+          <button type="button" class="btn chat-all"><span class="inline-i18n en">Play all</span><span class="inline-i18n zh">全部播放</span></button>
+          <button type="button" class="btn chat-reset"><span class="inline-i18n en">Reset</span><span class="inline-i18n zh">重播</span></button>
+          <span class="chat-progress"><span class="prog-en">0 / 6</span><span class="prog-zh">0 / 6 条</span></span>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="panel">
-      <h2 class="i18n-block i18n-en">Steps — surface vs backstage</h2>
-      <h2 class="i18n-block i18n-zh">分步 — 表面上 / 背后</h2>
+    <div class="section-title block-i18n en">Step journey (after the skill is installed)</div>
+    <div class="section-title block-i18n zh">分步旅程（技能已就绪之后）</div>
 
-      <div class="i18n-block i18n-en">
-        <div class="step">
-          <h3>1. Install the skill folder</h3>
-          <div class="surface"><strong>Surface</strong> — You drop <code>web-learning-github/</code> into the host’s skills directory (e.g. Cursor <code>.agents/skills/web-learning-github/</code>).</div>
-          <div class="backstage"><strong>Backstage</strong> — The host indexes <code>SKILL.md</code>; <code>references/*</code> stay on disk until a generation task runs.</div>
+    <div class="step">
+      <div class="step-head block-i18n en">Step 0 · Install the skill folder</div>
+      <div class="step-head block-i18n zh">步骤 0 · 安装 skill 目录</div>
+      <div class="grid2">
+        <div class="card user"><h4><span class="inline-i18n en">On the surface</span><span class="inline-i18n zh">你表面上</span></h4>
+          <p class="block-i18n en">Copy <code>web-learning-github/</code> into your host path (e.g. <code>.agents/skills/web-learning-github/</code> on Cursor).</p>
+          <p class="block-i18n zh">将 <code>web-learning-github/</code> 拷到宿主目录（如 Cursor 的 <code>.agents/skills/web-learning-github/</code>）。</p>
         </div>
-        <div class="step">
-          <h3>2. Trigger with owner/repo + language prefs</h3>
-          <div class="surface"><strong>Surface</strong> — Natural language: map repo, bilingual toggle, default output under <code>web/</code>.</div>
-          <div class="backstage"><strong>Backstage</strong> — Model follows SKILL ordering: meta → blurbs → journey → steps → tree → bullets; chat messages start hidden and reveal on Play.</div>
-        </div>
-        <div class="step">
-          <h3>3. Ship or archive the HTML</h3>
-          <div class="surface"><strong>Surface</strong> — Double-click the file, scroll, screenshot, or attach to docs.</div>
-          <div class="backstage"><strong>Backstage</strong> — No runtime server required; fonts may load once from Google Fonts then cache offline.</div>
+        <div class="card back"><h4><span class="inline-i18n en">Backstage</span><span class="inline-i18n zh">背后</span></h4>
+          <p class="block-i18n en">Host indexes <code>SKILL.md</code>; <code>references/</code> applies when generating HTML, not on every keystroke.</p>
+          <p class="block-i18n zh">宿主识别 <code>SKILL.md</code>；<code>references/</code> 在生成 HTML 时才参与编排。</p>
         </div>
       </div>
-
-      <div class="i18n-block i18n-zh">
-        <div class="step">
-          <h3>1. 安装 skill 目录</h3>
-          <div class="surface"><strong>表面上</strong> — 将 <code>web-learning-github/</code> 放进宿主约定的 skills 路径（如 Cursor 的 <code>.agents/skills/web-learning-github/</code>）。</div>
-          <div class="backstage"><strong>背后</strong> — 宿主识别 <code>SKILL.md</code>；<code>references/*</code> 在真正生成 HTML 时才会被读到。</div>
+    </div>
+    <div class="step">
+      <div class="step-head block-i18n en">Step 1 · Trigger in natural language</div>
+      <div class="step-head block-i18n zh">步骤 1 · 自然语言触发</div>
+      <div class="grid2">
+        <div class="card user"><h4><span class="inline-i18n en">On the surface</span><span class="inline-i18n zh">你表面上</span></h4>
+          <p class="block-i18n en">Say the target <code>owner/repo</code>, language (single or bilingual), and output folder if not default <code>web/</code>.</p>
+          <p class="block-i18n zh">说明目标 <code>owner/repo</code>、单语或双语，以及若非默认 <code>web/</code> 则指定实验室目录。</p>
         </div>
-        <div class="step">
-          <h3>2. 用自然语言触发</h3>
-          <div class="surface"><strong>表面上</strong> — 说明目标 <code>owner/repo</code>、是否要中英切换、产出是否放在 <code>web/</code>。</div>
-          <div class="backstage"><strong>背后</strong> — 模型按 SKILL 顺序：元信息 → 短文 → 路径 → 分步 → 树 → 要点；聊天气泡初始隐藏，点「播放」再逐步出现。</div>
-        </div>
-        <div class="step">
-          <h3>3. 使用或归档 HTML</h3>
-          <div class="surface"><strong>表面上</strong> — 双击打开、滚动、截屏或贴进文档。</div>
-          <div class="backstage"><strong>背后</strong> — 无需服务端；首次可从 Google Fonts 拉字库，之后可离线依赖缓存。</div>
+        <div class="card back"><h4><span class="inline-i18n en">Backstage</span><span class="inline-i18n zh">背后</span></h4>
+          <p class="block-i18n en">Model composes fd-pass HTML: journey first, then grid steps, tree, README bullets.</p>
+          <p class="block-i18n zh">模型按 fd-pass 结构生成：路径优先，再双列分步、目录树、README 要点。</p>
         </div>
       </div>
-    </section>
+    </div>
+    <div class="step">
+      <div class="step-head block-i18n en">Step 2 · Share or archive the page</div>
+      <div class="step-head block-i18n zh">步骤 2 · 使用或归档页面</div>
+      <div class="grid2">
+        <div class="card user"><h4><span class="inline-i18n en">On the surface</span><span class="inline-i18n zh">你表面上</span></h4>
+          <p class="block-i18n en">Double-click the HTML, use <strong>Play all</strong> for demos, export PNG for README.</p>
+          <p class="block-i18n zh">双击打开 HTML，演示可点<strong>全部播放</strong>，截屏供 README 使用。</p>
+        </div>
+        <div class="card back"><h4><span class="inline-i18n en">Backstage</span><span class="inline-i18n zh">背后</span></h4>
+          <p class="block-i18n en">No server; lab copies under <code>30_resources/oss-skill-lab/</code> stay out of the skill repo if you prefer.</p>
+          <p class="block-i18n zh">无需服务端；若不想混入 skill 仓，可把生成物只放在 <code>30_resources/oss-skill-lab/</code>。</p>
+        </div>
+      </div>
+    </div>
 
-    <section class="panel">
-      <h2 class="i18n-block i18n-en">Repository tree</h2>
-      <h2 class="i18n-block i18n-zh">仓库目录</h2>
-      <pre class="tree">web-learning-github/
-├── SKILL.md
-├── SKILL.zh-CN.md
-├── references/
-│   ├── README.md
-│   ├── workflow.md
-│   ├── workflow.zh-CN.md
-│   ├── ui-tokens.md
-│   ├── ui-tokens.zh-CN.md
-│   ├── frontend-design-notes.md
-│   └── frontend-design-notes.zh-CN.md
-├── web/
-│   ├── demo.html
-│   └── YeJe-cpu-web-learning-github.html   ← this walkthrough
-├── assets/
-├── skill-lab/
-├── README.md
-├── README.zh-CN.md
-├── AGENTS.md
-├── CONTRIBUTING.md
-└── LICENSE</pre>
-    </section>
+    <div class="section-title block-i18n en">Repository tree</div>
+    <div class="section-title block-i18n zh">仓库骨架</div>
+    <pre class="tree"><span class="f">web-learning-github/</span>
+├── <span class="f">SKILL.md</span>              <span class="n">agent instructions</span>
+├── <span class="f">SKILL.zh-CN.md</span>
+├── <span class="f">references/</span>           <span class="n">workflow, ui-tokens, notes</span>
+├── <span class="f">web/</span>
+│   ├── <span class="f">demo.html</span>           <span class="n">sample (shorter)</span>
+│   └── <span class="f">YeJe-cpu-web-learning-github.html</span>  <span class="n">this page (fd-pass)</span>
+├── <span class="f">README.md</span>
+├── <span class="f">README.zh-CN.md</span>
+└── <span class="f">LICENSE</span></pre>
 
-    <section class="panel">
-      <h2 class="i18n-block i18n-en">README angles</h2>
-      <h2 class="i18n-block i18n-zh">README 侧写</h2>
-      <ul class="readme i18n-block i18n-en">
-        <li><strong>Demand</strong> — Skill repos hide real entrypoints under <code>references/</code> and naming conventions; one page reduces tab fatigue.</li>
-        <li><strong>Distribution</strong> — Single-file HTML is easy to share or drop in <code>web/</code> without a build step.</li>
-        <li><strong>Caveat</strong> — GitHub counters are a snapshot at generation time.</li>
-        <li><strong>Compliance</strong> — Do not embed secrets or private URLs in generated walkthroughs.</li>
+    <div class="readme-box">
+      <h4 class="block-i18n en">README angles</h4>
+      <h4 class="block-i18n zh">README 简析</h4>
+      <ul class="block-i18n en">
+        <li><strong>Demand:</strong> Skill repos are easy to star, hard to “see the wiring” without a single scrollable map.</li>
+        <li><strong>Spread:</strong> One HTML file; works offline after fonts cache; fits GitHub Pages under <code>/web</code> if you want.</li>
+        <li><strong>Caveat:</strong> GitHub counters are a snapshot at generation time.</li>
+        <li><strong>Compliance:</strong> Do not embed secrets or private URLs in generated pages.</li>
       </ul>
-      <ul class="readme i18n-block i18n-zh">
-        <li><strong>需求</strong> — Skill 仓的真实入口常在 <code>references/</code> 与约定名之下，单页能减少来回切 Tab。</li>
-        <li><strong>传播</strong> — 单文件 HTML 易分享，放进 <code>web/</code> 也无须构建链。</li>
-        <li><strong>注意</strong> — GitHub 数字为生成时刻的快照。</li>
-        <li><strong>合规</strong> — 勿在生成页中写入密钥或内网地址。</li>
+      <ul class="block-i18n zh">
+        <li><strong>需求：</strong>Skill 仓好收藏，调用链若没有单页地图则不够直观。</li>
+        <li><strong>传播：</strong>单文件；字体缓存后可离线；也可配合 GitHub Pages 指到 <code>/web</code>。</li>
+        <li><strong>注意：</strong>GitHub 数字为生成时刻快照。</li>
+        <li><strong>合规：</strong>生成页勿写密钥或内网地址。</li>
       </ul>
-    </section>
+    </div>
 
     <footer class="note">
-      <p class="i18n-block i18n-en"><strong>Snapshot</strong> · Page generated for documentation / screenshot use (2026-04-03). Toggle: <code>html.is-en</code> / <code>html.is-zh</code>; preference key <code>wlgh-walkthrough-lang</code>.</p>
-      <p class="i18n-block i18n-zh"><strong>快照</strong> · 本页用于文档说明 / 截屏（2026-04-03）。语言：<code>html.is-en</code> / <code>html.is-zh</code>；偏好键 <code>wlgh-walkthrough-lang</code>。</p>
+      <p class="block-i18n en">Lab-grade walkthrough · <code>web/YeJe-cpu-web-learning-github.html</code> · Optional mirror: <code>30_resources/oss-skill-lab/YeJe-cpu-web-learning-github.html</code> · Upstream: <a href="https://github.com/YeJe-cpu/web-learning-github" target="_blank" rel="noopener">github.com/YeJe-cpu/web-learning-github</a> · Snapshot: 2026-04-03 · Layout: fd-pass + EN/中文 toggle.</p>
+      <p class="block-i18n zh">实验室级说明页 · <code>web/YeJe-cpu-web-learning-github.html</code> · 可选镜像：<code>30_resources/oss-skill-lab/YeJe-cpu-web-learning-github.html</code> · 上游：<a href="https://github.com/YeJe-cpu/web-learning-github" target="_blank" rel="noopener">github.com/YeJe-cpu/web-learning-github</a> · 快照：2026-04-03 · 版式：fd-pass + 中英切换。</p>
     </footer>
   </div>
 
   <script>
     (function () {
       var root = document.documentElement;
-      var btnEn = document.getElementById('btn-en');
-      var btnZh = document.getElementById('btn-zh');
+      var btnEn = document.getElementById("btn-en");
+      var btnZh = document.getElementById("btn-zh");
       function setLang(lang) {
-        var en = lang === 'en';
-        root.classList.remove('is-en', 'is-zh');
-        root.classList.add(en ? 'is-en' : 'is-zh');
-        root.lang = en ? 'en' : 'zh-CN';
-        btnEn.setAttribute('aria-pressed', en ? 'true' : 'false');
-        btnZh.setAttribute('aria-pressed', en ? 'false' : 'true');
-        try { localStorage.setItem('wlgh-walkthrough-lang', lang); } catch (e) {}
+        var en = lang === "en";
+        root.classList.remove("is-en", "is-zh");
+        root.classList.add(en ? "is-en" : "is-zh");
+        root.lang = en ? "en" : "zh-CN";
+        btnEn.setAttribute("aria-pressed", en ? "true" : "false");
+        btnZh.setAttribute("aria-pressed", en ? "false" : "true");
+        try { localStorage.setItem("wlgh-walkthrough-lang", lang); } catch (e) {}
       }
-      btnEn.addEventListener('click', function () { setLang('en'); });
-      btnZh.addEventListener('click', function () { setLang('zh'); });
+      btnEn.addEventListener("click", function () { setLang("en"); });
+      btnZh.addEventListener("click", function () { setLang("zh"); });
       var saved = null;
-      try { saved = localStorage.getItem('wlgh-walkthrough-lang'); } catch (e) {}
-      if (saved === 'zh') setLang('zh');
-      else setLang('en');
+      try { saved = localStorage.getItem("wlgh-walkthrough-lang"); } catch (e) {}
+      if (saved === "zh") setLang("zh");
+      else setLang("en");
 
-      var win = document.getElementById('wlgh-journey');
-      var typing = document.getElementById('wlgh-journey-typing-avatar');
-      var msgs = win ? win.querySelectorAll('.chat-message') : [];
-      var idx = 0;
-      var playing = false;
-
-      function showTyping(on) {
-        if (!typing) return;
-        typing.classList.toggle('is-visible', !!on);
-      }
-
-      function resetJourney() {
-        idx = 0;
-        playing = false;
-        showTyping(false);
-        for (var i = 0; i < msgs.length; i++) msgs[i].style.display = 'none';
-      }
-
-      function stepNext() {
-        if (idx >= msgs.length) {
-          playing = false;
-          showTyping(false);
-          return;
+      function initChat(container) {
+        if (!container) return;
+        var messages = container.querySelectorAll(".chat-message");
+        var typingEl = container.querySelector(".chat-typing");
+        var typingAvEl = document.getElementById(container.id + "-typing-avatar") || container.querySelector(".chat-typing .chat-avatar");
+        var progressEl = container.querySelector(".chat-progress");
+        var progEn = progressEl ? progressEl.querySelector(".prog-en") : null;
+        var progZh = progressEl ? progressEl.querySelector(".prog-zh") : null;
+        var nextBtn = container.querySelector(".chat-next");
+        var allBtn = container.querySelector(".chat-all");
+        var resetBtn = container.querySelector(".chat-reset");
+        var index = 0;
+        var actors = {};
+        messages.forEach(function (msg) {
+          var sender = msg.getAttribute("data-sender");
+          var avatar = msg.querySelector(".chat-avatar");
+          if (avatar && !actors[sender]) {
+            actors[sender] = { initial: avatar.textContent.trim(), bg: avatar.style.background || "" };
+          }
+        });
+        function updateProgress() {
+          if (progEn) progEn.textContent = index + " / " + messages.length;
+          if (progZh) progZh.textContent = index + " / " + messages.length + " 条";
         }
-        var sender = msgs[idx].getAttribute('data-sender');
-        if (sender === 'host' || sender === 'model') {
-          showTyping(true);
+        function showNext() {
+          if (index >= messages.length) return;
+          var msg = messages[index];
+          var sender = msg.getAttribute("data-sender");
+          if (typingEl && actors[sender]) {
+            if (typingAvEl) {
+              typingAvEl.textContent = actors[sender].initial;
+              typingAvEl.style.background = actors[sender].bg;
+            }
+            typingEl.style.display = "flex";
+          }
           setTimeout(function () {
-            showTyping(false);
-            msgs[idx].style.display = 'block';
-            idx++;
-            setTimeout(stepNext, 420);
-          }, 580);
-        } else {
-          msgs[idx].style.display = 'block';
-          idx++;
-          setTimeout(stepNext, 420);
+            if (typingEl) typingEl.style.display = "none";
+            msg.style.display = "flex";
+            index++;
+            updateProgress();
+          }, 650);
         }
+        function showAll() {
+          var iv = setInterval(function () {
+            if (index >= messages.length) {
+              clearInterval(iv);
+              return;
+            }
+            showNext();
+          }, 1100);
+        }
+        function reset() {
+          index = 0;
+          messages.forEach(function (m) {
+            m.style.display = "none";
+          });
+          if (typingEl) typingEl.style.display = "none";
+          updateProgress();
+        }
+        if (nextBtn) nextBtn.addEventListener("click", showNext);
+        if (allBtn) allBtn.addEventListener("click", showAll);
+        if (resetBtn) resetBtn.addEventListener("click", reset);
+        updateProgress();
       }
-
-      function playJourney() {
-        if (playing) return;
-        resetJourney();
-        playing = true;
-        stepNext();
-      }
-
-      var playBtn = document.getElementById('journey-play');
-      var playBtnZh = document.getElementById('journey-play-zh');
-      var resetBtn = document.getElementById('journey-reset');
-      var resetBtnZh = document.getElementById('journey-reset-zh');
-      if (playBtn) playBtn.addEventListener('click', playJourney);
-      if (playBtnZh) playBtnZh.addEventListener('click', playJourney);
-      if (resetBtn) resetBtn.addEventListener('click', resetJourney);
-      if (resetBtnZh) resetBtnZh.addEventListener('click', resetJourney);
-
-      resetJourney();
+      document.querySelectorAll(".chat-window").forEach(initChat);
     })();
   </script>
 </body>

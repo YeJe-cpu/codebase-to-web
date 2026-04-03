@@ -2,7 +2,8 @@
 
 ## 单仓库 vs 整合页
 
-- **单仓库（默认）**：新建 `web/<owner>-<repo>.html`（或用户在对话里指定的目录）。
+- **单仓库（开源 skill 包默认）**：`web/<owner>-<repo>.html`（或用户在对话里指定的目录）。
+- **维护者本机实验室目录**：用户要落在 OSS 实验树下时，例如 `30_resources/oss-skill-lab/<owner>-<repo>.html`（相对其多项目根目录；路径以当场约定为准）。
 - **多仓库一次交付**：用户在一句话里列出 2+ 个 GitHub 仓库，或明说「合成一个 Tab 页」→ 可输出整合 HTML，或分别输出多个单文件；若无偏好，**优先多个单文件**。
 
 ## 用户明确偏好的结构
@@ -24,14 +25,16 @@
 
 - 不要把组件路径放到页面最底部。
 
-## 版心与配色
+## 版式（FD‑pass 壳）与配色
 
-- 默认 **Lab·Canonical**，见 `ui-tokens.zh-CN.md`。
-- 变体 A/B 仅用户要换气质或盲盒时使用。
+- **壳**：与 fd-pass 一致——`.meta-bar`、`.path-wrap` / `.chat-window`（下一条 · 全部播放 · 重播 · 进度）、`.grid2` 双列分步（`.card.user` / `.card.back`）、`.readme-box`、`pre.tree` 配色行等。
+- 色板默认 **Lab·Canonical**（`ui-tokens.zh-CN.md`）；变体 A/B 仅用户要换气质或盲盒时使用。
 
 ## 检查清单（生成后目测）
 
 - [ ] 主标题不是 Inter / Roboto 堆栈
 - [ ] 背景无大紫渐变主导、无重噪点磨砂铺满
 - [ ] 版心留白适中（`ui-tokens.zh-CN.md` 中的 `.shell` 公式）
-- [ ] `typing-avatar` id 与 `chat-window` id 一致
+- [ ] `typing-avatar` id = `{chatWindowId}-typing-avatar`
+- [ ] 组件路径聊天具备 **逐步 / 全部播放 / 重播** 与进度
+- [ ] 宽屏下分步为 **两列**（`.grid2`）
