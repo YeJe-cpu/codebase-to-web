@@ -25,6 +25,8 @@ If the user **explicitly** asks for **both languages in one HTML** with a **UI s
 - **Multiple repos** in one request, or explicit “single tabbed page”: you may emit one combined HTML; if no preference, **prefer separate files**.
 - Keep outputs under an agreed folder; **default `web/`**.
 
+This repo ships **`web/index.html`** as a bilingual (EN / 中文) reference page; **`web/demo.html`** redirects there—do not overwrite those when generating other repos’ walkthroughs (use `web/<owner>-<repo>.html`).
+
 ## Hosts (for journey/install copy)
 
 When naming the host in journey bubbles or install steps, follow the user’s real environment. Examples (always verify against vendor docs):

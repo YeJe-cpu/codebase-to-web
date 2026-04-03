@@ -28,7 +28,9 @@ README 往往写得很概括，真实入口在 Hook、`references/` 或子命令
 
 ### 示例页
 
-克隆仓库后本地打开 [`web/demo.html`](web/demo.html)，顶部可切换 English / 中文。若要在本 README 配图，可把截图放到 `assets/demo-screenshot.png`，写 `![预览](./assets/demo-screenshot.png)` 即可。
+克隆后打开 [`web/index.html`](web/index.html)，右上角 **English / 中文** 可切换全文。（[`web/demo.html`](web/demo.html) 会跳转到同一页。）配图可放 `assets/demo-screenshot.png`，写 `![预览](./assets/demo-screenshot.png)`。
+
+**GitHub Pages（可选）：** 仓库 Settings → Pages → 从分支发布 → 根目录选 **`/web`**，站点首页即为该双语页（例：`https://YeJe-cpu.github.io/web-learning-github/`）。
 
 ---
 
@@ -69,7 +71,8 @@ web-learning-github/
 ├── SKILL.zh-CN.md
 ├── references/
 ├── web/
-│   └── demo.html
+│   ├── index.html      # 中英切换示例（默认入口）
+│   └── demo.html       # 跳转至 index.html
 ├── README.md
 ├── README.zh-CN.md
 └── LICENSE

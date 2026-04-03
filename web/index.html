@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="is-en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Web Learning GitHub — bilingual walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page-bg: #e8e2d8;
+      --surface: #fffdf8;
+      --accent: #9c4221;
+      --accent-light: #ffedd5;
+      --code-bg: #25201c;
+      --text: #1c1917;
+      --muted: #57534e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .shell {
+      max-width: min(52rem, calc(100vw - 2.5rem));
+      margin: 0 auto;
+      padding: clamp(2rem, 5vw, 3rem) clamp(1.2rem, 4vw, 2rem) 4rem;
+    }
+    header.top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .title-block h1 {
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(1.45rem, 4vw, 2rem);
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+    }
+    .title-block .sub {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 36rem;
+    }
+    .lang-switch {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      padding: 0.2rem;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      flex-shrink: 0;
+    }
+    .lang-switch button {
+      border: none;
+      background: transparent;
+      padding: 0.45rem 0.85rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+    .lang-switch button[aria-pressed="true"] {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .panel {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 1.35rem;
+      box-shadow: 0 2px 14px rgba(28,25,23,.06);
+    }
+    .panel h2 {
+      font-family: Fraunces, serif;
+      font-size: 1.2rem;
+      margin: 0 0 0.75rem;
+      color: var(--accent);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .meta a { color: var(--accent); }
+    .i18n { display: none; }
+    html.is-en .i18n.en { display: block; }
+    html.is-zh .i18n.zh { display: block; }
+    .chat-msg {
+      margin: 0.55rem 0;
+      padding: 0.65rem 0.95rem;
+      border-radius: 10px;
+      max-width: 94%;
+    }
+    .chat-msg.user { background: var(--accent-light); border-left: 4px solid var(--accent); }
+    .chat-msg.agent { background: #f5f5f4; margin-left: 1rem; border-right: 4px solid #78716c; }
+    .who { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 0.25rem; }
+    .step { margin: 1rem 0; }
+    .step h3 { font-family: Fraunces, serif; font-size: 1.05rem; margin: 0 0 0.45rem; }
+    .surface, .backstage {
+      padding: 0.72rem 0.95rem;
+      border-radius: 8px;
+      margin: 0.4rem 0;
+      font-size: 0.96rem;
+    }
+    .surface { background: #fef3c7; border-left: 3px solid #d97706; }
+    .backstage { background: #e0e7ff; border-left: 3px solid #4f46e5; }
+    pre.tree {
+      background: var(--code-bg);
+      color: #e7e5e4;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      margin: 0.5rem 0 0;
+    }
+    ul.readme { margin: 0.4rem 0 0; padding-left: 1.15rem; font-size: 0.95rem; }
+    footer.note { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <div class="title-block">
+        <h1 class="i18n en">YeJe-cpu/web-learning-github</h1>
+        <h1 class="i18n zh">YeJe-cpu/web-learning-github</h1>
+        <p class="sub i18n en">Sample walkthrough (not live API data). Use the <strong>English / 中文</strong> switch above — same pattern as skill-generated pages.</p>
+        <p class="sub i18n zh">示意 walkthrough（非实时 API）。用右上角 <strong>English / 中文</strong> 切换，与 skill 生成的页面同一套交互。</p>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Language / 语言">
+        <button type="button" id="btn-en" aria-pressed="true">English</button>
+        <button type="button" id="btn-zh" aria-pressed="false">中文</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2 class="i18n en">Repo info</h2>
+      <h2 class="i18n zh">仓库信息</h2>
+      <div class="meta i18n en">
+        <span><strong>Topic</strong>: Agent skill → single HTML walkthrough</span>
+        <span><strong>Output default</strong>: <code>web/&lt;owner&gt;-&lt;repo&gt;.html</code></span>
+        <span><a href="https://github.com/YeJe-cpu/web-learning-github">GitHub →</a></span>
+      </div>
+      <div class="meta i18n zh">
+        <span><strong>定位</strong>：Agent skill → 单页可视化说明</span>
+        <span><strong>默认产出</strong>：<code>web/&lt;owner&gt;-&lt;repo&gt;.html</code></span>
+        <span><a href="https://github.com/YeJe-cpu/web-learning-github">GitHub →</a></span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="i18n en">In one sentence</h2>
+      <h2 class="i18n zh">一句话</h2>
+      <p class="i18n en">Help you see the <strong>UI/UX path</strong> through an Agent Skill repo—what you click or type vs what the host and model load next—so you learn faster than jumping across Markdown files alone.</p>
+      <p class="i18n zh">帮你看清 Agent Skill 仓库里的<strong>用户路径</strong>：你点哪里、说什么，对应宿主和模型下一步读什么——比在小 Markdown 里来回跳更快建立心智模型。</p>
+    </section>
+
+    <section class="panel">
+      <h2 class="i18n en">Component path (example)</h2>
+      <h2 class="i18n zh">组件路径（示例）</h2>
+      <div class="i18n en">
+        <div class="chat-msg user"><div class="who">You</div>Install skill folder, then ask: “Map this repo to one HTML.”</div>
+        <div class="chat-msg agent"><div class="who">Host (e.g. Cursor)</div>Loads <code>.agents/skills/web-learning-github/SKILL.md</code>.</div>
+        <div class="chat-msg user"><div class="who">Model</div>Reads <code>references/ui-tokens.md</code> for Lab·Canonical layout, then emits <code>web/owner-repo.html</code>.</div>
+      </div>
+      <div class="i18n zh">
+        <div class="chat-msg user"><div class="who">你</div>安装 skill 目录，然后：「把这个仓做成一页 HTML 说明。」</div>
+        <div class="chat-msg agent"><div class="who">宿主（如 Cursor）</div>加载 <code>.agents/skills/web-learning-github/SKILL.md</code>。</div>
+        <div class="chat-msg user"><div class="who">模型</div>读取 <code>references/ui-tokens.md</code> 等，按 Lab·Canonical 版式生成 <code>web/owner-repo.html</code>。</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="i18n en">Steps — surface vs backstage</h2>
+      <h2 class="i18n zh">分步 — 表面上 / 背后</h2>
+      <div class="step i18n en">
+        <h3>1. Install</h3>
+        <div class="surface"><strong>Surface</strong> — Copy <code>web-learning-github/</code> into your host skills path.</div>
+        <div class="backstage"><strong>Backstage</strong> — Host scans for <code>SKILL.md</code>; rules in <code>references/</code> apply only when generating HTML.</div>
+      </div>
+      <div class="step i18n en">
+        <h3>2. Generate</h3>
+        <div class="surface"><strong>Surface</strong> — You type the target <code>owner/repo</code> in chat.</div>
+        <div class="backstage"><strong>Backstage</strong> — Model may call GitHub API for stats; builds journey + tree from repo layout.</div>
+      </div>
+      <div class="step i18n zh">
+        <h3>1. 安装</h3>
+        <div class="surface"><strong>表面上</strong> — 把 <code>web-learning-github/</code> 拷进宿主要求的 skills 目录。</div>
+        <div class="backstage"><strong>背后</strong> — 宿主查找 <code>SKILL.md</code>；生成 HTML 时才读取 <code>references/</code>。</div>
+      </div>
+      <div class="step i18n zh">
+        <h3>2. 生成</h3>
+        <div class="surface"><strong>表面上</strong> — 在对话里给出目标 <code>owner/repo</code>。</div>
+        <div class="backstage"><strong>背后</strong> — 模型可能请求 GitHub API；按目录结构拼 journey 与树。</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="i18n en">Repository tree (static excerpt)</h2>
+      <h2 class="i18n zh">目录树（示意节选）</h2>
+      <pre class="tree i18n en">web-learning-github/
+├── SKILL.md
+├── SKILL.zh-CN.md
+├── references/
+│   ├── README.md
+│   ├── workflow.md
+│   ├── ui-tokens.md
+│   └── …
+├── web/
+│   ├── index.html   ← you are here (EN / 中文 toggle)
+│   └── demo.html   → redirects here
+├── README.md
+└── README.zh-CN.md</pre>
+      <pre class="tree i18n zh">web-learning-github/
+├── SKILL.md
+├── SKILL.zh-CN.md
+├── references/
+│   └── …
+├── web/
+│   ├── index.html   ← 当前页（中英切换）
+│   └── demo.html   → 跳转到本页
+├── README.md
+└── README.zh-CN.md</pre>
+    </section>
+
+    <section class="panel">
+      <h2 class="i18n en">README angles (illustrative)</h2>
+      <h2 class="i18n zh">README 侧写（示意）</h2>
+      <ul class="readme i18n en">
+        <li><strong>Demand</strong> — Skill repos are easy to star, hard to “see the wiring.”</li>
+        <li><strong>Distribution</strong> — One sharable HTML; works offline after fonts cache.</li>
+        <li><strong>Moat / caveats</strong> — Snapshot stats; regenerate when the repo moves.</li>
+        <li><strong>Compliance</strong> — Don’t paste secrets into generated pages.</li>
+      </ul>
+      <ul class="readme i18n zh">
+        <li><strong>需求</strong> — Skill 仓好收藏，调用链却不直观。</li>
+        <li><strong>传播</strong> — 单文件 HTML，字体缓存后可离线传阅。</li>
+        <li><strong>注意</strong> — Star 等为快照；仓库大变要重新生成。</li>
+        <li><strong>合规</strong> — 勿把密钥写进生成页。</li>
+      </ul>
+    </section>
+
+    <footer class="note">
+      <p class="i18n en">Illustration only; numbers not live. If you enable GitHub Pages with the <code>/web</code> folder as root, this page becomes the site entry — toggle still works.</p>
+      <p class="i18n zh">仅为示意，数据非实时。若用 GitHub Pages 把站点根目录指到 <code>/web</code>，本页即入口，中英切换仍可用。</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btnEn = document.getElementById('btn-en');
+      var btnZh = document.getElementById('btn-zh');
+      var KEY = 'wlgh-demo-lang';
+      function setLang(lang) {
+        var en = lang === 'en';
+        root.classList.remove('is-en', 'is-zh');
+        root.classList.add(en ? 'is-en' : 'is-zh');
+        root.lang = en ? 'en' : 'zh';
+        btnEn.setAttribute('aria-pressed', en ? 'true' : 'false');
+        btnZh.setAttribute('aria-pressed', en ? 'false' : 'true');
+        try { localStorage.setItem(KEY, lang); } catch (e) {}
+      }
+      btnEn.addEventListener('click', function () { setLang('en'); });
+      btnZh.addEventListener('click', function () { setLang('zh'); });
+      var saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'zh') setLang('zh');
+      else setLang('en');
+    })();
+  </script>
+</body>
+</html>

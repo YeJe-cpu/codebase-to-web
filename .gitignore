@@ -1,5 +1,6 @@
 # Generated HTML (skill output); keep checked-in demo
 web/*.html
+!web/index.html
 !web/demo.html
 
 # OS

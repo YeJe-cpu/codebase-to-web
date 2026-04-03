@@ -26,9 +26,11 @@ Output is one HTML file (no bundler). Typical sections:
 - Short README context bullets (demand, spread, caveats)
 - Typography and layout follow our default design token Lab·Canonical (warm editorial style); ideas align with [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design). First load may fetch Google Fonts; after that it can work offline from cache.
 
-### Demo
+### Bilingual sample (English / 中文)
 
-See [`web/demo.html`](web/demo.html) for a bilingual (EN / 中文) sample you can open locally after cloning. Optional screenshot for this README: put `assets/demo-screenshot.png` in the repo and use `![Demo](./assets/demo-screenshot.png)`.
+Open [`web/index.html`](web/index.html) after cloning — top-right switch toggles the whole page. ([`web/demo.html`](web/demo.html) redirects to the same file.) Optional screenshot for this README: `assets/demo-screenshot.png` → `![Demo](./assets/demo-screenshot.png)`.
+
+**GitHub Pages (optional):** Repository → Settings → Pages → deploy from branch → set folder to `/web`. The site root becomes this toggle page (e.g. `https://YeJe-cpu.github.io/web-learning-github/`).
 
 ---
 
@@ -69,7 +71,8 @@ web-learning-github/
 ├── SKILL.zh-CN.md
 ├── references/
 ├── web/
-│   └── demo.html       # committed sample; other web/*.html usually gitignored
+│   ├── index.html      # bilingual sample (default entry)
+│   └── demo.html       # redirect → index.html
 ├── README.md
 ├── README.zh-CN.md
 └── LICENSE
