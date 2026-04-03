@@ -1,49 +1,103 @@
-# repo-to-skill-lab
+# Repo to Skill Lab
 
-把 **GitHub 上的 Agent Skill 开源仓** 生成 **单文件、可本地打开的「Skill 实验室」HTML**：先看 **组件路径**（谁加载谁），再读分步旅程、目录树和 README 热度简析。默认中文叙事；可在提示里改成全英文。
+一款 **Claude Code** skill：把 GitHub 上的 **Agent Skill 仓库** 变成**漂亮、自持的单文件 HTML「实验室」**。
 
-仓库名对齐 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) 的 **「X → Y」** 记法：**repo → skill lab**，比 `oss-skill-lab-html` 好记。
+指向一个 skill 仓，拿回**可双击打开**的页面——带**区块化阅读**、**可步进的组件路径 journey**（谁加载谁）、**大白话**、**目录树**、以及 **README 热度简析**——避免典型大紫渐变「AI 皮肤」。
 
-## 适用对象
+> **README 双轨（任选其一作为 GitHub 默认显示）：**  
+> - **Track B（本文件）** — 段落节奏 **严格对标** [zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)。  
+> - **Track A** — 用 [jonathimer/devmarketing-skills](https://github.com/jonathimer/devmarketing-skills) 的开发者受众视角来写，**并注明参照了哪些子 skill**（**不随本仓捆绑**）。见 [Track A 中文](docs/README-track-a.zh-CN.md) · [Track A EN](docs/README-track-a.md)。  
+> **仓库取名：** [docs/REPO_NAME_IDEAS.md](docs/REPO_NAME_IDEAS.md) · **GitHub About 怎么填：** [docs/GITHUB-ABOUT.md](docs/GITHUB-ABOUT.md)
 
-- 收藏了一堆 `SKILL.md` 仓库却懒得逐层点开的人  
-- 维护 Skill 包、需要给同事 **一页纸讲清安装与调用链**  
-- 希望成品 **无构建步骤**、双击即看（字体首次需联网）
+[English (Track B)](README.md)
 
-## 安装
+---
 
-将本目录拷到：
+## 适合谁？
 
-- `.agents/skills/repo-to-skill-lab/`（Cursor 等）
-- 或 `~/.claude/skills/repo-to-skill-lab/`（Claude Code）
+**「收藏了_skill_但还要干活的人」** —— 你已经在用 Claude Code、Cursor、Windsurf 等。你会 **star 各种 skill 仓**（或内置 `anthropics/skills`、社区包、公司内 `SKILL.md` 树）。能用，但缺一张**可信的** **安装 → 触发 → 读哪些文件 → README  hype 意味着什么** 的总图。
 
-保持 `SKILL.md` 与 `references/` 结构不变。
+**目标很实际，不做论文：**
 
-## 产出路径
+* **指挥 agent**：斜杠命令 / 目录到底怎么扫  
+* **快速验 README**：「只要 clone」是否掩盖了 Hook  
+* ** onboarding 同事**：不用屏幕共享十几份 Markdown  
+* ** Maintainer 对齐**：共享同一份 HTML 实验室稿  
+
+---
+
+## 实验室页长什么样？
+
+**单个 `.html`** —— 无需打包、`npm install`；字体首次需联网（Google Fonts）。包含：
+
+* **GitHub 元数据条** —— Star / Fork / 创建时间（页脚注明**快照**）
+* **大白话** —— 一句话说清干嘛的  
+* **可步进 journey** —— 用户 → 宿主 → skill / ref …（**条数随真实路径**，不设死四格演示）
+* **分步** —— 表面上 vs 背后（文件 / Hook）
+* **目录树** —— 与 README 对齐的 monospace 骨架  
+* **README 简析** —— 需求 / 传播 / 壁垒 / 合规，各一行  
+* **有辨识度的视觉** —— 默认 **Lab·Canonical**（Fraunces + Source Sans 3 + 陶土强调）；理念对齐 [Anthropic `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design)；可要求冷色 / 青绿工程变体  
+
+---
+
+## 怎么用
+
+### 作为 Claude Code skill
+
+1. 将 `repo-to-skill-lab` 文件夹复制到 `~/.claude/skills/`（Cursor 可用 `.agents/skills/repo-to-skill-lab/`）。  
+2. 在项目里对模型说：**「把 `owner/repo` 做成 Skill 实验室单页。」**
+
+### 产出路径
 
 默认 **`skill-lab/<owner>-<repo>.html`**；可在对话里改输出目录。
 
+---
+
 ## 触发示例
 
-- 「给 `owner/repo` 做 Skill 实验室单页」  
-- 「组件路径 journey 在前，再分步旅程」  
+* “把这个 skill 仓生成实验室 HTML”  
+* “组件路径 journey 在前，再分步”  
+* “单页讲清 `SKILL.md` 树”  
+* “Turn this skills repo into a Skill Lab HTML”
 
-## 和 codebase-to-course 的关系
+---
 
-| | [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) | **本 skill** |
-|--|--|--|
-| 输入 | 应用代码仓 | **Skill / Agent 技能包** 仓 |
-| 输出 | 互动课程 | **单页实验室**（元数据 + journey + 树 + README 简析）|
-| 目的 | 搞懂代码怎么跑 | 搞懂 **skill 怎么装、谁调谁** |
+## 设计理念
 
-可并行使用：课程搞代码，实验室搞技能包。
+### 先 journey，再文件夹
 
-## 发布与叙事（可选）
+学习材料常从树开始；从业者从**输入什么**、**回来什么**开始。本 skill **强制组件路径先于长文分步**。
 
-开源官宣可配合 [jonathimer/devmarketing-skills](https://github.com/jonathimer/devmarketing-skills) 里那套 **开发者受众** 写法：具体案例、少形容词、多可验证截图路径。
+### 能走流程就不用长段
 
-热门标签示例：`agent-skills`、`claude-code`、`cursor`、`静态页面`。
+能用**步进对话**或**树**表达的，不写六段说明；每块 blurb 控制在两三句。
+
+### 单文件、可分享
+
+文件名 **`owner-repo.html`**，方便 diff、打包、附件；**无构建**就少一层「产物对不上」的风险。
+
+### 与 Codebase to Course 互补
+
+**应用代码**深读用 [zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)；**Skill 包 / 触发链**用 **Repo to Skill Lab**。
+
+---
+
+## 目录结构
+
+```
+repo-to-skill-lab/
+├── SKILL.md
+├── references/
+├── docs/                    # Track A、取名、GitHub About
+├── skill-lab/
+├── README.md
+└── README.zh-CN.md          # Track B（本文件）
+```
+
+详见英文 [README.md](README.md) 中的完整树。
+
+---
 
 ## 许可证
 
-MIT。借用 Anthropic `frontend-design` 理念时请保留 [上游链接与许可](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。
+MIT — 见 [LICENSE](LICENSE)。

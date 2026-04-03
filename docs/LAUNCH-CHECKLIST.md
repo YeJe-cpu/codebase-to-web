@@ -1,10 +1,16 @@
 # 开源发布检查清单（给维护者）
 
-方法论可参考 [jonathimer/devmarketing-skills](https://github.com/jonathimer/devmarketing-skills)（开发者营销 skill 包，需单独安装）。
+## README 双轨
+
+- **Track B（默认）：** 根目录 [README.md](../README.md) — 段落对标 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)。  
+- **Track A（开发者营销）：** [README-track-a.md](README-track-a.md) / [README-track-a.zh-CN.md](README-track-a.zh-CN.md) — 明确列出参照的 [devmarketing-skills](https://github.com/jonathimer/devmarketing-skills) **子 skill**（本仓库不捆绑该包）。
+
+方法论安装：`npx add-skill jonathimer/devmarketing-skills`（可选）。
 
 ## 仓库基础
 
-- [ ] `README.md` 首屏 3 秒内说清：**输入 / 输出 / 和 codebase-to-course 的差异**
+- [ ] GitHub **About** 描述与 Topics：抄 [GITHUB-ABOUT.md](GITHUB-ABOUT.md)  
+- [ ] `README.md` 首屏说清：**输入 / 输出 / 与 codebase-to-course 互补**
 - [ ] `LICENSE` 已选（当前 MIT）
 - [ ] Topics：`agent-skills` `claude-code` `cursor` `skill` `static-html` `education`
 
