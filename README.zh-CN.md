@@ -1,112 +1,126 @@
 # Codebase to Web
 
-**Agent skill**（**Cursor**、**Claude Code**、**Windsurf**、**OpenClaw** 等宿主）：把 GitHub 上的 **Agent Skill 仓库** 变成**单文件、可本地打开的「Skill 实验室」HTML**。
-
-指向 skill 仓，得到可双击浏览的页面——**区块阅读**、**可步进组件路径 journey**、**大白话**、**目录树**、**README 简析**——避免典型大紫渐变「AI 皮肤」。
+**Codebase to Web** 是跑在 **Cursor、Claude Code、Windsurf、OpenClaw** 等环境里的 **Agent skill**。你对准 GitHub 上的某个 **Agent Skill 仓库**，它会生成 **单个 HTML 文件**：把「用户怎么操作、怎么触发」和「背后宿主、模型、Agent 各做了什么」整理成 **一条可在浏览器里滚动查看的可视化路径**——不是再堆一叠分散的 Markdown，而是一张网页里的 **流程 + 说明**。
 
 **仓库：** [github.com/YeJe-cpu/codebase-to-web](https://github.com/YeJe-cpu/codebase-to-web) · [English](README.md)
 
 ---
 
-## Skill 在仓库里长什么样？（GitHub 上能看到吗？）
-
-**能。** Skill **就是本仓库**，不是别的目录。克隆后你会看到：
-
-| 路径 | 作用 |
-|------|------|
-| **[`SKILL.md`](SKILL.md)** | 主技能说明（多数宿主默认读这个文件）。 |
-| **[`SKILL.zh-CN.md`](SKILL.zh-CN.md)** | 中文规则的完整副本；可选，也可合并进一份 `SKILL.md`。 |
-| **`references/`** | 生成 HTML **实验室页**时模型要参考的补充说明：配色字体、版式检查、别做成大紫渐变那张图——**不是**另一个独立产品。通俗说明见 **[`references/README.md`](references/README.md)**。 |
-| **`web/`** | **生成结果**默认落盘处；仓库里只保留占位（`.gitkeep`），真实 `.html` 一般不入库（见 `.gitignore`）。 |
-
-以前口头叫 **Skill Lab** / **`oss-skill-lab-html`**，指的是**这类单页 HTML 的产出**；**源代码形态的 skill** 就在本仓库根目录的 **`SKILL.md`**（以及 `references/`），没有名为 `skill-lab` 的子文件夹专门存 skill。
-
----
-
-## GitHub 上到底是什么
-
-只有上述 skill 包 + 双 README + `LICENSE`。**没有**上传你整个 `emo专用` 工作区。
-
----
-
 ## 适合谁？
 
-**「收了 skill 还要交付的人」** —— 你已在使用 **Cursor / Claude Code / Windsurf / OpenClaw** 等。你会 **star 或内置** 各类 `SKILL.md` 仓库，但缺一张 **安装 → 触发 → 读哪些文件 → README 意味着什么** 的总图。
-
-**目标：** 指挥 agent · 验 README 是否藏 Hook · onboarding · Maintainer 对齐。
-
----
-
-## 启发来源：codebase-to-course，以及我们的不同
-
-本 skill 的直接启发来自 **[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)**（把代码仓变成可互动的「课程」体验）。我们非常尊重那条路线的产品与完成度。
-
-| | [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) | **Codebase to Web**（本仓库） |
-|---|---|---|
-| **典型对象** | 应用 / 产品 **业务代码仓** | **Agent Skill 包**（`SKILL.md`、Hook、`references/`、打包方式） |
-| **体验形态** | 偏 **课程**：模块、闯关、围绕代码的深度学习 | **不强制**课程问答式流程——给一张可滚动、可分享的 **实验室单页** |
-| **吸纳的能力** | 其中特别好的 **组件路径**：按时间线看清 **谁先加载谁、调用顺序** | 我们 **采纳同一思路**：HTML 里 **journey / 组件路径区块置顶**，先建立心智模型再读细节 |
-| **我们主打的点** | 教懂你这份代码 | **Skill 路径的 UI/UX**：让用户在**每一步界面操作**旁边，看到 **背后宿主、模型、Agent 各自在干什么**（「表面上 / 背后」对照） |
-| **这里还带什么** | — | GitHub **Star / Fork / 创建时间**（页脚 **快照**）、**仓库目录树**、**README 侧写**（需求感 · 传播 · 壁垒 · 合规注意等简短 bullet）、**大白话**引言 |
-
-**关系是互补，不是擂台：** 你要对**应用代码**做结构化深度学习，用 *codebase-to-course*；你要给 **`SKILL.md` 生态**做 **安装 → 触发 → 读哪些文件** 的一页总图，用 **Codebase to Web**。若我们对上游项目的描述和他们的最新版不一致，欢迎开 issue，我们改表述。
+- **Vibe coder / 想少踩坑的人**：刷 GitHub、想学别人的 skill/工具链，想 **更快搞清**「装在哪、怎么触发、谁先读哪个文件」。  
+- **读开源的日常场景**：README 常写得很高概念，**真实入口**在 Hook、`references/`、子命令里——这一页把 **用户可见路径** 和 **幕后机制** 放在一起。  
+- **要交付、对齐、写文档的人**：需要 **一个 `.html` 或一个链接**，把调用关系讲给同事或贡献者听。
 
 ---
 
-## 实验室页长什么样？
+## 生成的可视化网页里有什么？
 
-单个 **`.html`**，无需打包；字体首次需联网（Google Fonts）。含：GitHub 元数据、大白话、可步进 journey、分步（表面/背后）、目录树、README 简析、**Lab·Canonical** 视觉（可要求变体）。理念参考 [Anthropic `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。
+得到的是 **本地双击即可打开的单个 `.html`**（不需要再跑打包命令）。常见版块从上往下包括：
 
----
+1. **仓库信息条** — 链到 GitHub，展示 Star / Fork / 创建时间（页脚可注明数据 **快照时间**）。  
+2. **大白话引言** — 用一句话说清这个仓 **解决什么问题**、给谁用。  
+3. **组件路径（可步进）** — 类似对话气泡，**一步一步** 播放：用户输入 → 宿主/路由 → 读到哪份 `SKILL.md` 或 `references/` → 模型或 Agent 下一步……条数按 **真实仓库** 展开，不硬套固定步数。  
+4. **分步说明（表面上 / 背后）** — 每一步你在 UI 上在做什么，对应 **背后在读文件、跑 Hook、还是走子命令**。  
+5. **目录树** — 和仓库实际结构一致的树状展示，方便对照「README 里没写全的路径」。  
+6. **README 侧写** — 几条短 bullet，例如需求感、传播点、壁垒或合规注意等，帮助判断项目在社群里的位置。  
+7. **版式与字体** — 默认暖色编辑向的 **Lab·Canonical**（有识别度的标题字体 + 舒适版心），刻意避开「大紫渐变 + 万能 Inter 标题」的廉价感；需要可换冷色/工程向变体。视觉纪律参考 [Anthropic `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。
 
-## 安装（按宿主选路径）
+若页面里引用了 **Google Fonts**，**第一次**打开通常需要联网；之后同一文件可离线查看。
 
-将本仓库中的 **`codebase-to-web`** 文件夹拷入对应 skill 目录：
+### 想插图？
 
-| 宿主 | 常见路径（示例） |
-|------|------------------|
-| **Cursor** | 如项目内 `.agents/skills/codebase-to-web/` |
-| **Claude Code** | 如 `~/.claude/skills/codebase-to-web/`（口语音常被听写成 **Cloud Code**，指同一产品） |
-| **Windsurf** | 以当前官方文档中的项目级 skills 为准 |
-| **OpenClaw** | 如 `~/.openclaw/skills/`、`~/.agents/skills/` 或工作区 `skills/`，见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/)（中文社群口语「**龙虾**」多指 **OpenClaw**，文档与 journey 里请写规范名） |
+Markdown 支持图片。例如在仓库里新建 `assets/preview.png`，在本 README 里写：
 
-保留 **`SKILL.md` + `SKILL.zh-CN.md` + `references/`**（含 `*.zh-CN.md` 镜像）。多数宿主默认只读 `SKILL.md`；中文说明可合并进一份或按团队约定 symlink。  
-**产出语言：** 见 `SKILL.md` / `SKILL.zh-CN.md` —— 英文对话 → 整页英文，中文对话 → 整页中文。
+```markdown
+![页面预览示例](./assets/preview.png)
+```
 
-然后对模型说：**「把 `owner/repo` 做成 Skill 实验室单页。」**
-
-### 产出路径
-
-默认 **`web/<owner>-<repo>.html`**；可在对话里改目录。
+推送到 GitHub 后，在仓库首页就能看到缩略图；本地编辑同样生效。
 
 ---
 
-## 触发示例
+## 我们想强调的几件事
 
-* 「把这个 skill 仓生成实验室 HTML」  
-* 「组件路径 journey 在前，再分步」  
-* “Turn this skills repo into a Skill Lab HTML”  
-
----
-
-## 设计理念
-
-**先 journey 再长文**；**能对话/树就不堆段**；**单文件可分享**。  
-与 *codebase-to-course* 如何分工，见上文 **「启发来源：codebase-to-course，以及我们的不同」** 一节。
+- **路径优先**：先看 **谁先加载谁**、用户一句话触发了哪条链，再去读长篇说明。  
+- **表面 × 背后**：每个关键步骤都尽量回答 **界面层在干什么、底下模型/Agent 在干什么**。  
+- **一页总览**：输出是 **单文件可视化说明**，不强制「课堂闯关式」问答（和「把业务仓做成系统课」类产品 **场景不同**，见文末致谢）。  
+- **少翻 tab**：Star、目录树、README 侧写放在同一页，减少在 GitHub 与本地文件之间来回跳。
 
 ---
 
-## 目录结构
+## 本仓库里每个路径是干什么的？
+
+克隆下来的 **就是** 可发布的 skill 包，典型布局如下：
 
 ```
 codebase-to-web/
-├── SKILL.md
-├── SKILL.zh-CN.md
-├── references/
-├── web/
+├── SKILL.md              # 多数宿主默认读取的技能说明（英文主文）
+├── SKILL.zh-CN.md        # 中文规则副本（可与上一文件二选一或自行合并）
+├── references/           # 生成 HTML 时的版式、流程与审美约束
+├── web/                  # 默认输出目录（生成的 .html 通常不入库；可有 .gitkeep）
 ├── README.md
-└── README.zh-CN.md
+├── README.zh-CN.md
+└── LICENSE
 ```
+
+| 路径 | 作用 |
+|------|------|
+| `SKILL.md`、`SKILL.zh-CN.md` | 规定 **生成逻辑、章节顺序、产出语言** 等 |
+| `references/` | 具体见 [`references/README.md`](references/README.md)（版心配色、检查项、设计纪律） |
+| `web/` | 在对话里生成页面时的 **默认保存位置**，一般为 `web/<owner>-<repo>.html` |
+
+---
+
+## 如何安装
+
+把 **`codebase-to-web`** 文件夹原样放进你的宿主所要求的 skills 目录：
+
+| 宿主 | 常见示例 |
+|------|-----------|
+| **Cursor** | 如项目内 `.agents/skills/codebase-to-web/` |
+| **Claude Code** | 如 `~/.claude/skills/codebase-to-web/` |
+| **Windsurf** | 以产品官方文档中的 skills 路径为准 |
+| **OpenClaw** | 如 `~/.openclaw/skills/` 或工作区内的 `skills/` 等，加载顺序见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/) |
+
+**输出语言**（整页中文或英文）由 `SKILL.md` / `SKILL.zh-CN.md` 约定，随你的对话语言走。
+
+### 默认输出路径
+
+**`web/<owner>-<repo>.html`**；也可以在提示里改成别的目录名。
+
+---
+
+## 怎么用（提示词示例）
+
+- 「帮我把 `owner/repo` 生成一页 **安装→触发→读文件顺序** 的单文件 HTML。」  
+- 「**组件路径**要做成可步进的气泡，再放 **表面上/背后** 分步。」  
+- “Turn `owner/repo` into one self-contained HTML that maps user actions to agent behavior.”
+
+---
+
+## 设计理念（短）
+
+**先路径、后长文**；**能点着看就不堆长段落**；**单文件 HTML 可分享**。
+
+---
+
+## 致谢与和 Codebase to Course 的关系
+
+思路受到 **[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)**（*Codebase to Course*）的启发：他们把代码仓做成 **可结构化解锁的学习/课程体验**，需求清晰、完成度高，社区 Star 多说明这条路 **被大量开发者验证过**。
+
+**我们不会拿 star 数去和对方「比个头」。** 更实在的分工是：**对方偏应用代码的系统化学习**；**我们偏 Agent Skill 包的一条可视化用户路径**——赛道不同，可以并存；若你愿意同时用两个工具，也互不挡道。
+
+| | Codebase to Course | Codebase to Web（本仓库） |
+|---|---|---|
+| 典型输入 | 应用 / 产品代码仓 | `SKILL.md`、Hook、`references/` 等 **技能包** |
+| 体验重心 | 课程式模块与深度 | **单页**总览；**不强制**课堂问答流 |
+| 借鉴点 | 清晰的 **组件路径 / 时间线** 表达方式 | 同样在页面 **靠前** 用可步进路径讲清先后顺序 |
+| 我们的侧重点 | — | **用户侧操作** 与 **模型/Agent 侧动作** 的对照；Star、树、README 辅助信息 |
+
+若你对上游项目最新能力更熟悉，欢迎开 issue 帮我们 **更正表述**。
+
+---
 
 ## 许可证
 

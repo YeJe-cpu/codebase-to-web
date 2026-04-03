@@ -1,156 +1,124 @@
 # Codebase to Web
 
-An **agent skill** (Cursor, Claude Code, Windsurf, **OpenClaw**, …) that turns **Agent Skill repositories** on GitHub into a **beautiful, self-contained, single-page HTML lab**.
-
-Point it at a skills repo. Get back a **lab you can double-click**—**scroll-friendly sections**, **step-through journey** (who loads whom), **plain-language blurbs**, **repo tree**, and **README context**—without the typical purple-gradient AI look.
+**Codebase to Web** is an **agent skill** for **Cursor**, **Claude Code**, **Windsurf**, **OpenClaw**, and similar hosts. Point it at an **Agent Skill repository** on GitHub and it produces a **single HTML file**: a **scrollable, visual map** of how **user-facing actions** connect to **what the host, model, and agents do underneath**—not a pile of tiny Markdown files, but one page you can **read like a UI/UX walkthrough**.
 
 **Repo:** [github.com/YeJe-cpu/codebase-to-web](https://github.com/YeJe-cpu/codebase-to-web) · [中文说明](README.zh-CN.md)
 
 ---
 
-## Where is the skill on GitHub?
-
-The skill **is** this repo. After `git clone`, you get:
-
-| File / folder | Role |
-|---------------|------|
-| **[`SKILL.md`](SKILL.md)** | Main skill instructions (what hosts usually load). |
-| **[`SKILL.zh-CN.md`](SKILL.zh-CN.md)** | Same rules in Chinese; optional if you merge into one file. |
-| **`references/`** | Extra rules the agent reads when **generating** the HTML lab—fonts/colors, layout checklist, design guardrails. Not a second product; see [`references/README.md`](references/README.md). |
-| **`web/`** | Default **output** folder for generated `.html` (repo keeps only `.gitkeep`; real pages are local / gitignored). |
-
-There is **no** separate “Skill Lab” source folder name on disk—the old working title was `oss-skill-lab-html`; the publishable bundle lives **here** under **`codebase-to-web`**.
-
----
-
-## What’s on GitHub
-
-Only the files above plus READMEs and `LICENSE`. Not your whole `emo专用` workspace.
-
----
-
 ## Who is this for?
 
-**“Skill hoarders who still have a job to do”—** you already use **Cursor**, **Claude Code**, **Windsurf**, **OpenClaw**, or similar. You **star skill repos** (or vendor `anthropics/skills`, community packs, in-house `SKILL.md` trees). They work. But you don’t yet have a **single map** of **install → trigger → which file fires → what the README implies**.
-
-**Practical goals:**
-
-* Steer agents (commands, skill folders)  
-* Spot README oversimplifications (hooks live elsewhere)  
-* Onboard teammates without fifteen Markdown tabs  
-* Share one artifact with maintainers  
+* **Vibe coders / learners** browsing GitHub who want to **get oriented fast**: install location, trigger phrases, and **which files load in what order**.  
+* **Anyone reading OSS skill repos** where the README sells the idea but the **real entrypoints** live in hooks, `references/`, or subcommands—this page lines up **visible path** and **backstage mechanics**.  
+* **People who need to ship or align**: one **double-clickable `.html`** (or a link) that explains the call graph to teammates or contributors.
 
 ---
 
-## Inspired by Codebase to Course — and how we differ
+## What’s inside the generated page?
 
-We’re inspired by **[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)** (*Codebase to Course*) — the project that turns a codebase into an interactive course. Their framing and UX quality motivated this spin-off.
+You get **one self-contained `.html`** (no separate build step). Typical sections, top to bottom:
 
-| | [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) | **Codebase to Web** (this skill) |
-|---|---|---|
-| **Typical target** | Application / product **codebases** | **Agent Skill** repos (`SKILL.md`, hooks, `references/`, packaging) |
-| **Experience** | Course-shaped depth (modules, checkpoints, code-centric flow) | **No mandatory course/quiz loop** — one **lab page** you scroll, skim, or hand to a teammate |
-| **Borrowed idea** | The **component path**: a **step-through journey** of *who loads whom*, in order | We **adopted that pattern**: the journey block is **first** so the call path sticks |
-| **Our main bet** | Teaching the code | **Skill-path UX**: pair **each user-facing action** with **what the host, model, and agents do underneath** (“surface” vs “behind the scenes”) |
-| **Also ships here** | — | GitHub **stars / forks / created-at** (with **snapshot** footer), **repo tree**, **README context** bullets (demand · distribution · moat · compliance cues), plain-language intro |
+1. **Repo meta bar** — link, stars, forks, created-at, with an optional **snapshot** timestamp in the footer.  
+2. **Plain-language intro** — what the repo is **for**, in one breath.  
+3. **Component path (step-through)** — chat-style beats: user input → host/routing → which `SKILL.md` / `references/` loads → next model or agent move. Length follows the **real** repo; no forced “always four bubbles.”  
+4. **Steps (surface vs backstage)** — what you **do in the UI** vs **what runs behind** (files read, hooks, commands).  
+5. **Repository tree** — matches the repo layout so you can spot paths **not spelled out in the README**.  
+6. **README context bullets** — short signals: demand, distribution, moat-ish notes, compliance flags—**fewer browser tabs**.  
+7. **Visual system** — default **Lab·Canonical** (warm editorial type, comfortable measure); avoids cliché purple gradients and generic Inter hero type. Optional cool/engineering variants on request. Informed by [Anthropic `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design).
 
-**Complementary, not competing:** use *codebase-to-course* when you want structured learning on an app repo; use **Codebase to Web** when you need a **single HTML map** of **install → trigger → file load order** for a skills ecosystem. If our comparison mischaracterizes their latest behavior, open an issue and we’ll fix the wording.
+**Google Fonts** may need **one online load** the first time you open the file; after that it can be viewed offline in the browser cache.
 
----
+### Screenshots in this README
 
-## What the lab looks like
+Add an image file (e.g. `assets/preview.png`) and reference it:
 
-One **`.html`** — no bundler, no `npm install`; works offline after first font load (Google Fonts):
+```markdown
+![Example page](./assets/preview.png)
+```
 
-* **GitHub meta bar** — stars, forks, created-at (+ **snapshot** in footer)  
-* **Plain-language blurb**  
-* **Interactive journey** — user → host → skill / ref → … (length follows the real path)  
-* **User vs behind-the-scenes steps**  
-* **Repository tree**  
-* **README heat bullets** — demand / distribution / moat / compliance  
-* **Lab·Canonical** design (Fraunces + Source Sans 3 + terracotta); ideas from [Anthropic `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design); optional cool/teal variants on request  
+GitHub renders Markdown images automatically once the file is in the repo.
 
 ---
 
-## How to install
+## What we optimize for
 
-Copy the **`codebase-to-web`** folder (this repo) into the skill location your **host** expects:
+* **Path first** — **who loads whom** before long prose.  
+* **Surface × backstage** — tie each user-visible step to **model/agent behavior**.  
+* **One artifact** — a **single overview page**, not a mandatory quiz-based “course loop” (different use case from deep **application-code** curricula—see acknowledgements).  
+* **Less tab-hopping** — stars, tree, and README angles on **one** page.
+
+---
+
+## What’s in this repository?
+
+The clone **is** the publishable skill bundle:
+
+```
+codebase-to-web/
+├── SKILL.md              # primary instructions (most hosts read this)
+├── SKILL.zh-CN.md        # Chinese mirror (optional; merge if your host reads one file)
+├── references/           # layout, checklist, design constraints for HTML generation
+├── web/                  # default output folder (generated .html usually gitignored; may contain .gitkeep)
+├── README.md
+├── README.zh-CN.md
+└── LICENSE
+```
+
+| Path | Role |
+|------|------|
+| `SKILL.md`, `SKILL.zh-CN.md` | Generation rules, section order, **output language** policy |
+| `references/` | See [`references/README.md`](references/README.md) |
+| `web/` | Default save location, typically `web/<owner>-<repo>.html` |
+
+---
+
+## Install
+
+Copy the **`codebase-to-web`** folder into the skills path your host expects:
 
 | Host | Typical location |
 |------|------------------|
-| **Cursor** | e.g. `.agents/skills/codebase-to-web/` in your project (or your team convention) |
+| **Cursor** | e.g. `.agents/skills/codebase-to-web/` in the project |
 | **Claude Code** | e.g. `~/.claude/skills/codebase-to-web/` |
-| **Windsurf** | per current Windsurf / Cascade docs (project-level skills path) |
-| **OpenClaw** | e.g. `~/.openclaw/skills/`, `~/.agents/skills/`, or workspace `skills/` — see [OpenClaw · Skills](https://docs.openclaw.ai/skills/) for load order |
+| **Windsurf** | per current product docs |
+| **OpenClaw** | e.g. `~/.openclaw/skills/` or workspace `skills/` — [OpenClaw · Skills](https://docs.openclaw.ai/skills/) |
 
-Keep this layout (English references are default; Chinese mirrors end with `.zh-CN.md`):
+**Page language** (all-English vs all-Chinese) follows the skill files—see `SKILL.md` / `SKILL.zh-CN.md`.
 
-```
-codebase-to-web/
-├── SKILL.md                 # canonical for most hosts
-├── SKILL.zh-CN.md           # Chinese skill copy (optional; merge if your host reads one file)
-├── references/
-│   ├── workflow.md
-│   ├── workflow.zh-CN.md
-│   ├── ui-tokens.md
-│   ├── ui-tokens.zh-CN.md
-│   ├── frontend-design-notes.md
-│   └── frontend-design-notes.zh-CN.md
-├── web/                     # default HTML output (ignored by git)
-├── README.md
-└── README.zh-CN.md
-```
+### Default output path
 
-**Page language:** English prompt → English lab page; 中文 → 中文页面 (see `SKILL.md`).
-
-Then in chat: *“Turn `owner/repo` into a Skill Lab HTML page.”*
-
-### Output path
-
-Default: **`web/<owner>-<repo>.html`**. Override in your prompt if needed.
+**`web/<owner>-<repo>.html`**, or override in your prompt.
 
 ---
 
-## Trigger phrases
+## Example prompts
 
-* “Turn this skills repo into a Skill Lab HTML”  
-* “Generate a lab page for this Agent Skill repo”  
-* “Journey first, then steps — 实验室页”  
-* “把这个仓库做成 Skill 实验室单页”  
-
----
-
-## Design philosophy
-
-### Install first, journey second
-
-Force the **journey block before** long-form steps so the call path sticks.
-
-### Show the call path
-
-Prefer **step-through chat** or **tree** over long prose; ~2–3 sentences per blurb.
-
-### One artifact
-
-Filename **`owner-repo.html`**; **no build** = reproducible output.
-
-### Pair with *Codebase to Course*
-
-See **[Inspired by Codebase to Course](#inspired-by-codebase-to-course--and-how-we-differ)** above — same ecosystem, different job: app **depth** vs **skill** call graphs.
+* “Generate a single HTML for `owner/repo` that maps **install → trigger → file order**.”  
+* “Put the **component path** first as step-through bubbles, then **surface vs backstage** steps.”  
+* “把这个仓库做成一页可调用的路径说明 HTML。”
 
 ---
 
-## Skill structure
+## Design notes (short)
 
-```
-codebase-to-web/
-├── SKILL.md
-├── SKILL.zh-CN.md
-├── references/
-├── web/
-├── README.md
-└── README.zh-CN.md
-```
+**Path before essays**; **prefer step-through over walls of text**; **one sharable `.html`**.
+
+---
+
+## Acknowledgements (and how this relates to *Codebase to Course*)
+
+We’re grateful for **[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)** (*Codebase to Course*)—a polished project that turns codebases into **structured, course-like learning**. A high star count there mostly tells you **the problem is real**, not that smaller tools “lose by comparison.”
+
+**Different lane:** they shine on **deep, curriculum-style walks through application code**; we focus on **one visual HTML map** for **Agent Skill repos**—install/trigger/load order and **what happens under each user action**. Both can coexist.
+
+| | Codebase to Course | Codebase to Web |
+|---|---|---|
+| Typical input | Application / product repos | **Skill** bundles (`SKILL.md`, hooks, `references/`) |
+| Experience | Modular, course-shaped depth | **Single-page** overview; **no mandatory Q&A course loop** |
+| Idea we borrowed | Strong **component-path / timeline** clarity | Same: put the **step-through path up front** |
+| Our emphasis | — | **User step ↔ model/agent behavior**; stars, tree, README context on one page |
+
+If anything here misstates their latest behavior, open an issue and we’ll fix the copy.
 
 ---
 

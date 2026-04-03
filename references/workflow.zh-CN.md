@@ -1,4 +1,4 @@
-# Skill 实验室页 · 用户偏好与检查清单
+# 可视化 HTML 页 · 用户偏好与检查清单
 
 ## 单仓库 vs 整合页
 
@@ -13,7 +13,7 @@
 
 ## 宿主表述
 
-旅程气泡或安装说明需点名时，优先使用用户当前环境（**Cursor / Claude Code / Windsurf / OpenClaw** 等）。OpenClaw 路径与优先级参见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/)。口语「龙虾」在中文语境多指 **OpenClaw**，正文仍写规范产品名。
+旅程气泡或安装说明需点名时，优先使用用户当前环境（**Cursor / Claude Code / Windsurf / OpenClaw** 等）。OpenClaw 路径与优先级参见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/)。
 
 ## 数据
 

@@ -1,4 +1,4 @@
-# Skill lab page · visual tokens (self-contained)
+# Visual HTML page · design tokens (self-contained)
 
 Follow **frontend-design** discipline: intentional type and color, purposeful whitespace (see `frontend-design-notes.md`).
 

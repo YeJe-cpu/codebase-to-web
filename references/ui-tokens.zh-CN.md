@@ -1,4 +1,4 @@
-# Skill 实验室页 · 视觉 token（自持）
+# 可视化 HTML 页 · 视觉 token（自持）
 
 对齐 **frontend-design** 纪律：有主见的字体与配色、意图明确的留白（见 `frontend-design-notes.zh-CN.md`）。
 
@@ -49,4 +49,4 @@ https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,
 
 ## 禁止
 
-主标题不要用 Inter / Roboto / Arial；不要大紫渐变铺满背景；实验室页不要重噪点磨砂大底。
+主标题不要用 Inter / Roboto / Arial；不要大紫渐变铺满背景；页面不要重噪点磨砂大底。

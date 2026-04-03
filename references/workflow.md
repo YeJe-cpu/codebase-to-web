@@ -1,4 +1,4 @@
-# Skill lab page — preferences & checklist
+# Visual HTML walkthrough — preferences & checklist
 
 ## Single file vs merged page
 

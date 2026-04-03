@@ -1,9 +1,9 @@
 ---
 name: codebase-to-web
-description: "Agent skill: GitHub Agent Skill repo → self-contained single-file HTML lab page (meta, journey chat, user vs behind-the-scenes, tree, README bullets). Default web/<owner>-<repo>.html. Hosts: Cursor, Claude Code, Windsurf, OpenClaw. Match page language to the user. Lab·Canonical visuals + frontend-design discipline."
+description: "Agent skill: GitHub Agent Skill repo → self-contained single-file HTML walkthrough (meta, journey chat, user vs behind-the-scenes, tree, README bullets). Default web/<owner>-<repo>.html. Hosts: Cursor, Claude Code, Windsurf, OpenClaw. Match page language to the user. Lab·Canonical visuals + frontend-design discipline."
 ---
 
-# Agent Skill repo → single-file HTML lab (Codebase to Web)
+# Agent Skill repo → single-file visual HTML (Codebase to Web)
 
 ## Goal
 
@@ -11,7 +11,7 @@ Deliver a **double-clickable** single HTML file that explains **who talks to who
 
 ## Output language (required)
 
-- If the user writes mainly in **English**, generate the **entire lab page in English** (headings, blurbs, journey copy, step labels, bullets, footer).
+- If the user writes mainly in **English**, generate the **entire HTML page in English** (headings, blurbs, journey copy, step labels, bullets, footer).
 - If the user writes mainly in **Chinese (中文)**, generate the **entire page in 中文**.
 - Mixed prompts: follow the **dominant** language; if unclear, **default to English** for this OSS bundle unless the user asks for 中文.
 
