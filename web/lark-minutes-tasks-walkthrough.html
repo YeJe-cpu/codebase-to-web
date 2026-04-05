@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>银样本 · lark-minutes-tasks — Walkthrough（定稿 Demo）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --bg-elev: #ffffff;
+      --bg-soft: #f4f4f5;
+      --fg: #18181b;
+      --muted: #71717a;
+      --border: #e4e4e7;
+      --accent: #256aeb;
+      --accent-dim: color-mix(in srgb, var(--accent) 14%, transparent);
+      --ok: #047857;
+      --warn: #b45309;
+      --radius: 14px;
+      --font: "DM Sans", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 40px rgb(0 0 0 / 0.06);
+    }
+    [data-theme="dark"] {
+      --bg: #0c0c0e;
+      --bg-elev: #141416;
+      --bg-soft: #1c1c1f;
+      --fg: #f4f4f5;
+      --muted: #a1a1aa;
+      --border: #2e2e33;
+      --accent: #60a5fa;
+      --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
+      --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 20px 50px rgb(0 0 0 / 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 1rem 1rem 3.5rem; }
+    header.top {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .top-inner {
+      max-width: 920px; margin: 0 auto; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .brand { font-weight: 700; font-size: 0.95rem; letter-spacing: -0.02em; }
+    .brand small { font-weight: 500; color: var(--muted); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    select.tiny, button.tiny {
+      font-family: var(--font);
+      border: 1px solid var(--border);
+      background: var(--bg-elev);
+      color: var(--fg);
+      padding: 0.35rem 0.55rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    button.tiny.primary {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+    .repo-card {
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      background: var(--bg-elev);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .repo-card { grid-template-columns: auto 1fr; align-items: center; }
+    }
+    .repo-avatar {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+    .repo-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.82rem; color: var(--muted); }
+    .repo-meta b { color: var(--fg); font-weight: 600; }
+    .repo-meta a { color: var(--accent); text-decoration: none; }
+    .repo-meta a:hover { text-decoration: underline; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      padding: 0.2rem 0.5rem; border-radius: 999px;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      font-size: 0.72rem; font-weight: 600;
+    }
+    .walk-hint {
+      margin-top: 0.9rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .walk-hint strong { color: var(--fg); }
+    h1.hero-title {
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0.85rem 0 0.35rem;
+      line-height: 1.2;
+    }
+    .hero-lead { color: var(--muted); max-width: 65ch; margin: 0; font-size: 0.95rem; }
+    .viz-panel {
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: visible;
+      background: var(--bg-elev);
+      box-shadow: var(--shadow);
+    }
+    .viz-sticky-stack {
+      position: sticky;
+      top: 3.25rem;
+      z-index: 45;
+      background: var(--bg-elev);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .viz-head {
+      padding: 0.65rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-dim), transparent 55%);
+      position: static;
+    }
+    .viz-title-block {
+      flex: 1 1 12rem;
+      min-width: 0;
+    }
+    @media (max-width: 520px) {
+      .viz-title-block { flex: 1 1 100%; }
+      .viz-controls { flex: 1 1 100%; justify-content: flex-start; }
+    }
+    .viz-head span.cap {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted);
+      display: block;
+      line-height: 1.4;
+    }
+    .viz-rail-captions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.45rem 1rem 0.55rem;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .viz-rail-captions span { min-width: 0; }
+    .viz-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+    @media (min-width: 780px) {
+      .viz-grid { grid-template-columns: 1.05fr 0.95fr; }
+    }
+    .viz-canvas {
+      position: relative;
+      min-height: 320px;
+      background:
+        radial-gradient(ellipse 90% 70% at 25% 15%, var(--accent-dim), transparent 50%),
+        radial-gradient(ellipse 50% 45% at 85% 85%, color-mix(in srgb, var(--ok) 10%, transparent), transparent 45%),
+        var(--bg-soft);
+      padding: 0.85rem 1rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .node-box {
+      transition: filter 0.35s, opacity 0.35s;
+      filter: grayscale(0.2) brightness(0.97);
+      opacity: 0.72;
+    }
+    .node-box.on {
+      filter: none; opacity: 1;
+      filter: drop-shadow(0 6px 20px color-mix(in srgb, var(--accent) 32%, transparent));
+    }
+    .flow-path {
+      fill: none; stroke: var(--border); stroke-width: 2.5;
+      transition: stroke 0.35s;
+    }
+    .flow-path.on {
+      stroke: var(--accent);
+      stroke-dasharray: 10 6;
+      animation: flow 1.1s linear infinite;
+    }
+    @keyframes flow { to { stroke-dashoffset: -32; } }
+    .anno {
+      padding: 1rem 1.15rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-elev);
+    }
+    @media (min-width: 780px) {
+      .anno { border-top: none; border-left: 1px solid var(--border); }
+    }
+    .anno h3 { margin: 0 0 0.4rem; font-size: 1.05rem; font-weight: 700; }
+    .anno p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+    .anno-layers { margin-top: 0.15rem; }
+    .anno-card {
+      border-radius: 12px;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      border-left: 3px solid color-mix(in srgb, var(--ok) 70%, var(--border));
+    }
+    .anno-lbl {
+      margin: 0 0 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .anno-lbl.en { display: none; }
+    html[lang="en"] .anno-lbl.zh { display: none; }
+    html[lang="en"] .anno-lbl.en { display: block; }
+    .anno-card-body { margin: 0; font-size: 0.86rem; color: var(--fg); line-height: 1.52; }
+    .anno-card-body code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      padding: 0.12em 0.35em;
+      border-radius: 4px;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+    }
+    .learn-hero {
+      margin: 0 0 1.25rem;
+      padding: 1.15rem 1.25rem 1.2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(125deg, var(--accent-dim), color-mix(in srgb, var(--bg-soft) 88%, var(--accent)) 38%);
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 6px 28px color-mix(in srgb, var(--accent) 9%, transparent);
+    }
+    .learn-hero h2 {
+      margin: 0;
+      font-size: clamp(1.12rem, 2.4vw, 1.38rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1.28;
+    }
+    .learn-hero .lead {
+      margin: 0.7rem 0 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+    .viz-controls {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .step-pill { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); padding: 0.25rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-soft); }
+    .tabs { display: flex; gap: 0.2rem; margin-top: 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab {
+      border: none; background: transparent; color: var(--muted);
+      padding: 0.65rem 0.95rem; font-family: var(--font);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      border-radius: 10px 10px 0 0; margin-bottom: -1px;
+    }
+    .tab.on {
+      color: var(--fg); background: var(--bg-elev);
+      border: 1px solid var(--border); border-bottom-color: var(--bg);
+    }
+    .panel { display: none; padding: 1.35rem 0 2rem; }
+    .panel.on { display: block; animation: fi 0.25s ease; }
+    @keyframes fi { from { opacity: 0; } to { opacity: 1; } }
+    .surface {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1rem;
+      background: var(--bg-elev);
+      border-left: 3px solid var(--warn);
+    }
+    table.src {
+      width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0.75rem 0;
+    }
+    table.src th, table.src td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    table.src th { background: var(--bg-soft); font-weight: 600; }
+    pre.repo-tree {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      line-height: 1.5;
+      margin: 0.65rem 0 0;
+      padding: 1rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      overflow-x: auto;
+      color: var(--fg);
+    }
+    .readme-heat {
+      margin-top: 0.85rem;
+      padding: 1rem 1.15rem;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent) 6%, var(--bg-soft));
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .readme-heat h4 { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 700; color: var(--fg); }
+    .readme-heat ul { margin: 0; padding-left: 1.15rem; }
+    .readme-heat li { margin-bottom: 0.45rem; }
+    .journey-fold {
+      margin: 1.1rem 0 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-elev);
+      overflow: hidden;
+    }
+    .journey-fold > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--fg);
+      background: var(--bg-soft);
+    }
+    .journey-fold > summary::-webkit-details-marker { display: none; }
+    .journey-fold[open] > summary { border-bottom: 1px solid var(--border); }
+    .journey-steps { padding: 0.85rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .journey-step {
+      padding: 0.65rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .journey-step strong { display: block; color: var(--fg); font-size: 0.8rem; margin-bottom: 0.35rem; }
+    .sim-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg-elev); }
+    .sim-toolbar {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-soft);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .sim-feed {
+      max-height: 420px; overflow-y: auto; padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.55rem; min-height: 220px;
+    }
+    .bubble {
+      max-width: 92%; border-radius: 12px; padding: 0.65rem 0.85rem; font-size: 0.84rem;
+      border: 1px solid var(--border);
+      animation: pop 0.22s ease;
+    }
+    .bubble.bubble-soft { animation: none; }
+    @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .bubble .who { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.3rem; }
+    .bubble.u { align-self: flex-end; background: var(--accent-dim); }
+    .bubble.a { align-self: flex-start; background: var(--bg-soft); }
+    .bubble.t { align-self: flex-start; background: color-mix(in srgb, var(--ok) 12%, var(--bg-soft)); }
+    details.qa {
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.65rem 1rem; margin: 0.55rem 0; background: var(--bg-elev);
+    }
+    details.qa summary { font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+    details.qa p { margin: 0.55rem 0 0; font-size: 0.86rem; color: var(--muted); }
+    .note-foot {
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .note-foot a { color: var(--accent); }
+    .i18n-en-only { display: none; }
+    html[lang="en"] .i18n-en-only { display: block; }
+    html[lang="en"] .i18n-zh-only { display: none; }
+    .anno .en { display: none; margin-top: 0.55rem; font-size: 0.84rem; }
+    html[lang="en"] .anno .zh { display: none; }
+    html[lang="en"] .anno .en { display: block; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">Walkthrough <small>· 银样本 · lark-minutes-tasks</small></div>
+      <div class="toolbar">
+        <label class="i18n-zh-only" style="font-size:0.75rem;color:var(--muted);">主题</label>
+        <label class="i18n-en-only" style="font-size:0.75rem;color:var(--muted);">Theme</label>
+        <select id="selTheme" class="tiny" aria-label="Theme">
+          <option value="system">跟随系统</option>
+          <option value="light">浅色</option>
+          <option value="dark">深色</option>
+        </select>
+        <label class="i18n-zh-only" style="font-size:0.75rem;color:var(--muted);">语言</label>
+        <label class="i18n-en-only" style="font-size:0.75rem;color:var(--muted);">Lang</label>
+        <select id="selLang" class="tiny" aria-label="Language">
+          <option value="auto">自动（浏览器）</option>
+          <option value="zh-Hans">中文</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="repo-card">
+      <img class="repo-avatar" src="https://github.com/zarazhangrui.png" width="64" height="64" alt="" />
+      <div>
+        <div class="repo-meta">
+          <a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener"><b>zarazhangrui/lark-minutes-tasks</b></a>
+          <span class="pill i18n-zh-only">★ <span id="metaStars">30</span> &nbsp;⑂ <span id="metaForks">7</span></span>
+          <span class="pill i18n-en-only">★ <span id="metaStarsEn">30</span> · <span id="metaForksEn">7</span> forks</span>
+          <span class="pill">MIT</span>
+          <span class="pill i18n-zh-only">Open issues <span id="metaIssues">1</span></span>
+          <span class="pill i18n-en-only">Open issues <span id="metaIssuesEn">1</span></span>
+        </div>
+        <p class="i18n-zh-only" style="margin:0.6rem 0 0;font-size:0.88rem;color:var(--muted);">
+          读飞书妙记（或纪要文档）逐字稿，抽<strong>行动项</strong>，再按你的选择<strong>真的去执行</strong>——不只是生成待办列表。依赖本机已登录的 <a href="https://github.com/larksuite/cli" target="_blank" rel="noopener">Lark CLI</a>。
+        </p>
+        <p class="i18n-en-only" style="margin:0.6rem 0 0;font-size:0.88rem;color:var(--muted);">
+          Reads Lark/Feishu meeting minutes, pulls action items, then <strong>executes</strong> what you select — not just a todo dump. Uses the official <a href="https://github.com/larksuite/cli" target="_blank" rel="noopener">Lark CLI</a> on your machine.
+        </p>
+        <p class="i18n-zh-only" style="margin:0.45rem 0 0;font-size:0.82rem;color:var(--muted);">
+          <strong>安装：</strong><code>cp minutes.md ~/.claude/commands/minutes.md</code>（Claude Code）；其他宿主请放到对应 commands 目录。
+        </p>
+        <p class="i18n-en-only" style="margin:0.45rem 0 0;font-size:0.82rem;color:var(--muted);">
+          <strong>Install:</strong> <code>cp minutes.md ~/.claude/commands/minutes.md</code> (Claude Code) — or your host’s command folder.
+        </p>
+      </div>
+    </div>
+
+    <div class="walk-hint i18n-zh-only"><strong>建议顺序：</strong><strong>组件路径</strong> → <strong>学习</strong> → <strong>模拟器</strong> → <strong>深度探索</strong>。单文件可本地直接打开；若异常可用 <code>python3 -m http.server</code>。</div>
+    <div class="walk-hint i18n-en-only"><strong>Order:</strong> <strong>Component path</strong> → <strong>Learn</strong> → <strong>Simulator</strong> → <strong>Deep dive</strong>. Open as file or over HTTP.</div>
+
+    <h1 class="hero-title i18n-zh-only">会后不只做清单，让 Agent 按妙记去办事</h1>
+    <h1 class="hero-title i18n-en-only">From meeting minutes to done — not only a task list</h1>
+    <p class="hero-lead i18n-zh-only">
+      你给妙记或纪要文档链接，Agent 读全文、捉你开会时说的 <strong>Wake Word</strong> 指令、拆行动项并给出执行方式；你勾序号后它再去约日程、起稿、建任务等。下面流程图按时间顺序亮灯（与组件路径、模拟器对照）。
+    </p>
+    <p class="hero-lead i18n-en-only">
+      Pass a Minutes or doc URL: full read → <strong>wake-word</strong> scan → action extraction &amp; plans → you pick rows → execution. The strip follows the same story as the <a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener">README</a>.
+    </p>
+
+    <section class="viz-panel" aria-label="Pipeline visualization">
+      <div class="viz-sticky-stack">
+        <div class="viz-head">
+          <div class="viz-title-block">
+            <span class="cap i18n-zh-only">组件路径 · 步进</span>
+            <span class="cap i18n-en-only">Component path</span>
+          </div>
+          <div class="viz-controls">
+            <span class="step-pill" id="heroPill">0 / 6</span>
+            <button type="button" class="tiny" id="heroPrev" aria-label="Previous step">←</button>
+            <button type="button" class="tiny primary" id="heroNext" aria-label="Next step">→</button>
+            <button type="button" class="tiny" id="heroPlay" aria-pressed="false"><span class="play-ic">▶</span> <span class="i18n-zh-only">自动播放</span><span class="i18n-en-only">Auto</span></button>
+            <button type="button" class="tiny" id="heroReset" aria-label="Reset">↺</button>
+          </div>
+        </div>
+        <div class="viz-rail-captions" aria-hidden="true">
+          <span id="vizRailCapL">妙记</span>
+          <span id="vizRailCapR">执行</span>
+        </div>
+      </div>
+      <div class="viz-grid">
+        <div class="viz-canvas">
+          <svg viewBox="0 0 380 332" width="380" height="332" aria-hidden="true">
+            <path id="p1" class="flow-path" d="M 190 46 L 190 58" />
+            <path id="p2" class="flow-path" d="M 190 86 L 190 98" />
+            <path id="p3" class="flow-path" d="M 190 126 L 190 138" />
+            <path id="p4" class="flow-path" d="M 190 166 L 190 178" />
+            <path id="p5" class="flow-path" d="M 190 206 L 190 218" />
+            <path id="p6" class="flow-path" d="M 190 246 L 190 258" />
+            <g id="g1" transform="translate(190,34)">
+              <rect class="node-box" data-node x="-92" y="-14" width="184" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)">/minutes + URL</text>
+            </g>
+            <g id="g2" transform="translate(190,74)">
+              <rect class="node-box" data-node x="-88" y="-14" width="176" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="lblRead">读逐字稿</text>
+            </g>
+            <g id="g3" transform="translate(190,114)">
+              <rect class="node-box" data-node x="-80" y="-14" width="160" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="lblWake">Wake Word</text>
+            </g>
+            <g id="g4" transform="translate(190,154)">
+              <rect class="node-box" data-node x="-88" y="-14" width="176" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="lblAct">行动项</text>
+            </g>
+            <g id="g5" transform="translate(190,194)">
+              <rect class="node-box" data-node x="-92" y="-14" width="184" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="8.5" font-weight="700" fill="var(--fg)" id="lblPlan">方案 → 编号列表</text>
+            </g>
+            <g id="g6" transform="translate(190,234)">
+              <rect class="node-box" data-node x="-70" y="-14" width="140" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="lblPick">你选序号</text>
+            </g>
+            <g id="g7" transform="translate(190,274)">
+              <rect class="node-box" data-node x="-56" y="-14" width="112" height="28" rx="7" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="lblExec">执行</text>
+            </g>
+          </svg>
+        </div>
+        <div class="anno">
+          <h3 id="annoH">—</h3>
+          <div class="anno-layers">
+            <article class="anno-card" aria-label="Step note">
+              <h4 class="anno-lbl zh">这一步在干什么</h4>
+              <h4 class="anno-lbl en">What this step does</h4>
+              <p class="anno-card-body" id="annoHoodText"></p>
+            </article>
+          </div>
+          <p class="zh" id="annoZ" style="font-size:0.8rem;color:var(--muted);margin:0.7rem 0 0;">—</p>
+          <p class="en" id="annoE" style="font-size:0.8rem;color:var(--muted);margin:0.7rem 0 0;">—</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab on" role="tab" data-tab="learn" id="tabLearn">学习</button>
+      <button type="button" class="tab" role="tab" data-tab="sim" id="tabSim">模拟器</button>
+      <button type="button" class="tab" role="tab" data-tab="qna" id="tabQna">深度探索</button>
+    </div>
+
+    <section class="panel on" id="pan-learn" role="tabpanel">
+      <div class="learn-hero i18n-zh-only">
+        <h2>这份仓库在解决什么问题</h2>
+        <p class="lead">会开完了，待办散落在逐字稿里。这个 skill 让 Agent <strong>读完妙记或纪要</strong>、认出你在会上喊的 <strong>Wake Word</strong>、列出行动项，再按你勾选的条目<strong>真的去约会议、写文档、建飞书任务</strong>——不是只生成一串待办字条。</p>
+      </div>
+      <div class="learn-hero i18n-en-only">
+        <h2>What this repo is for</h2>
+        <p class="lead">Action items are buried in transcripts. This skill <strong>reads Minutes or meeting docs</strong>, recovers your <strong>wake-word</strong> lines, proposes execution plans, then <strong>runs the rows you approve</strong> (calendar, Lark docs, tasks) — not only a plain todo list.</p>
+      </div>
+
+      <details class="journey-fold i18n-zh-only" open>
+        <summary>装好以后怎么用（与组件路径、模拟器对照）</summary>
+        <div class="journey-steps">
+          <div class="journey-step"><strong>1 · 放到 commands</strong>把 <code>minutes.md</code> 拷到 Claude Code 的 <code>~/.claude/commands/</code>；宿主只是在磁盘上多了一条命令定义，没有常驻服务。</div>
+          <div class="journey-step"><strong>2 · 准备 Lark CLI</strong>本机执行 <code>lark-cli config init</code> 与 <code>lark-cli auth login --domain all</code>；后续拉妙记/文档走的是你已授权的身份。</div>
+          <div class="journey-step"><strong>3 · 开会时喊 Wake Word</strong>在会议里说出你预设的触发语；会后 Agent 会从全文里把这段指令捡出来，不用你背原话。</div>
+          <div class="journey-step"><strong>4 · 跑 /minutes</strong>把妙记 URL 或 docx 纪要链接交给 Agent；它按 README 中的 6 步逻辑推进，你在编号列表里勾选要它动手的那几项。</div>
+        </div>
+      </details>
+      <details class="journey-fold i18n-en-only" open>
+        <summary>After install — how to run it</summary>
+        <div class="journey-steps">
+          <div class="journey-step"><strong>1 · Command file</strong>Copy <code>minutes.md</code> into <code>~/.claude/commands/</code> — static definition, no daemon.</div>
+          <div class="journey-step"><strong>2 · Lark CLI</strong>Run <code>lark-cli config init</code> and <code>lark-cli auth login --domain all</code>; fetches use your tenant login.</div>
+          <div class="journey-step"><strong>3 · Wake word in meeting</strong>Say your trigger phrase during the call; the agent recovers it from the transcript later.</div>
+          <div class="journey-step"><strong>4 · Invoke</strong>Type <code>/minutes</code> plus your Minutes or meeting-doc URL (see README), then pick which numbered actions to run.</div>
+        </div>
+      </details>
+
+      <div class="surface i18n-zh-only" style="margin-top:1rem;">
+        <h3 style="margin-top:0;">数据从哪来、边界在哪</h3>
+        <p style="margin:0;font-size:0.88rem;color:var(--muted);">Agent 通过 <strong>Lark CLI</strong> 访问你账号有权读的妙记与文档；不能绕过公司权限「偷」未授权内容。发消息类动作 README 写明可<strong>先复制到剪贴板再由你粘贴</strong>——实际发送仍在你手上。</p>
+      </div>
+      <div class="surface i18n-en-only" style="margin-top:1rem;">
+        <h3 style="margin-top:0;">Data &amp; safety</h3>
+        <p style="margin:0;font-size:0.88rem;color:var(--muted);">Lark CLI only reaches resources your login can read. “Send message” may mean <strong>draft + clipboard</strong> — you still hit send.</p>
+      </div>
+
+      <h3 class="i18n-zh-only" style="font-size:0.95rem;margin-top:1.25rem;">支持的行动类型（摘自 README）</h3>
+      <h3 class="i18n-en-only" style="font-size:0.95rem;margin-top:1.25rem;">Action types (from README)</h3>
+      <table class="src i18n-zh-only">
+        <tr><th>类型</th><th>Agent 怎么做</th></tr>
+        <tr><td>发消息</td><td>起草内容，复制到剪贴板供你粘贴</td></tr>
+        <tr><td>约会议</td><td>看空闲、建日程</td></tr>
+        <tr><td>写文档</td><td>创建飞书文档</td></tr>
+        <tr><td>查信息</td><td>搜网页或飞书文档并摘要</td></tr>
+        <tr><td>试用产品</td><td>找链接/安装说明发给你</td></tr>
+        <tr><td>创建任务</td><td>飞书任务、负责人与截止时间</td></tr>
+        <tr><td>读文档</td><td>拉文档并摘要</td></tr>
+      </table>
+      <table class="src i18n-en-only">
+        <tr><th>Type</th><th>Behavior</th></tr>
+        <tr><td>Send message</td><td>Draft → clipboard → you paste</td></tr>
+        <tr><td>Schedule meeting</td><td>Find slots, create event</td></tr>
+        <tr><td>Write document</td><td>Create Lark doc</td></tr>
+        <tr><td>Research</td><td>Web/Lark search + summary</td></tr>
+        <tr><td>Try a product</td><td>Link + install hints</td></tr>
+        <tr><td>Create task</td><td>Lark task with assignee &amp; due</td></tr>
+        <tr><td>Read/review doc</td><td>Fetch + summarize</td></tr>
+      </table>
+
+      <h3 class="i18n-zh-only" style="font-size:0.95rem;margin-top:1.35rem;">仓库里有什么</h3>
+      <h3 class="i18n-en-only" style="font-size:0.95rem;margin-top:1.35rem;">Repo layout</h3>
+      <pre class="repo-tree">lark-minutes-tasks/
+├── minutes.md      ← 给宿主读的命令定义（单文件交付）
+├── README.md · README_CN.md
+└── LICENSE</pre>
+
+      <div class="readme-heat i18n-zh-only">
+        <h4>GitHub 上星标不多时，往往说明什么？</h4>
+        <ul>
+          <li><strong>需求：</strong>盯妙记、要把「会上说了算」落成事的人不少，但真正愿意配置 Lark CLI + 授权 + Agent 宿主的人是小众。</li>
+          <li><strong>传播：</strong>单文件 <code>minutes.md</code>、MIT、双语 README，转发成本低；话题偏「效率工具」而非泛流量。</li>
+          <li><strong>摩擦：</strong>强依赖飞书/Lark 租户与 CLI——环境不配齐就卡在第一步；星少不一定代表不好用，可能是集成门槛过滤了大部分围观收藏。</li>
+          <li><strong>边界：</strong>执行型 Agent 触碰日程、文档、任务，权限与误操作风险要按公司规范自己把控。</li>
+        </ul>
+        <p style="margin:0.55rem 0 0;font-size:0.8rem;">右上数字为制作本页时的快照；以 <a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener">仓库主页</a> 为准。</p>
+      </div>
+      <div class="readme-heat i18n-en-only">
+        <h4>Reading modest star counts</h4>
+        <ul>
+          <li><strong>Demand:</strong> Minutes → actions resonates with power users; fewer stars often means CLI + tenant setup filters casual stargazers.</li>
+          <li><strong>Ship shape:</strong> One-file command + MIT + EN/CN README is easy to try if you already live in Lark.</li>
+          <li><strong>Friction:</strong> <code>lark-cli</code> auth is the gate; low stars ≠ low quality.</li>
+          <li><strong>Risk:</strong> Execution touches calendars/docs/tasks — keep org policy in mind.</li>
+        </ul>
+        <p style="margin:0.55rem 0 0;font-size:0.8rem;">Header stats are a snapshot — see the <a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener">live repo</a>.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="pan-sim" role="tabpanel" hidden>
+      <p class="i18n-zh-only" style="color:var(--muted);font-size:0.88rem;margin:0 0 .75rem;">
+        示意对话：<strong>路径第 1 步</strong>起始于 <code>/minutes</code>；<strong>工具行</strong>可对照「读妙记 / CLI」；<strong>编号勾选与执行</strong>对应路径后几步。可按步或连续播放。
+      </p>
+      <p class="i18n-en-only" style="color:var(--muted);font-size:0.88rem;margin:0 0 .75rem;">
+        Sample thread: starts at step 1 on the strip; tool lines ≈ Lark fetch; numbered picks ≈ tail of the path.
+      </p>
+      <div class="sim-wrap">
+        <div class="sim-toolbar">
+          <span id="simProg">—</span>
+          <span>
+            <button type="button" class="tiny primary" id="simStep">下一条</button>
+            <button type="button" class="tiny" id="simPlayAll">全部播放</button>
+            <button type="button" class="tiny" id="simReset">重播</button>
+          </span>
+        </div>
+        <div class="sim-feed" id="simFeed"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="pan-qna" role="tabpanel" hidden>
+      <p class="i18n-zh-only" style="font-size:0.86rem;color:var(--muted);margin:0 0 1rem;padding:0.75rem 1rem;background:var(--bg-soft);border-radius:12px;border:1px dashed var(--border);">
+        以下内容根据公开 README / README_CN 整理；与仓库不一致时以上游为准。
+      </p>
+      <p class="i18n-en-only" style="font-size:0.86rem;color:var(--muted);margin:0 0 1rem;padding:0.75rem 1rem;background:var(--bg-soft);border-radius:12px;border:1px dashed var(--border);">
+        From public READMEs only — verify on GitHub if in doubt.
+      </p>
+
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:0 0 .5rem;">一、常见疑问</h2>
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:0 0 .5rem;">FAQ</h2>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;border-left-color:var(--accent);"><strong>Q</strong> 不用 Claude Code 能用吗？<br/><strong>A</strong> 可以：把 <code>minutes.md</code> 放到<strong>你的宿主</strong>读取命令定义的目录；具体路径因产品而异。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;border-left-color:var(--accent);"><strong>Q</strong> Not on Claude Code?<br/><strong>A</strong> Still copy <code>minutes.md</code> wherever your host loads slash commands from.</div>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;"><strong>Q</strong> Wake Word 会泄露我说了什么吗？<br/><strong>A</strong> 处理对象是<strong>已有妙记/文档</strong>里的文字；谁能读这份妙记，本身就受飞书权限范围约束。不要在会上说超出你职权的敏感指令。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;"><strong>Q</strong> Wake-word privacy?<br/><strong>A</strong> It mines text you already stored in Minutes/docs under your Lark ACL — keep sensitive verbal orders off the record you don’t own.</div>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;"><strong>Q</strong> 和「只生成待办」有什么区别？<br/><strong>A</strong> README 强调会<strong>执行</strong>选中项（约会议、建文档等）；发消息类往往是草稿+剪贴板，最终发送仍由你确认。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;"><strong>Q</strong> vs plain todo extraction?<br/><strong>A</strong> README promises execution paths; messaging may still be draft+clipboard for safety.</div>
+
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:1.1rem 0 .5rem;">二、上游 Issue</h2>
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:1.1rem 0 .5rem;">Issues</h2>
+      <details class="qa" open>
+        <summary><span class="i18n-zh-only">打开 Issue 列表</span><span class="i18n-en-only">Open issues</span></summary>
+        <p style="margin:0"><a href="https://github.com/zarazhangrui/lark-minutes-tasks/issues" target="_blank" rel="noopener">github.com/zarazhangrui/lark-minutes-tasks/issues</a> — 仓库小、Issue 少时往往意味着作者在 README 里已写清前置条件；碰壁优先查 Lark CLI 与域账号。</p>
+      </details>
+    </section>
+
+    <div class="note-foot">
+      <p class="i18n-zh-only"><strong>银样本</strong> · 上游：<a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener">lark-minutes-tasks</a> · 版式对齐金样本：<code>colleague-skill-prototype-gold.html</code></p>
+      <p class="i18n-en-only"><strong>Silver sample</strong> · Upstream: <a href="https://github.com/zarazhangrui/lark-minutes-tasks" target="_blank" rel="noopener">lark-minutes-tasks</a> · Layout matches gold prototype.</p>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  var STORAGE_THEME = "lark-minutes-proto-theme";
+  var STORAGE_LANG = "lark-minutes-proto-lang";
+
+  function getSystemDark() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function applyTheme(mode) {
+    var root = document.documentElement;
+    if (mode === "system") {
+      root.dataset.theme = getSystemDark() ? "dark" : "light";
+    } else {
+      root.dataset.theme = mode;
+    }
+  }
+  function readThemeSelect() {
+    try {
+      var v = localStorage.getItem(STORAGE_THEME) || "system";
+      if (v !== "system" && v !== "light" && v !== "dark") v = "system";
+      return v;
+    } catch (e) {
+      return "system";
+    }
+  }
+  function readLangSelect() {
+    try {
+      return localStorage.getItem(STORAGE_LANG) || "auto";
+    } catch (e) {
+      return "auto";
+    }
+  }
+  function detectLang() {
+    var nav = (navigator.language || "en").toLowerCase();
+    if (nav.indexOf("zh") === 0) return "zh-Hans";
+    return "en";
+  }
+  function applyLang(mode) {
+    var lang = mode === "auto" ? detectLang() : mode;
+    document.documentElement.lang = lang;
+    var zh = document.querySelectorAll(".i18n-zh-only");
+    var en = document.querySelectorAll(".i18n-en-only");
+    for (var i = 0; i < zh.length; i++) zh[i].style.display = lang === "zh-Hans" ? "" : "none";
+    for (var j = 0; j < en.length; j++) en[j].style.display = lang === "en" ? "" : "none";
+    refreshI18nStrings();
+  }
+
+  var selTheme = document.getElementById("selTheme");
+  var selLang = document.getElementById("selLang");
+  selTheme.value = readThemeSelect();
+  selLang.value = readLangSelect();
+  selTheme.addEventListener("change", function () {
+    try { localStorage.setItem(STORAGE_THEME, selTheme.value); } catch (e) {}
+    applyTheme(selTheme.value);
+  });
+  selLang.addEventListener("change", function () {
+    try { localStorage.setItem(STORAGE_LANG, selLang.value); } catch (e) {}
+    applyLang(selLang.value);
+  });
+  if (window.matchMedia) {
+    try {
+      var mqScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      function onSchemeChange() {
+        if (readThemeSelect() === "system") applyTheme("system");
+      }
+      if (typeof mqScheme.addEventListener === "function") {
+        mqScheme.addEventListener("change", onSchemeChange);
+      } else if (typeof mqScheme.addListener === "function") {
+        mqScheme.addListener(onSchemeChange);
+      }
+    } catch (e) {}
+  }
+
+  function parentGroupEl(el) {
+    var n = el ? el.parentNode : null;
+    while (n && n.nodeName && String(n.nodeName).toLowerCase() !== "g") {
+      n = n.parentNode;
+    }
+    return n && n.id ? n : null;
+  }
+
+  var H_STEPS = [
+    { h: { zh: "概览", en: "Overview" }, ux: { zh: { b: "图示为妙记 → 行动项 → 执行的顺序；点「下一步 / 自动播放」才会走动效。" }, en: { b: "Timeline from Minutes URL to execution — use Next or Auto for motion." } }, z: "与 README 六步叙述同一故事线。", e: "Same story as README’s six bullets.", nodes: [], paths: [] },
+    { h: { zh: "触发", en: "Invoke" }, ux: { zh: { b: "宿主读入 <code>minutes.md</code> 后，你在对话里输入 <code>/minutes</code>，再粘贴<strong>妙记或纪要文档的完整链接</strong>（二选一）。示例格式见 README。" }, en: { b: "After <code>minutes.md</code> loads, type <code>/minutes</code> then paste a full <strong>Minutes or meeting-doc URL</strong>. Shape examples are in the README." } }, z: "命令名与参数见仓库 README。", e: "Slash shape per upstream README.", nodes: ["g1"], paths: [] },
+    { h: { zh: "读全文", en: "Read" }, ux: { zh: { b: "Agent 通过 Lark CLI 你已登录的身份拉取逐字稿；前提：本机完成 <code>lark-cli</code> 配置与授权。" }, en: { b: "Fetches transcript via authenticated Lark CLI on your machine." } }, z: "依赖 README 前置条件。", e: "Requires prerequisites block.", nodes: ["g1", "g2"], paths: ["p1"] },
+    { h: { zh: "Wake Word", en: "Wake word" }, ux: { zh: { b: "扫描你在会中说的触发词，把口头对 Agent 的指令从长文本里捞出来——你不必事后回忆原句。" }, en: { b: "Scans the transcript for your trigger phrase and recovers in-meeting agent instructions." } }, z: "触发语可自行设定。", e: "Configurable phrase per README.", nodes: ["g1", "g2", "g3"], paths: ["p1", "p2"] },
+    { h: { zh: "行动项", en: "Actions" }, ux: { zh: { b: "合并「明确承诺」与「隐含待办」，并为每一项挑执行形态（约会议、写文档、建任务等）。" }, en: { b: "Explicit + implied items, each routed to an action type from the table." } }, z: "类型表见学习 Tab。", e: "Types in Learn tab.", nodes: ["g1", "g2", "g3", "g4"], paths: ["p1", "p2", "p3"] },
+    { h: { zh: "列表与选择", en: "Pick" }, ux: { zh: { b: "先展示编号列表；你只让 Agent 动你要的行，降低误操作面。" }, en: { b: "Numbered list — you choose which rows to execute." } }, z: "执行前有人在回路。", e: "Human-in-the-loop before side effects.", nodes: ["g1", "g2", "g3", "g4", "g5", "g6"], paths: ["p1", "p2", "p3", "p4", "p5"] },
+    { h: { zh: "执行", en: "Execute" }, ux: { zh: { b: "按类型调用飞书能力与工具：例如发消息可能是剪贴板草稿，约会议则写日历。" }, en: { b: "Runs the chosen plans — message may be clipboard draft; meetings hit calendar APIs." } }, z: "细节以 minutes.md + Lark 能力为准。", e: "Exact tools live in the command markdown.", nodes: ["g1", "g2", "g3", "g4", "g5", "g6", "g7"], paths: ["p1", "p2", "p3", "p4", "p5", "p6"] }
+  ];
+
+  var heroIdx = 0;
+  var heroTimer = null;
+  var heroFirstTimeout = null;
+  function clearHeroAnim() {
+    if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+    if (heroFirstTimeout) { clearTimeout(heroFirstTimeout); heroFirstTimeout = null; }
+  }
+  var heroPill = document.getElementById("heroPill");
+  var annoH = document.getElementById("annoH");
+  var annoHoodText = document.getElementById("annoHoodText");
+  var annoZ = document.getElementById("annoZ");
+  var annoE = document.getElementById("annoE");
+
+  function stopHeroPlayUI() {
+    clearHeroAnim();
+    var hp = document.getElementById("heroPlay");
+    if (hp) hp.setAttribute("aria-pressed", "false");
+  }
+  function setPathOn(id, on) {
+    var el = document.getElementById(id);
+    if (el) el.classList.toggle("on", on);
+  }
+
+  function syncSvgI18n() {
+    var zh = document.documentElement.lang === "zh-Hans";
+    var capL = document.getElementById("vizRailCapL");
+    var capR = document.getElementById("vizRailCapR");
+    if (capL) capL.textContent = zh ? "妙记" : "MINUTES";
+    if (capR) capR.textContent = zh ? "执行" : "ACTIONS";
+    var a = document.getElementById("lblRead");
+    if (a) a.textContent = zh ? "读逐字稿" : "Transcript";
+    var b = document.getElementById("lblWake");
+    if (b) b.textContent = "Wake Word";
+    var c = document.getElementById("lblAct");
+    if (c) c.textContent = zh ? "行动项" : "Actions";
+    var d = document.getElementById("lblPlan");
+    if (d) d.textContent = zh ? "方案 → 编号列表" : "Plan → list";
+    var e = document.getElementById("lblPick");
+    if (e) e.textContent = zh ? "你选序号" : "You pick";
+    var f = document.getElementById("lblExec");
+    if (f) f.textContent = zh ? "执行" : "Execute";
+  }
+
+  function applyHero() {
+    syncSvgI18n();
+    if (!annoH || !annoZ || !annoE || !heroPill) return;
+    var s = H_STEPS[heroIdx];
+    var isZh = document.documentElement.lang === "zh-Hans";
+    annoH.textContent = isZh ? s.h.zh : s.h.en;
+    var u = s.ux || { zh: { b: "" }, en: { b: "" } };
+    if (annoHoodText) {
+      var hb = isZh ? u.zh.b : u.en.b;
+      if ((hb || "").indexOf("<code>") >= 0 || (hb || "").indexOf("<strong>") >= 0) {
+        annoHoodText.innerHTML = hb;
+      } else {
+        annoHoodText.textContent = hb;
+      }
+    }
+    annoZ.textContent = s.z;
+    annoE.textContent = s.e;
+    heroPill.textContent = heroIdx + " / " + (H_STEPS.length - 1);
+
+    var allG = document.querySelectorAll("[data-node]");
+    for (var i = 0; i < allG.length; i++) {
+      var box = allG[i];
+      var pg = parentGroupEl(box);
+      var gid = pg ? pg.id : "";
+      box.classList.toggle("on", s.nodes.indexOf(gid) >= 0);
+    }
+    var pathIds = ["p1", "p2", "p3", "p4", "p5", "p6"];
+    for (var p = 0; p < pathIds.length; p++) {
+      setPathOn(pathIds[p], false);
+    }
+    for (var q = 0; q < s.paths.length; q++) {
+      setPathOn(s.paths[q], true);
+    }
+  }
+
+  function heroAutoTick() {
+    if (heroIdx >= H_STEPS.length - 1) {
+      stopHeroPlayUI();
+      return;
+    }
+    heroIdx++;
+    applyHero();
+    if (heroIdx >= H_STEPS.length - 1) {
+      stopHeroPlayUI();
+    }
+  }
+  function heroNext() {
+    if (heroTimer || heroFirstTimeout) { stopHeroPlayUI(); }
+    if (heroIdx < H_STEPS.length - 1) { heroIdx++; applyHero(); }
+  }
+  function heroPrev() {
+    if (heroTimer || heroFirstTimeout) { stopHeroPlayUI(); }
+    if (heroIdx > 0) { heroIdx--; applyHero(); }
+  }
+  document.getElementById("heroNext").onclick = heroNext;
+  document.getElementById("heroPrev").onclick = heroPrev;
+  document.getElementById("heroReset").onclick = function () {
+    stopHeroPlayUI();
+    heroIdx = 0;
+    applyHero();
+  };
+  document.getElementById("heroPlay").onclick = function () {
+    var hp = document.getElementById("heroPlay");
+    if (heroTimer || heroFirstTimeout) {
+      stopHeroPlayUI();
+      return;
+    }
+    if (heroIdx >= H_STEPS.length - 1) {
+      heroIdx = 0;
+      applyHero();
+    }
+    if (hp) hp.setAttribute("aria-pressed", "true");
+    var tickMs = 2200;
+    heroFirstTimeout = setTimeout(function () {
+      heroFirstTimeout = null;
+      heroAutoTick();
+      heroTimer = setInterval(heroAutoTick, tickMs);
+    }, 150);
+  };
+
+  var SIM = [
+    { r: "u", t: { zh: "/minutes https://example.feishu.cn/minutes/abc123", en: "/minutes https://example.feishu.cn/minutes/abc123" } },
+    { r: "a", t: { zh: "收到。我会用已登录的 Lark CLI 拉取这条妙记的全文，然后按 Wake Word「小助手听着」扫描你对 Agent 的口头指令。", en: "Pulling the transcript via Lark CLI, then scanning for your wake phrase." } },
+    { r: "t", t: { zh: "Bash: lark-cli minutes export abc123 → 本地临时 transcript.md（示意）", en: "Bash: lark-cli minutes export … → local transcript (illustrative)." } },
+    { r: "a", t: { zh: "共提取 5 条行动项（含 1 条会上你说的「小助手听着：会后把 PRD 链接丢群里」）。下面是编号清单，请选要我来执行的序号。", en: "Five items found (one from your wake-word line). Reply with numbers to execute." } },
+    { r: "u", t: { zh: "做 2、4、5。", en: "Run 2, 4, and 5." } },
+    { r: "t", t: { zh: "Lark API：创建日程 · 起草群消息到剪贴板 · 创建飞书任务@你 due 周五（示意）", en: "Lark: calendar + clipboard draft + task (illustrative)." } },
+    { r: "a", t: { zh: "2 已约上；4 的文案在剪贴板；5 任务已建。需要我把纪要里其它条目改成仅待办备忘吗？", en: "Done for 2/4/5. Want the rest as plain reminders?" } }
+  ];
+  var simShown = 0;
+  var simPlayTimer = null;
+  var simFeed = document.getElementById("simFeed");
+  var simProg = document.getElementById("simProg");
+
+  function simLabel(r) {
+    var zh = document.documentElement.lang === "zh-Hans";
+    if (r === "u") return zh ? "用户" : "User";
+    if (r === "t") return zh ? "工具 / Bash" : "Tool";
+    return "Agent";
+  }
+  function simUpdateProg() {
+    if (!simProg) return;
+    var zh = document.documentElement.lang === "zh-Hans";
+    simProg.textContent = (zh ? "已展示 " : "Shown ") + simShown + " / " + SIM.length;
+  }
+  function appendSimBubble(index, softMotion) {
+    if (!simFeed || index < 0 || index >= SIM.length) return;
+    var row = SIM[index];
+    var zh = document.documentElement.lang === "zh-Hans";
+    var div = document.createElement("div");
+    div.className = "bubble " + (row.r === "u" ? "u" : row.r === "t" ? "t" : "a");
+    if (softMotion) div.classList.add("bubble-soft");
+    div.innerHTML = "<div class=\"who\">" + simLabel(row.r) + "</div>" + (zh ? row.t.zh : row.t.en);
+    simFeed.appendChild(div);
+  }
+  function renderSimFull() {
+    if (!simFeed) return;
+    simFeed.innerHTML = "";
+    for (var i = 0; i < simShown; i++) {
+      appendSimBubble(i, false);
+    }
+    simUpdateProg();
+    simFeed.scrollTop = simFeed.scrollHeight;
+  }
+  function renderSimAppendLatest(softMotion) {
+    if (!simFeed || simShown < 1) return;
+    appendSimBubble(simShown - 1, softMotion);
+    simUpdateProg();
+    simFeed.scrollTop = simFeed.scrollHeight;
+  }
+  document.getElementById("simStep").onclick = function () {
+    if (simShown < SIM.length) {
+      simShown++;
+      renderSimAppendLatest(false);
+    }
+  };
+  document.getElementById("simReset").onclick = function () {
+    if (simPlayTimer) { clearInterval(simPlayTimer); simPlayTimer = null; }
+    simShown = 0;
+    renderSimFull();
+  };
+  document.getElementById("simPlayAll").onclick = function () {
+    if (simPlayTimer) {
+      clearInterval(simPlayTimer);
+      simPlayTimer = null;
+      return;
+    }
+    if (simShown >= SIM.length) {
+      simShown = 0;
+      renderSimFull();
+    }
+    simPlayTimer = setInterval(function () {
+      if (simShown >= SIM.length) {
+        clearInterval(simPlayTimer);
+        simPlayTimer = null;
+        return;
+      }
+      simShown++;
+      renderSimAppendLatest(true);
+    }, 700);
+  };
+
+  function tabTo(id) {
+    var tabs = document.querySelectorAll(".tab");
+    var pans = document.querySelectorAll(".panel");
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].dataset.tab === id;
+      tabs[i].classList.toggle("on", on);
+      tabs[i].setAttribute("aria-selected", on ? "true" : "false");
+    }
+    for (var j = 0; j < pans.length; j++) {
+      pans[j].classList.remove("on");
+      pans[j].hidden = true;
+    }
+    var pan = document.getElementById("pan-" + id);
+    if (pan) {
+      pan.hidden = false;
+      pan.classList.add("on");
+    }
+  }
+  var tabBtns = document.querySelectorAll(".tab");
+  for (var tb = 0; tb < tabBtns.length; tb++) {
+    (function (btn) {
+      btn.addEventListener("click", function () { tabTo(btn.getAttribute("data-tab")); });
+    })(tabBtns[tb]);
+  }
+
+  function refreshI18nStrings() {
+    var zh = document.documentElement.lang === "zh-Hans";
+    document.getElementById("tabLearn").textContent = zh ? "学习" : "Learn";
+    document.getElementById("tabSim").textContent = zh ? "模拟器" : "Simulator";
+    document.getElementById("tabQna").textContent = zh ? "深度探索" : "Deep dive";
+    var st = document.getElementById("simStep");
+    var pa = document.getElementById("simPlayAll");
+    var rs = document.getElementById("simReset");
+    if (st) st.textContent = zh ? "下一条" : "Step";
+    if (pa) pa.textContent = zh ? "全部播放" : "Play all";
+    if (rs) rs.textContent = zh ? "重播" : "Reset";
+    applyHero();
+    renderSimFull();
+  }
+
+  applyTheme(selTheme.value);
+  applyLang(selLang.value === "auto" ? "auto" : selLang.value);
+})();
+  </script>
+</body>
+</html>

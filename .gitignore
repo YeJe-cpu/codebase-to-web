@@ -1,7 +1,7 @@
-# Generated HTML (skill output); keep checked-in demo
+# Generated HTML (skill output); only checked-in samples below
 web/*.html
-!web/demo.html
-!web/YeJe-cpu-web-learning-github.html
+!web/colleague-skill-prototype-gold.html
+!web/lark-minutes-tasks-walkthrough.html
 
 # OS
 .DS_Store

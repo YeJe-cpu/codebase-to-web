@@ -2,7 +2,7 @@
 
 ## What it is & who it’s for
 
-An **agent skill** for **Cursor, Claude Code, Windsurf, OpenClaw**, and similar hosts: point it at an **Agent Skill repo on GitHub** and get a **single self-contained HTML** that traces the UI/UX path—what you do in the product vs what the host and model load next. Meant for **learning and orientation**, not for turning an app codebase into a shipped web product.
+An **agent skill** for **Cursor, Claude Code, Windsurf, OpenClaw**, and similar hosts: point it at an **Agent Skill repo on GitHub** and get a **single self-contained HTML** that traces the UI/UX path—**what you do in the product** vs **what the host and model load next**. Meant for **learning and orientation**, not for turning an app codebase into a shipped web product.
 
 **Who is it for?** Vibe coders and anyone on GitHub who wants to see **where to install**, **what triggers the skill**, and **which files load in what order**. READMEs are often high-level while real entrypoints sit under hooks, `references/`, or subcommands—this page is **one scrollable map** instead of many small Markdown hops.
 
@@ -10,94 +10,81 @@ An **agent skill** for **Cursor, Claude Code, Windsurf, OpenClaw**, and similar 
 
 ---
 
-## Demo & what’s inside the page
+## Demo & what the generated page contains
 
-The **English** UI of this repo’s sample page [`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html) (open locally after clone). **English / 中文** toggle at the top; component path: **Next · Play all · Reset** (fd-pass layout). Same pattern as READMEs that lead with visuals—**one image per beat**, then the feature list below.
+Below, a single-page example built from [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) ([`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)). **Three images = three main regions** of the page, not a full-page recording; **English / 中文** live in the **same file**.
 
-**Hero, hints, repo meta, plain-language + deliverables**
+![Top of page: repo info and reading guidance](assets/demo-en-hero.png)
 
-![Overview — hero, meta, plain-language intro, deliverables (English)](assets/demo-en-hero.png)
+*Maps to **Hero + GitHub bar**: which repo, install hint, suggested reading order.*
 
-**Component-path bubbles + two-column step journey**
+![Component path: SVG flow and step-by-step notes](assets/demo-en-component-path.gif)
 
-![Component path bubbles and two-column step journey (English)](assets/demo-en-path-steps.png)
+*Maps to the **component path** block: the flow lights step-by-step with controls and the “what this step does” side pane.*
 
-**Playback controls (GIF)**
+![Simulator: stepped chat bubbles](assets/demo-en-simulator.gif)
 
-![Playback — Next, Play all, Reset (English, GIF)](assets/demo-en-interaction.gif)
+*Maps to the **Simulator** tab: bubbles show roughly how interaction in the host might go after install.*
 
-**Typical sections in that HTML:** repo meta (link, stars, forks, created time), plain-language blurb, a **step-through component path** (message count follows the **real** repo—not fixed), **two-column** surface vs backstage on wide screens, tree, README-flavoured bullets. Defaults follow **Lab·Canonical** (warm editorial) and [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) discipline. First load may fetch Google Fonts; then you can use it offline from cache.
+<table>
+<colgroup><col style="width:11%"><col style="width:24%"><col style="width:65%"></colgroup>
+<thead><tr><th>Block</th><th>What you see</th><th>What you get from the full HTML (worth opening)</th></tr></thead>
+<tbody>
+<tr><td><strong>Hero</strong></td><td>Title, reading order</td><td>Know in seconds whether to follow the path first or the long copy—less guessing.</td></tr>
+<tr><td><strong>Meta</strong></td><td>Stars, forks, link</td><td>Instant “this is the repo I meant.”</td></tr>
+<tr><td><strong>Component path</strong></td><td>Flow SVG, rails, step controls, side notes</td><td><strong>The spine</strong>: trigger → branches/steps → disk, like scrubbing a timeline—easier to follow than a wall of README prose.</td></tr>
+<tr><td><strong>Learn</strong></td><td>Long sections, lists</td><td>Background, install, and limits <strong>in one continuous read</strong> for people who want the full picture once.</td></tr>
+<tr><td><strong>Simulator</strong></td><td>Bubble steps</td><td><strong>How a real session might sound</strong> after install—less imagination tax.</td></tr>
+<tr><td><strong>Deep dive</strong></td><td>Heavy Q&amp;A, caveats</td><td>Permissions, deps, and how this differs from “todo-only” tools—<strong>cheap failures here</strong> before you commit in production.</td></tr>
+<tr><td><strong>After install</strong></td><td>Foldable checklist</td><td>Aligned with <strong>component path</strong> and <strong>simulator</strong> so you can execute in order.</td></tr>
+<tr><td><strong>Tree + bullets</strong></td><td>File tree, README-style bullets</td><td>Where artifacts land and how the author sells the project—last glance before you try or fork.</td></tr>
+</tbody>
+</table>
 
-Shorter sample: [`web/demo.html`](web/demo.html). Full walkthrough matching the screenshots: **`web/YeJe-cpu-web-learning-github.html`**.
+**Full interactive page:** `git clone` this repo → open `web/colleague-skill-prototype-gold.html` in a browser and click through / switch tabs. Another reference page, `web/lark-minutes-tasks-walkthrough.html`, is for a different product story—clone locally to open it; this README does not include a second set of images for it.
 
 ---
 
-## How to use
+## How to use (humans & agents)
 
-1. Copy the `web-learning-github` folder into your host’s skills directory (examples below).
-2. In chat, ask for an HTML walkthrough of a repo (see trigger phrases).
+1. Copy this repo (or only the **`web-learning-github`** folder) into your host’s skills directory.  
+2. In chat, **paste the target skill’s GitHub URL** and say you want **this skill (Web Learning GitHub)** to generate that one-page walkthrough.
 
 | Host | Typical path |
 |------|----------------|
-| Cursor | e.g. `.agents/skills/web-learning-github/` in the project |
+| Cursor | e.g. `.agents/skills/web-learning-github/` |
 | Claude Code | e.g. `~/.claude/skills/web-learning-github/` |
 | Windsurf | follow current product docs |
-| OpenClaw | e.g. `~/.openclaw/skills/` or workspace `skills/` — [OpenClaw · Skills](https://docs.openclaw.ai/skills/) |
+| OpenClaw | e.g. `~/.openclaw/skills/` — [Skills](https://docs.openclaw.ai/skills/) |
 
-Generated pages default to `web/<owner>-<repo>.html`. You can override the folder in the prompt. Output language (or a bilingual toggle in one file) is described in `SKILL.md` and `SKILL.zh-CN.md`.
+**You might say:** “Repo is `https://github.com/someone/some-skill` — use **Web Learning GitHub** to give me **one self-contained HTML** that explains install, trigger, and file order.” Add “**bilingual EN/中文** on the page” if you need a language toggle.
 
-### Trigger phrases
-
-- “Turn `owner/repo` into one HTML that maps install → trigger → file order.”
-- “Component path first as bubbles, then surface vs backstage steps.”
-- “One HTML with EN / 中文 toggle for every section.”
-- 「把这个仓库做成一页路径说明 HTML。」
+**Agents** follow **`SKILL.md`**, **`SKILL.zh-CN.md`**, and **`references/`**. After cloning this bundle, the usual output path is **`web/<owner>-<repo>.html`** (one target repo → one file unless you agree otherwise).
 
 ---
 
-## Design philosophy
-
-Path before long prose. Prefer a step-through call graph over walls of text. One file you can share or archive.
-
----
-
-## Skill layout
+## Repo layout
 
 ```
 web-learning-github/
 ├── SKILL.md
 ├── SKILL.zh-CN.md
 ├── references/
-├── assets/             # README demo images
+├── assets/                         # README screenshots & GIFs
 ├── web/
-│   ├── demo.html
-│   └── YeJe-cpu-web-learning-github.html
+│   ├── colleague-skill-prototype-gold.html    # colleague-skill demo (titanwings/colleague-skill)
+│   ├── lark-minutes-tasks-walkthrough.html    # other reference scenario (lark-minutes-tasks)
+│   └── .gitkeep
 ├── README.md
 ├── README.zh-CN.md
-└── LICENSE
+├── LICENSE
+└── CONTRIBUTING.md                 # notes for people who edit this skill repo
 ```
 
-Details for `references/` are in [`references/README.md`](references/README.md).
-
----
-
-## Acknowledgements
-
-[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) (*Codebase to Course*) turns application codebases into rich, interactive single-page courses (modules, quizzes, visualizations)—a different and valuable problem. We borrow the idea of putting a clear **component path / timeline** up front; our focus is Agent Skill repos and a single-page map of user action vs agent behavior, without a mandatory course loop. Both can coexist. If our comparison misstates their current README, open an issue.
-
-| | Codebase to Course | Web Learning GitHub |
-|---|---|---|
-| Typical input | Application / product repos | Skill bundles (`SKILL.md`, hooks, `references/`) |
-| Experience shape | Course-style depth | One-page overview |
-| Shared idea | Clear ordering of who loads whom | Same: step-through path first |
-| Emphasis here | — | User step ↔ model/agent; meta, tree, README hints on one page |
+See [`references/README.md`](references/README.md) for `references/`.
 
 ---
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-
-## Contributing
-
-[CONTRIBUTING.md](CONTRIBUTING.md).

@@ -1,7 +1,7 @@
 # Contributing
 
-1. **Skill behavior** → `SKILL.md` (English) and/or `SKILL.zh-CN.md`（与英文语义对齐）+ `references/`.
-2. **Visual tokens** → `references/ui-tokens.md` + `references/ui-tokens.zh-CN.md`（**Lab·Canonical** 为默认视觉代号）.
-3. **User-facing docs** → `README.md` / `README.zh-CN.md`.
+This file is for **people who edit this skill repository** (change `SKILL.md`, `references/`, or sample HTML). End users do **not** need to read it—install the skill and paste a GitHub repo link in chat as described in `README.md`.
 
-**`web/demo.html`** 为双语示意页，可随产品迭代修改。**其他** skill 生成的 `web/*.html` 默认勿提交；见 `.gitignore`。
+1. Keep **`SKILL.md`** and **`SKILL.zh-CN.md`** aligned in meaning.  
+2. Touch **`references/`** when layout or token rules change.  
+3. Update **`README.md` / `README.zh-CN.md`** and **`assets/`** if demo media or sample paths change.

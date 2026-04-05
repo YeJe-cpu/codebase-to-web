@@ -1,40 +1,41 @@
-# Visual HTML walkthrough — preferences & checklist
+# Visual HTML walkthrough — checklist (Canonical)
 
 ## Single file vs merged page
 
-- **Single repo (default for OSS bundle):** write `web/<owner>-<repo>.html` (or user-chosen path).
-- **Author lab folder:** if the user wants outputs under their OSS lab tree, use e.g. `30_resources/oss-skill-lab/<owner>-<repo>.html` (path relative to their multi-project root); confirm in chat.
-- **Multiple repos in one request:** merged tabbed HTML **or** separate files; if no preference, **prefer separate files**.
+- **Single repo (default):** `web/<owner>-<repo>.html` (or user path).
+- **Author lab:** e.g. `30_resources/oss-skill-lab/<owner>-<repo>.html` when that tree exists.
+- **Multiple repos:** separate files unless the user wants one tabbed page.
 
-## Structure preferences
+## Structure
 
-1. **Component path / journey first** — before long-form steps; **never assume a fixed number of chat bubbles** (e.g. not “always 6”); follow the real repo—fewer for simple layouts, more for complex ones.
-2. **Granular step journey** — install / first touch / happy path / failure paths as needed.
-3. **Research questions the page should answer:** journey UX; artifact shape; what README popularity implies.
+1. **Hero + meta** first; then **`.viz-panel`** (component path) **before** long prose tabs.
+2. **Steps / beats:** follow the real repo—**no fixed bubble or node count**.
+3. **Rail captions + optional simulator** should align with the story you tell in **Learn**.
 
 ## Host wording
 
-Name the host the user actually uses (**Cursor / Claude Code / Windsurf / OpenClaw**). OpenClaw resolution order: [OpenClaw · Skills](https://docs.openclaw.ai/skills/).
+Use the user’s real host when known (**Cursor / Claude Code / Windsurf / OpenClaw**).
 
 ## Data
 
-- Stars/forks/created_at from GitHub API when possible; footer **snapshot** time.
-- Without API: “see repo page” + link.
+Stars / forks / `created_at` from GitHub API when possible; footer **snapshot** time.
 
 ## Do not
 
-- Push the component-path block to the bottom of the page.
+- Push the main walkthrough block to the bottom of the page.
+- Use **`overflow: hidden`** on **`.viz-panel`** together with a sticky header stack (breaks layout).
 
-## Layout & palette (FD‑pass)
+## Layout (Canonical)
 
-- **Shell:** match **fd-pass** structure: `.meta-bar`, `.path-wrap` / `.chat-window` (Next · Play all · Reset · progress), `.grid2` two-column steps (`.card.user` / `.card.back`), `.readme-box`, colored `pre.tree` where helpful.
-- Tokens: **Lab·Canonical** in `ui-tokens.md`; variants A/B only for “wildcard” requests.
+- **`.viz-panel`** → **`.viz-sticky-stack`** (`.viz-head` + `.viz-rail-captions`) → **`.viz-grid`** (`.viz-canvas` + `.anno`).
+- **Samples:** `web/colleague-skill-prototype-gold.html`, `web/lark-minutes-tasks-walkthrough.html`.
+- Tokens: **Lab·Canonical** in `ui-tokens.md` unless the user requests a variant.
 
 ## Post-gen sanity check
 
-- [ ] Display font for main title is not Inter / Roboto
-- [ ] No huge purple-gradient hero; no heavy noise texture across the whole page
-- [ ] Comfortable margins (`.shell` in `ui-tokens.md`)
-- [ ] `typing-avatar` id matches `chat-window` id rule (`#<id>-typing-avatar`)
-- [ ] Journey chat has **Next**, **Play all**, **Reset** and live **progress**
-- [ ] Surface / backstage use **two columns** at ≥720px (`.grid2`)
+- [ ] Title font is not Inter / Roboto cliché for the main headline
+- [ ] No huge purple-gradient hero; readable contrast
+- [ ] Comfortable page margins (see `ui-tokens.md`)
+- [ ] **`.viz-sticky-stack`** correct; **no title/rail overlap**
+- [ ] **Narrow screens:** title + controls wrap without clipping
+- [ ] Prev / Next / Auto / Reset behave; annotations stay in sync with the SVG step

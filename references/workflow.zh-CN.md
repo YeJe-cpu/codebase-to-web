@@ -1,40 +1,41 @@
-# 可视化 HTML 页 · 用户偏好与检查清单
+# 可视化 HTML 单页 · 检查清单（Canonical）
 
-## 单仓库 vs 整合页
+## 单仓 vs 整合页
 
-- **单仓库（开源 skill 包默认）**：`web/<owner>-<repo>.html`（或用户在对话里指定的目录）。
-- **维护者本机实验室目录**：用户要落在 OSS 实验树下时，例如 `30_resources/oss-skill-lab/<owner>-<repo>.html`（相对其多项目根目录；路径以当场约定为准）。
-- **多仓库一次交付**：用户在一句话里列出 2+ 个 GitHub 仓库，或明说「合成一个 Tab 页」→ 可输出整合 HTML，或分别输出多个单文件；若无偏好，**优先多个单文件**。
+- **单仓（默认）：** `web/<owner>-<repo>.html` 或用户指定路径。  
+- **维护者实验室：** 如 `30_resources/oss-skill-lab/<owner>-<repo>.html`。  
+- **多仓库：** 默认**多文件**；要单页 Tab 再单独约定。
 
-## 用户明确偏好的结构
+## 结构偏好
 
-1. **组件路径前置**：必须在「分步旅程」之前；**条数不写死**（不是固定 6 条之类），按真实仓库复杂度展开。
-2. **分步旅程要细**：安装 / 首触 / 顺利路径 / 异常路径等可拆步。
-3. **研究者三问**（内容上要能回答）：Journey UI；交付物形态；README 热度从何而来。
+1. **Hero + meta** 在前，**`.viz-panel`** 主路径在**长文 Tab 之前**。  
+2. **步进节点数**随真实仓库，**勿写死条数**。  
+3. **轨道字 / 模拟器** 与 **学习** Tab 叙事一致。
 
 ## 宿主表述
 
-旅程气泡或安装说明需点名时，优先使用用户当前环境（**Cursor / Claude Code / Windsurf / OpenClaw** 等）。OpenClaw 路径与优先级参见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/)。
+优先使用用户当前环境（**Cursor / Claude Code / Windsurf / OpenClaw**）。
 
 ## 数据
 
-- Star/Fork/创建时间以 GitHub API 为准；页脚注明「快照」时间。
-- 无 API 时写「以仓库页为准」并给链接。
+Star/Fork/创建时间尽量用 GitHub API；页脚注明快照时间。
 
 ## 不要做
 
-- 不要把组件路径放到页面最底部。
+- 把主 walkthrough 塞到页面最底部。  
+- **`.viz-panel` + sticky** 时滥用 **`overflow: hidden`**。
 
-## 版式（FD‑pass 壳）与配色
+## 版式（Canonical）
 
-- **壳**：与 fd-pass 一致——`.meta-bar`、`.path-wrap` / `.chat-window`（下一条 · 全部播放 · 重播 · 进度）、`.grid2` 双列分步（`.card.user` / `.card.back`）、`.readme-box`、`pre.tree` 配色行等。
-- 色板默认 **Lab·Canonical**（`ui-tokens.zh-CN.md`）；变体 A/B 仅用户要换气质或盲盒时使用。
+- **`.viz-panel`** → **`.viz-sticky-stack`**（`.viz-head` + `.viz-rail-captions`）→ **`.viz-grid`**（`.viz-canvas` + `.anno`）。  
+- **样本：** `web/colleague-skill-prototype-gold.html`、`web/lark-minutes-tasks-walkthrough.html`（金 / 银各一份）。  
+- 色板默认 **Lab·Canonical**（`ui-tokens.zh-CN.md`）。
 
-## 检查清单（生成后目测）
+## 生成后自检
 
-- [ ] 主标题不是 Inter / Roboto 堆栈
-- [ ] 背景无大紫渐变主导、无重噪点磨砂铺满
-- [ ] 版心留白适中（`ui-tokens.zh-CN.md` 中的 `.shell` 公式）
-- [ ] `typing-avatar` id = `{chatWindowId}-typing-avatar`
-- [ ] 组件路径聊天具备 **逐步 / 全部播放 / 重播** 与进度
-- [ ] 宽屏下分步为 **两列**（`.grid2`）
+- [ ] 主标题未沦为 Inter/Roboto 堆栈  
+- [ ] 无大紫渐变铺底，对比度可读  
+- [ ] 版心留白适中（`ui-tokens.zh-CN.md`）  
+- [ ] **`.viz-sticky-stack`** 正确，**顶栏与轨道字不叠字**  
+- [ ] **窄屏** 标题与控制条可换行、不裁切  
+- [ ] 上一步/下一步/自动/重置正常，注解与 SVG 步进同步  

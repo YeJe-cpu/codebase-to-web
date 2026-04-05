@@ -1,24 +1,12 @@
-# `references/` 是干嘛的？（帮你打消困惑）
+# `references/` 是干嘛的？
 
-这一整包就是 **一个 skill**：根目录的 `SKILL.md` 告诉模型**要做什么事**；`references/` 里是**生成那张可视化 HTML 时要遵守的细节**——相当于「出图规范」「排版与配色手册」，**不是**三个别的产品名称。
+这一整包是 **一个 skill**：根目录 `SKILL.md` 规定 **产出什么**；本目录是 **生成 HTML 时要遵守的细节**（布局、自检、视觉 token、审美纪律）。
 
-下面是每个文件一句话人话版：
+| 文件 | 作用 |
+|------|------|
+| `workflow.md` / `workflow.zh-CN.md` | 结构偏好与 **Canonical** 自检清单 |
+| `walkthrough-canonical-ui.md` / `walkthrough-canonical-ui.zh-CN.md` | **`.viz-panel` / sticky / Tab / SVG** 等版式约定 |
+| `ui-tokens.md` / `ui-tokens.zh-CN.md` | 字体、版心、默认 **Lab·Canonical** 色板 |
+| `frontend-design-notes.md` / `frontend-design-notes.zh-CN.md` | 与 `frontend-design` 思路对齐的纪律（避免模板脸） |
 
-## `workflow.md` / `workflow.zh-CN.md`
-
-**流程与检查清单**：默认一仓一单文件还是多仓合并、**fd-pass 壳**（双列分步、聊天 Next/全部播放/重播）、journey **条数随仓库**（勿写死条数）、journey 要放在前面、`web/` 与可选 **`30_resources/oss-skill-lab/`**（Cursor 本机可写死实验室路径）、**单语默认 / README 演示再双语**、配色可在纪律内盲盒微调、生成完自检什么。  
-→ 模型按这个来，**网页结构不会乱**。
-
-## `ui-tokens.md` / `ui-tokens.zh-CN.md`
-
-**视觉 token**：用什么 Google Fonts、`.shell` 版心多宽、默认暖陶土色还是用户要的冷色/青色变体。  
-→ 页面长什么样，主要**由这里定调**（避免每张都像大紫渐变 AI 模板）。
-
-## `frontend-design-notes.md` / `frontend-design-notes.zh-CN.md`
-
-**和 Anthropic 的 `frontend-design` 思路对齐的纪律**：主标题别用 Inter 堆满、别用脏渐变当背景，等等。  
-→ 本仓库**不捆绑**上游代码，只是生成 HTML 时**照着这个审美约束**来。
-
----
-
-**English:** same idea—`references/` holds **implementation notes for HTML generation**, not separate apps. Pair `*.md` (English) with `*.zh-CN.md` (中文).
+**English:** same idea—pair `*.md` with `*.zh-CN.md`.

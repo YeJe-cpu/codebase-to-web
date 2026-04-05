@@ -2,7 +2,7 @@
 
 ## 这是啥，适合谁
 
-跑在 **Cursor、Claude Code、Windsurf、OpenClaw** 等环境里的 Agent skill：对准 GitHub 上的 **Agent Skill 仓库**，生成 **单个自包含 HTML**，沿「你怎么操作」和「宿主 / 模型在背后读什么」把路径铺开——适合 **学习与捋清调用关系**，不是把业务代码一键变成上线网站。
+跑在 **Cursor、Claude Code、Windsurf、OpenClaw** 等环境里的 **Agent skill**：对准 GitHub 上的 **Agent Skill 仓库**，生成 **单个自包含 HTML**，沿「你怎么操作」和「宿主 / 模型在背后读什么」把路径铺开——适合 **学习与捋清调用关系**，不是把业务代码一键变成上线网站。
 
 **适合谁？** Vibe coder、常刷 GitHub、想搞清某个 skill 仓 **怎么装、怎么触发、文件谁先谁后** 的人。README 往往写得很概括，真实入口在 Hook、`references/` 或子命令里；这一页用 **可滚动的单文件** 把路径和幕后机制放在一起，少啃一堆 Markdown 标签页。
 
@@ -10,54 +10,56 @@ English：[README.md](README.md) · 仓库：[YeJe-cpu/web-learning-github](http
 
 ---
 
-## 演示 & 生成的页面里有什么
+## 演示和生成的页面里有什么
 
-下列截图为 **本仓库** 示例 [`web/YeJe-cpu-web-learning-github.html`](web/YeJe-cpu-web-learning-github.html) 的 **中文** 界面（克隆后本地打开）。与 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) 一类 README 相同：**一段说明 + 一张图**，逐屏展示。页顶 **English / 中文**；组件路径 **下一条 · 全部播放 · 重播**（fd-pass）。
+下面以 [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) 做成的单页示范为例（文件 [`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)）。**三张图对应页面上三块主要区域**，不是整页录像；同一文件内可切换 **English / 中文**。
 
-**总览 — 提示卡、仓库信息、大白话与交付物**
+![页面顶部：仓库信息与阅读引导](assets/demo-zh-hero.png)
 
-![总览 — 标题区、用法提示、仓库信息、大白话与交付物（中文）](assets/demo-zh-hero.png)
+*对应 **Hero + GitHub 信息条**：哪个仓库、安装提示、建议的阅读顺序。*
 
-**组件路径交互（GIF）**
+![组件路径：SVG 流程与右侧步进说明](assets/demo-zh-component-path.gif)
 
-![组件路径交互 — 下一条 / 全部播放 / 重播（中文，GIF）](assets/demo-zh-interaction.gif)
+*对应 **组件路径** 区块：流程图按步点亮，配合控制条与右侧「这一步在干什么」。*
 
-**分步旅程双列 + 目录树**
+![模拟器：分步对话气泡](assets/demo-zh-simulator.gif)
 
-![分步旅程双列与目录树片段（中文）](assets/demo-zh-steps-tree.png)
+*对应 **模拟器** Tab：用对话气泡演示装好后在宿主里大概如何交互。*
 
-**这一页里通常包括：** 仓库 meta（链接、Star、Fork、创建时间）、大白话、**可步进的组件路径**（步数随真实仓库，非固定条数）、**宽屏双列**「表面上 / 背后」、目录树、README 式要点。默认视觉 **Lab·Canonical**（暖色、清晰版心），纪律上可参考 [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)。首次若拉 Google Fonts 需联网，之后可离线依赖缓存。
+<table>
+<colgroup><col style="width:11%"><col style="width:24%"><col style="width:65%"></colgroup>
+<thead><tr><th>模块</th><th>看得见什么</th><th>打开完整 HTML 多得到什么（值得点进来的点）</th></tr></thead>
+<tbody>
+<tr><td><strong>Hero</strong></td><td>标题、建议阅读顺序</td><td>几十秒搞清楚先看路径还是先看长文，减少盲读。</td></tr>
+<tr><td><strong>Meta</strong></td><td>Star / Fork / 链接</td><td>立刻确认「就是我要看的那一个仓库」。</td></tr>
+<tr><td><strong>组件路径</strong></td><td>大图流程、轨道字、步进按钮、右侧解说</td><td><strong>主骨架</strong>：触发 → 分叉/步骤 → 落盘，像进度条一样看懂先后；比纯文字 README 更不容易迷路。</td></tr>
+<tr><td><strong>学习</strong></td><td>多段长文、列表、问题拆解</td><td>把背景、安装、能力边界<strong>摊在一页里读完</strong>，适合想一次吃透的人。</td></tr>
+<tr><td><strong>模拟器</strong></td><td>气泡逐步演示</td><td><strong>装好后在宿主里会怎么问、怎么走</strong>，少靠脑补。</td></tr>
+<tr><td><strong>深度探索</strong></td><td>大量 Q&amp;A、注意事项</td><td>权限、依赖、和「只产出清单不执行」之类产品<strong>差在哪里</strong>，先在这里排雷再决定要不要上会。</td></tr>
+<tr><td><strong>装好后怎么用</strong></td><td>可折叠清单</td><td>与上面的<strong>组件路径</strong>、<strong>模拟器</strong>一句对齐，按清单对照操作。</td></tr>
+<tr><td><strong>树 + 要点</strong></td><td>目录树、bullet</td><td>文件落盘长什么样、作者怎么概括价值，最后一眼决定去留。</td></tr>
+</tbody>
+</table>
 
-更短的示例见 [`web/demo.html`](web/demo.html)。与截图一致的完整 walkthrough 即 **`web/YeJe-cpu-web-learning-github.html`**。
+**完整页面怎么体验：** `git clone` 本仓库 → 用浏览器打开 `web/colleague-skill-prototype-gold.html` 即可逐步点击、切换 Tab。另有一份其它业务场景的参考单页 `web/lark-minutes-tasks-walkthrough.html`，同样需克隆到本地后打开；本 README 未为它单独配图。
 
 ---
 
-## 怎么用
+## 怎么用（人怎么用、Agent 怎么执行）
 
-1. 将 `web-learning-github` 文件夹拷入宿主规定的 skills 目录（见下表）。
-2. 在对话里说明要对哪个仓库生成 HTML（见触发示例）。
+1. 把本仓库（或其中的 **`web-learning-github`** 文件夹）拷到你宿主规定的 **skills** 目录。  
+2. 在对话里 **直接粘贴目标 skill 的 GitHub 链接**，并说明要用 **本 skill（Web Learning GitHub）** 生成那一页 walkthrough。
 
 | 宿主 | 常见路径 |
 |------|-----------|
-| Cursor | 如 `.agents/skills/web-learning-github/` |
+| Cursor | 如项目里的 `.agents/skills/web-learning-github/` |
 | Claude Code | 如 `~/.claude/skills/web-learning-github/` |
 | Windsurf | 以官方文档为准 |
-| OpenClaw | 如 `~/.openclaw/skills/` 或工作区 `skills/`，见 [OpenClaw · Skills](https://docs.openclaw.ai/skills/) |
+| OpenClaw | 如 `~/.openclaw/skills/`，见 [Skills](https://docs.openclaw.ai/skills/) |
 
-默认保存为 `web/<owner>-<repo>.html`，可在提示里改目录。整页语言或「单文件内中英切换」见 `SKILL.md` / `SKILL.zh-CN.md`。
+**你可以这么说：**「仓库是 `https://github.com/谁/什么` ，用 Web Learning GitHub 给我生成**单文件 HTML**，把安装、触发、读文件顺序讲清楚。」需要 **中英切换** 就加一句「页面要双语切换」。
 
-### 触发示例
-
-- 「把 `owner/repo` 做成一页：安装 → 触发 → 读文件顺序。」
-- 「组件路径用气泡步进，再写表面上/背后。」
-- 「一个 HTML，顶部中英切换，段落双语。」
-- “Turn `owner/repo` into one HTML with EN/中文 toggle.”
-
----
-
-## 设计理念
-
-先路径、后长文；能步进就不堆大段；单文件好分享。
+**Agent** 按 **`SKILL.md` / `SKILL.zh-CN.md`** 和 **`references/`** 执行；克隆本技能包后，默认会写出 **`web/<拥有者>-<仓库名>.html`**。
 
 ---
 
@@ -68,29 +70,18 @@ web-learning-github/
 ├── SKILL.md
 ├── SKILL.zh-CN.md
 ├── references/
-├── assets/             # README 演示配图
+├── assets/                         # 本 README 用到的截图与动图
 ├── web/
-│   ├── demo.html
-│   └── YeJe-cpu-web-learning-github.html
+│   ├── colleague-skill-prototype-gold.html    # 同事 skill 示范（titanwings/colleague-skill）
+│   ├── lark-minutes-tasks-walkthrough.html    # 另一参考场景（lark-minutes-tasks）
+│   └── .gitkeep
 ├── README.md
 ├── README.zh-CN.md
-└── LICENSE
+├── LICENSE
+└── CONTRIBUTING.md
 ```
 
 `references/` 说明见 [`references/README.md`](references/README.md)。
-
----
-
-## 致谢
-
-[zarazhangrui/codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)（Codebase to Course）把应用代码仓做成互动单页「课程」，模块与可视化都很完整，是很好的参照。我们借鉴的是「把时间线上谁先加载谁讲清楚」这一点；定位侧重点是 Agent Skill 包与用户—Agent 路径的一页地图，不强调课堂闯关。两者互补。若我们对上游描述过时，欢迎开 issue。
-
-| | Codebase to Course | Web Learning GitHub |
-|---|---|---|
-| 典型输入 | 应用 / 产品代码仓 | 技能包（`SKILL.md`、Hook、`references/` 等） |
-| 体验形态 | 课程式深度 | 单页总览 |
-| 共同点 | 清晰的组件路径与时间线 | 同样把步进路径放在靠前位置 |
-| 我们侧重的 | — | 用户操作与模型/Agent 的对照；元信息、树、README 提示同页呈现 |
 
 ---
 

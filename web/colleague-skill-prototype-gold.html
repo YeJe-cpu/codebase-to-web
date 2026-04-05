@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>金样本 · titanwings/colleague-skill — Walkthrough（定稿 Demo）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --bg-elev: #ffffff;
+      --bg-soft: #f4f4f5;
+      --fg: #18181b;
+      --muted: #71717a;
+      --border: #e4e4e7;
+      --accent: #c026d3;
+      --accent-dim: color-mix(in srgb, var(--accent) 15%, transparent);
+      --ok: #047857;
+      --warn: #b45309;
+      --radius: 14px;
+      --font: "DM Sans", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 40px rgb(0 0 0 / 0.06);
+    }
+    [data-theme="dark"] {
+      --bg: #0c0c0e;
+      --bg-elev: #141416;
+      --bg-soft: #1c1c1f;
+      --fg: #f4f4f5;
+      --muted: #a1a1aa;
+      --border: #2e2e33;
+      --accent: #e879f9;
+      --accent-dim: color-mix(in srgb, var(--accent) 14%, transparent);
+      --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 20px 50px rgb(0 0 0 / 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 1rem 1rem 3.5rem; }
+    /* 顶栏过高会盖住下方「组件路径」按钮（外置浏览器里像失灵）；viz-head 再 sticky 在顶栏之下保证可点 */
+    header.top {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .top-inner {
+      max-width: 920px; margin: 0 auto; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .brand { font-weight: 700; font-size: 0.95rem; letter-spacing: -0.02em; }
+    .brand small { font-weight: 500; color: var(--muted); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    select.tiny, button.tiny {
+      font-family: var(--font);
+      border: 1px solid var(--border);
+      background: var(--bg-elev);
+      color: var(--fg);
+      padding: 0.35rem 0.55rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    button.tiny.primary {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+
+    /* —— 仓库信息卡（对齐 web-learning-github「总览」信息量）—— */
+    .repo-card {
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      background: var(--bg-elev);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .repo-card { grid-template-columns: auto 1fr; align-items: center; }
+    }
+    .repo-avatar {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+    .repo-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.82rem; color: var(--muted); }
+    .repo-meta b { color: var(--fg); font-weight: 600; }
+    .repo-meta a { color: var(--accent); text-decoration: none; }
+    .repo-meta a:hover { text-decoration: underline; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      padding: 0.2rem 0.5rem; border-radius: 999px;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      font-size: 0.72rem; font-weight: 600;
+    }
+    .walk-hint {
+      margin-top: 0.9rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .walk-hint strong { color: var(--fg); }
+
+    h1.hero-title {
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0.85rem 0 0.35rem;
+      line-height: 1.2;
+    }
+    .hero-lead { color: var(--muted); max-width: 65ch; margin: 0; font-size: 0.95rem; }
+
+    /* —— Hero 可视化：双轨蒸馏 + 更丰富的层次（单仓库内也可「一课一样式」）—— */
+    .viz-panel {
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: visible;
+      background: var(--bg-elev);
+      box-shadow: var(--shadow);
+    }
+    /* 顶栏 + 轨道说明一起 sticky；panel 勿 overflow:hidden，否则会搞乱 sticky 叠字 */
+    .viz-sticky-stack {
+      position: sticky;
+      top: 3.25rem;
+      z-index: 45;
+      background: var(--bg-elev);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .viz-head {
+      padding: 0.65rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-dim), transparent 55%);
+      position: static;
+    }
+    .viz-title-block {
+      flex: 1 1 12rem;
+      min-width: 0;
+    }
+    @media (max-width: 520px) {
+      .viz-title-block { flex: 1 1 100%; }
+      .viz-controls { flex: 1 1 100%; justify-content: flex-start; }
+    }
+    .viz-head span.cap {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted);
+      display: block;
+      line-height: 1.4;
+    }
+    .viz-rail-captions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.45rem 1rem 0.55rem;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .viz-rail-captions span { min-width: 0; }
+    .viz-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+    @media (min-width: 780px) {
+      .viz-grid { grid-template-columns: 1.15fr 0.95fr; }
+    }
+    .viz-canvas {
+      position: relative;
+      min-height: 300px;
+      background:
+        radial-gradient(ellipse 90% 70% at 30% 20%, var(--accent-dim), transparent 50%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, color-mix(in srgb, var(--ok) 12%, transparent), transparent 45%),
+        var(--bg-soft);
+      padding: 0.85rem 1rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .node-box {
+      transition: filter 0.35s, opacity 0.35s;
+      filter: grayscale(0.25) brightness(0.97);
+      opacity: 0.72;
+    }
+    .node-box.on {
+      filter: none; opacity: 1;
+      filter: drop-shadow(0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent));
+    }
+    .flow-path {
+      fill: none; stroke: var(--border); stroke-width: 2.5;
+      transition: stroke 0.35s;
+    }
+    .flow-path.on {
+      stroke: var(--accent);
+      stroke-dasharray: 10 6;
+      animation: flow 1.1s linear infinite;
+    }
+    @keyframes flow { to { stroke-dashoffset: -32; } }
+    .anno {
+      padding: 1rem 1.15rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-elev);
+    }
+    @media (min-width: 780px) {
+      .anno { border-top: none; border-left: 1px solid var(--border); }
+    }
+    .anno h3 { margin: 0 0 0.4rem; font-size: 1.05rem; font-weight: 700; }
+    .anno p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+    .anno .en { display: none; margin-top: 0.55rem; font-size: 0.84rem; }
+    html[lang="en"] .anno .zh { display: none; }
+    html[lang="en"] .anno .en { display: block; }
+
+    .anno-layers { margin-top: 0.15rem; }
+    .anno-card {
+      border-radius: 12px;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      border-left: 3px solid color-mix(in srgb, var(--ok) 70%, var(--border));
+      box-shadow: 0 1px 0 color-mix(in srgb, var(--ok) 10%, transparent);
+    }
+    .anno-lbl {
+      margin: 0 0 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .anno-lbl.en { display: none; }
+    html[lang="en"] .anno-lbl.zh { display: none; }
+    html[lang="en"] .anno-lbl.en { display: block; }
+    .anno-card-body { margin: 0; font-size: 0.86rem; color: var(--fg); line-height: 1.52; }
+    .anno-card-body code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      padding: 0.12em 0.35em;
+      border-radius: 4px;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+    }
+
+    .learn-hero {
+      margin: 0 0 1.25rem;
+      padding: 1.15rem 1.25rem 1.2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(125deg, var(--accent-dim), color-mix(in srgb, var(--bg-soft) 88%, var(--accent)) 38%);
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 6px 28px color-mix(in srgb, var(--accent) 9%, transparent);
+    }
+    .learn-hero h2 {
+      margin: 0;
+      font-size: clamp(1.12rem, 2.4vw, 1.38rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1.28;
+    }
+    .learn-hero .lead {
+      margin: 0.7rem 0 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .journey-fold {
+      margin: 1.1rem 0 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-elev);
+      overflow: hidden;
+    }
+    .journey-fold > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--fg);
+      background: var(--bg-soft);
+    }
+    .journey-fold > summary::-webkit-details-marker { display: none; }
+    .journey-fold[open] > summary { border-bottom: 1px solid var(--border); }
+    .journey-steps { padding: 0.85rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .journey-step {
+      padding: 0.65rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .journey-step strong { display: block; color: var(--fg); font-size: 0.8rem; margin-bottom: 0.35rem; }
+
+    .readme-heat {
+      margin-top: 0.85rem;
+      padding: 1rem 1.15rem;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent) 6%, var(--bg-soft));
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .readme-heat h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .readme-heat ul { margin: 0; padding-left: 1.15rem; }
+    .readme-heat li { margin-bottom: 0.45rem; }
+    .readme-heat li:last-child { margin-bottom: 0; }
+
+    .viz-controls {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .step-pill { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); padding: 0.25rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-soft); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0.2rem; margin-top: 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab {
+      border: none; background: transparent; color: var(--muted);
+      padding: 0.65rem 0.95rem; font-family: var(--font);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      border-radius: 10px 10px 0 0; margin-bottom: -1px;
+    }
+    .tab[aria-selected="true"] {
+      color: var(--fg); background: var(--bg-elev);
+      border: 1px solid var(--border); border-bottom-color: var(--bg);
+    }
+    .panel { display: none; padding: 1.35rem 0 2rem; }
+    .panel.on { display: block; animation: fi 0.25s ease; }
+    @keyframes fi { from { opacity: 0; } to { opacity: 1; } }
+
+    .cols-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 700px) {
+      .cols-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .surface, .behind {
+      border: 1px solid var(--border); border-radius: 12px; padding: 1rem;
+      background: var(--bg-elev);
+    }
+    .surface h3, .behind h3 { margin: 0 0 0.5rem; font-size: 0.92rem; font-weight: 700; }
+    .surface { border-left: 3px solid var(--accent); }
+    .behind { border-left: 3px solid color-mix(in srgb, var(--ok) 70%, var(--border)); }
+
+    figure.stage {
+      margin: 1.1rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+    }
+    figure.stage .ph {
+      height: 140px;
+      background: linear-gradient(125deg, var(--accent-dim), transparent),
+        repeating-linear-gradient(-45deg, transparent, transparent 10px, color-mix(in srgb, var(--border) 35%, transparent) 10px, color-mix(in srgb, var(--border) 35%, transparent) 11px);
+    }
+    figure.stage figcaption { padding: 0.6rem 0.85rem; font-size: 0.78rem; color: var(--muted); }
+
+    table.src {
+      width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0.75rem 0;
+    }
+    table.src th, table.src td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    table.src th { background: var(--bg-soft); font-weight: 600; }
+
+    pre.repo-tree {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      line-height: 1.5;
+      margin: 0.65rem 0 0;
+      padding: 1rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      overflow-x: auto;
+      color: var(--fg);
+    }
+
+    /* 模拟器 */
+    .sim-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg-elev); }
+    .sim-toolbar {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-soft);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .sim-feed {
+      max-height: 420px; overflow-y: auto; padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.55rem; min-height: 220px;
+    }
+    .bubble {
+      max-width: 92%; border-radius: 12px; padding: 0.65rem 0.85rem; font-size: 0.84rem;
+      border: 1px solid var(--border);
+      animation: pop 0.22s ease;
+    }
+    .bubble.bubble-soft { animation: none; }
+    @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .bubble .who { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.3rem; }
+    .bubble.u { align-self: flex-end; background: var(--accent-dim); }
+    .bubble.a { align-self: flex-start; background: var(--bg-soft); }
+    .bubble.t { align-self: flex-start; background: color-mix(in srgb, var(--ok) 12%, var(--bg-soft)); }
+
+    /* 源码 */
+    .code-frame {
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+      background: #0d0d0f; color: #e4e4e7;
+      font-family: var(--mono); font-size: 0.74rem; line-height: 1.55;
+    }
+    [data-theme="dark"] .code-frame { background: #080809; }
+    .code-frame .bar {
+      padding: 0.45rem 0.75rem; background: #18181b;
+      border-bottom: 1px solid #27272a; font-size: 0.72rem; color: #a1a1aa;
+    }
+    .code-scroll { overflow-x: auto; max-height: 480px; overflow-y: auto; }
+    .code-scroll pre { margin: 0; padding: 0.85rem 1rem; }
+    .code-scroll .ln { color: #52525b; user-select: none; display: inline-block; width: 2rem; }
+    .cmt {
+      display: block; color: #a78bfa; font-style: italic; margin: 0.35rem 0 0.35rem 2.5rem; white-space: pre-wrap;
+    }
+
+    details.qa {
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.65rem 1rem; margin: 0.55rem 0; background: var(--bg-elev);
+    }
+    details.qa summary { font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+    details.qa .src-issue { font-size: 0.72rem; color: var(--muted); margin: 0.4rem 0 0; }
+    details.qa p { margin: 0.55rem 0 0; font-size: 0.86rem; color: var(--muted); }
+
+    .note-foot {
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .note-foot a { color: var(--accent); }
+    .i18n-en-only { display: none; }
+    html[lang="en"] .i18n-en-only { display: block; }
+    html[lang="en"] .i18n-zh-only { display: none; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">Walkthrough <small>· 金样本 · colleague-skill</small></div>
+      <div class="toolbar">
+        <label class="i18n-zh-only" style="font-size:0.75rem;color:var(--muted);">主题</label>
+        <label class="i18n-en-only" style="font-size:0.75rem;color:var(--muted);">Theme</label>
+        <select id="selTheme" class="tiny" aria-label="Theme">
+          <option value="system">跟随系统</option>
+          <option value="light">浅色</option>
+          <option value="dark">深色</option>
+        </select>
+        <label class="i18n-zh-only" style="font-size:0.75rem;color:var(--muted);">语言</label>
+        <label class="i18n-en-only" style="font-size:0.75rem;color:var(--muted);">Lang</label>
+        <select id="selLang" class="tiny" aria-label="Language">
+          <option value="auto">自动（浏览器）</option>
+          <option value="zh-Hans">中文</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="repo-card">
+      <img class="repo-avatar" src="https://avatars.githubusercontent.com/u/85022018?v=4" width="64" height="64" alt="titanwings" />
+      <div>
+        <div class="repo-meta">
+          <a href="https://github.com/titanwings/colleague-skill" target="_blank" rel="noopener"><b>titanwings/colleague-skill</b></a>
+          <span class="pill i18n-zh-only">★ <span id="metaStars">7051</span> &nbsp;⑂ <span id="metaForks">478</span></span>
+          <span class="pill i18n-en-only">★ <span id="metaStarsEn">7051</span> stars · <span id="metaForksEn">478</span> forks</span>
+          <span class="pill i18n-zh-only">创建于 <span id="metaCreated">2026-03-30</span></span>
+          <span class="pill i18n-en-only">Created <span id="metaCreatedEn">2026-03-30</span></span>
+          <span class="pill">MIT</span>
+          <span class="pill i18n-zh-only">Open issues <span id="metaIssues">57</span></span>
+          <span class="pill i18n-en-only">Open issues <span id="metaIssuesEn">57</span></span>
+        </div>
+        <p class="i18n-zh-only" style="margin:0.6rem 0 0;font-size:0.88rem;color:var(--muted);">
+          将飞书、钉钉、粘贴文本等原材料<strong>蒸馏</strong>成可调用的「同事」Skill：Part A Work · Part B Persona，并带版本与纠正回路。
+        </p>
+        <p class="i18n-en-only" style="margin:0.6rem 0 0;font-size:0.88rem;color:var(--muted);">
+          Distill Feishu/DingTalk/paste-ins into an invokable colleague skill: Work + Persona, versioning and corrections.
+        </p>
+        <p class="i18n-zh-only" style="margin:0.45rem 0 0;font-size:0.82rem;color:var(--muted);">
+          <strong>安装（README）：</strong> 克隆到 <code>.claude/skills/create-colleague</code>（项目或全局），可选 <code>pip install -r requirements.txt</code>；飞书/钉钉自动采集见 <code>INSTALL.md</code>。
+        </p>
+        <p class="i18n-en-only" style="margin:0.45rem 0 0;font-size:0.82rem;color:var(--muted);">
+          <strong>Install:</strong> clone to <code>.claude/skills/create-colleague</code>, optional <code>pip install -r requirements.txt</code>; Feishu/DingTalk in <code>INSTALL.md</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="walk-hint i18n-zh-only"><strong>建议顺序：</strong><strong>组件路径</strong> → <strong>学习</strong> → <strong>模拟器</strong> → <strong>深度探索</strong>。若用本地文件打开不顺畅，可在目录里执行 <code>python3 -m http.server</code> 后用浏览器打开。</div>
+    <div class="walk-hint i18n-en-only"><strong>Suggested order:</strong> <strong>Component path</strong> → <strong>Learn</strong> → <strong>Simulator</strong> → <strong>Deep dive</strong>. If <code>file://</code> misbehaves, serve the folder with a quick HTTP server.</div>
+
+    <h1 class="hero-title i18n-zh-only">把聊天和文档，变成随叫随到的「赛博同事」</h1>
+    <h1 class="hero-title i18n-en-only">Turn chats &amp; docs into an on-demand “digital teammate”</h1>
+    <p class="hero-lead i18n-zh-only">
+      做完以后，你在软件里打一个<strong>带斜杠的短名字</strong>（比如 <code>/大刘</code>），就像@那位同事——技术上叫 <strong>slug</strong>，你可以把它理解成「这位同事的代号」。下面这条流程按<strong>时间顺序</strong>亮灯（与组件路径、模拟器对照）：材料怎么进来、怎么分成「干活套路」和「说话风格」两路、最后怎么落盘。
+    </p>
+    <p class="hero-lead i18n-en-only">
+      After setup you type a <strong>slash command</strong> (e.g. <code>/daliu</code>) like paging a coworker. Engineers call that short name a <strong>slug</strong> — a handle for the packaged skill. The strip below walks the timeline: inputs → split Work vs Persona → save to disk.
+    </p>
+
+    <section class="viz-panel" aria-label="Pipeline visualization">
+      <div class="viz-sticky-stack">
+        <div class="viz-head">
+          <div class="viz-title-block">
+            <span class="cap i18n-zh-only">组件路径 · 步进</span>
+            <span class="cap i18n-en-only">Component path</span>
+          </div>
+          <div class="viz-controls">
+            <span class="step-pill" id="heroPill">0 / 6</span>
+            <button type="button" class="tiny" id="heroPrev" aria-label="Previous step">←</button>
+            <button type="button" class="tiny primary" id="heroNext" aria-label="Next step">→</button>
+            <button type="button" class="tiny" id="heroPlay" aria-pressed="false"><span class="play-ic">▶</span> <span class="i18n-zh-only">自动播放</span><span class="i18n-en-only">Auto</span></button>
+            <button type="button" class="tiny" id="heroReset" aria-label="Reset">↺</button>
+          </div>
+        </div>
+        <div class="viz-rail-captions" aria-hidden="true">
+          <span id="vizRailCapL">录入</span>
+          <span id="vizRailCapR">蒸馏</span>
+        </div>
+      </div>
+      <div class="viz-grid">
+        <div class="viz-canvas">
+          <svg viewBox="0 0 420 300" width="420" height="300" aria-hidden="true">
+            <!-- paths -->
+            <path id="p1" class="flow-path" d="M 210 52 L 210 78" />
+            <path id="p2" class="flow-path" d="M 210 118 L 210 142" />
+            <path id="p3a" class="flow-path" d="M 170 180 L 95 180 L 95 208" />
+            <path id="p3b" class="flow-path" d="M 250 180 L 325 180 L 325 208" />
+            <path id="p4a" class="flow-path" d="M 95 248 L 95 262 L 210 262 L 210 248" />
+            <path id="p4b" class="flow-path" d="M 325 248 L 325 262 L 210 262" />
+            <path id="p5" class="flow-path" d="M 210 276 L 210 292" />
+            <!-- nodes as groups -->
+            <g id="g-slash" transform="translate(210,40)">
+              <rect class="node-box" data-node x="-68" y="-16" width="136" height="32" rx="8" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="5" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">/create-colleague</text>
+            </g>
+            <g id="g-intake" transform="translate(210,98)">
+              <rect class="node-box" data-node x="-72" y="-16" width="144" height="32" rx="8" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="5" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)" id="lblIntake">录入 · A–E</text>
+            </g>
+            <g id="g-split" transform="translate(210,164)">
+              <polygon class="node-box" data-node points="0,-18 22,0 0,18 -22,0" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="4" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)" id="svgForkLbl">分叉</text>
+            </g>
+            <g id="g-work" transform="translate(95,228)">
+              <rect class="node-box" data-node x="-58" y="-18" width="116" height="36" rx="8" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="-2" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)">Work</text>
+              <text y="10" text-anchor="middle" font-size="7.5" fill="#71717a" id="svgWorkSub">分析→生成</text>
+            </g>
+            <g id="g-persona" transform="translate(325,228)">
+              <rect class="node-box" data-node x="-64" y="-18" width="128" height="36" rx="8" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="-2" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)">Persona</text>
+              <text y="10" text-anchor="middle" font-size="7.5" fill="#71717a" id="svgPersonaSub">五层人设</text>
+            </g>
+            <g id="g-disk" transform="translate(210,264)">
+              <rect class="node-box" data-node x="-78" y="-14" width="156" height="28" rx="6" fill="var(--bg-elev)" stroke="var(--border)" />
+              <text y="5" text-anchor="middle" font-size="9" font-weight="700" fill="var(--fg)">colleagues/{slug}</text>
+            </g>
+          </svg>
+        </div>
+        <div class="anno">
+          <h3 id="annoH">—</h3>
+          <div class="anno-layers">
+            <article class="anno-card" aria-label="Step note">
+              <h4 class="anno-lbl zh">这一步在干什么</h4>
+              <h4 class="anno-lbl en">What this step does</h4>
+              <p class="anno-card-body" id="annoHoodText"></p>
+            </article>
+          </div>
+          <p class="zh" id="annoZ" style="font-size:0.8rem;color:var(--muted);margin:0.7rem 0 0;">—</p>
+          <p class="en" id="annoE" style="font-size:0.8rem;color:var(--muted);margin:0.7rem 0 0;">—</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab on" role="tab" data-tab="learn" id="tabLearn">学习</button>
+      <button type="button" class="tab" role="tab" data-tab="sim" id="tabSim">模拟器</button>
+      <button type="button" class="tab" role="tab" data-tab="qna" id="tabQna">深度探索</button>
+    </div>
+
+    <section class="panel on" id="pan-learn" role="tabpanel">
+      <div class="learn-hero i18n-zh-only">
+        <h2>这份仓库在解决什么问题</h2>
+        <p class="lead">人走了，聊天记录、文档、习惯还在四面八方。这里的思路是：把你能合法拿到的材料<strong>收成一套文件</strong>，让 AI 助手尽量按<strong>他以前的说话方式 + 工作套路</strong>来配合你——不是再训练一个小模型，而是一叠结构化的说明与脚本。</p>
+      </div>
+      <div class="learn-hero i18n-en-only">
+        <h2>What this repo is for</h2>
+        <p class="lead">When someone leaves, their voice and habits scatter across chats and docs. This repo packages what you can legitimately gather into <strong>files + prompts + scripts</strong> so an assistant can mirror <strong>their tone + work patterns</strong> — not fine-tune a model from scratch.</p>
+      </div>
+
+      <details class="journey-fold i18n-zh-only" open>
+        <summary>装好以后怎么用（与组件路径、模拟器对照）</summary>
+        <div class="journey-steps">
+          <div class="journey-step"><strong>1 · 技能进到宿主里</strong>按 README 把仓库放到宿主认的目录（如 <code>.claude/skills/create-colleague</code>）。没有常驻后台服务；只有你发出斜杠命令或同类请求时，才会跑里面的脚本与提示词。</div>
+          <div class="journey-step"><strong>2 · 走创建流</strong>输入 <code>/create-colleague</code> 或等价说法后，SKILL 会按模板追问花名、画像、原材料来源——对应组件路径上「触发」和「录入」两格亮灯的那段。</div>
+          <div class="journey-step"><strong>3 · 写盘前的自动化</strong>你选好飞书/文件/粘贴等渠道后，工具脚本去抓数据，模型按「干活 / 说话」两路去读同一批材料，最后由 writer 落到 <code>colleagues/&lt;代号&gt;/</code>——对应路径里的分叉、双线蒸馏和落盘。</div>
+          <div class="journey-step"><strong>4 · 日常唤醒</strong>之后用带斜杠的短名（文档里写的 <code>/&lt;slug&gt;</code>）调用；运行时会先加载人设定调，再加载工作套路——对应路径最后一步，也和模拟器末尾的 Review 桥段衔接。</div>
+        </div>
+      </details>
+      <details class="journey-fold i18n-en-only" open>
+        <summary>After install — how you use it (cross-check the path + simulator)</summary>
+        <div class="journey-steps">
+          <div class="journey-step"><strong>1 · Skill on disk</strong>Put the repo where your host expects skills (e.g. <code>.claude/skills/create-colleague</code>). No daemon — tools run when you invoke the slash command or equivalent.</div>
+          <div class="journey-step"><strong>2 · Create flow</strong><code>/create-colleague</code> (or a paraphrase) drives the scripted Q&amp;A and source picker — matches the “invoke” + “intake” highlights on the strip.</div>
+          <div class="journey-step"><strong>3 · Before files land</strong>Collectors pull Feishu/files/paste; parallel Work vs Persona passes read the same corpus; writer emits <code>colleagues/&lt;slug&gt;/</code> — fork + dual distill + write on the diagram.</div>
+          <div class="journey-step"><strong>4 · Day-to-day</strong>Use the slash handle (<code>/&lt;slug&gt;</code> in docs). Runtime orders Persona then Work — last step on the path; simulator ending shows a sample review.</div>
+        </div>
+      </details>
+
+      <div class="surface i18n-zh-only" style="border-left-color:var(--warn);margin-top:1rem;">
+        <h3 style="margin-top:0;">数据从哪来、边界在哪</h3>
+        <p style="margin:0;font-size:0.88rem;color:var(--muted);">可及范围 ≈ <strong>你在职权内能拿到的 token、Bot、浏览器会话与本机文件</strong>。没有「绕过公司 DLP 从服务器偷数据」的路径；合规与留存以公司政策与 INSTALL 为准。</p>
+      </div>
+      <div class="surface i18n-en-only" style="border-left-color:var(--warn);margin-top:1rem;">
+        <h3 style="margin-top:0;">What you can connect — and what stays off-limits</h3>
+        <p style="margin:0;font-size:0.88rem;color:var(--muted);">Scope ≈ <strong>tokens, bots, browser sessions, and files you legitimately hold</strong>. No DLP-bypass story; follow employer policy and INSTALL.</p>
+      </div>
+
+      <h3 class="i18n-zh-only" style="font-size:0.95rem;margin-top:1.25rem;">数据源与实现方式</h3>
+      <h3 class="i18n-en-only" style="font-size:0.95rem;margin-top:1.25rem;">Data sources &amp; mechanics</h3>
+      <table class="src i18n-zh-only">
+        <tr><th>来源</th><th>消息</th><th>文档/Wiki</th><th>实现要点</th></tr>
+        <tr><td>飞书（自动）</td><td>✅</td><td>✅</td><td>开放平台 API；群聊常需 Bot 在群内；私聊需用户 OAuth，应用身份读不了私聊。</td></tr>
+        <tr><td>钉钉（自动）</td><td>⚠️ 浏览器</td><td>✅</td><td>开放平台拉文档/表格；历史消息 API 不可用时切 Playwright 类浏览器自动化。</td></tr>
+        <tr><td>Slack</td><td>✅</td><td>—</td><td>Bot Token + Bot 加入频道；免费版约 90 天历史。</td></tr>
+        <tr><td>微信</td><td>✅ SQLite</td><td>—</td><td>读本机库不稳定；推荐第三方导出（WeChatMsg / PyWxDump / 留痕）再解析。</td></tr>
+        <tr><td>飞书 JSON / 邮件 / PDF / 图 / MD / 粘贴</td><td>视类型</td><td>视类型</td><td>解析器或 Read；用户自备文件。</td></tr>
+      </table>
+      <table class="src i18n-en-only">
+        <tr><th>Source</th><th>Msgs</th><th>Docs</th><th>Notes</th></tr>
+        <tr><td>Feishu auto</td><td>✅</td><td>✅</td><td>Open API; bot in group; private chats need user OAuth.</td></tr>
+        <tr><td>DingTalk</td><td>⚠️ browser</td><td>✅</td><td>When history API missing, use browser capture.</td></tr>
+        <tr><td>Slack</td><td>✅</td><td>—</td><td>Bot in channel; ~90d on free tier.</td></tr>
+        <tr><td>WeChat</td><td>SQLite</td><td>—</td><td>Local DB reads flaky; export-first per README.</td></tr>
+        <tr><td>Exports / files / paste</td><td>varies</td><td>varies</td><td>Parsers + Read.</td></tr>
+      </table>
+
+      <h3 class="i18n-zh-only" style="font-size:0.95rem;margin-top:1.35rem;">仓库里大概长什么样</h3>
+      <h3 class="i18n-en-only" style="font-size:0.95rem;margin-top:1.35rem;">What’s in the repo</h3>
+      <pre class="repo-tree i18n-zh-only">create-colleague/
+├── SKILL.md              ← 入口：斜杠命令从这儿排班
+├── prompts/              ← 问话、分析、合并、纠正等模板
+├── tools/                ← 飞书/钉钉/Slack… 采集与 skill_writer、版本管理
+├── colleagues/           ← 生成出来的「每位同事」文件夹（常 gitignore）
+├── docs/ INSTALL.md README.md …</pre>
+      <pre class="repo-tree i18n-en-only">create-colleague/
+├── SKILL.md          ← entry / slash routing
+├── prompts/          ← intake, analyzers, builders, merge, correction
+├── tools/            ← collectors + skill_writer + version_manager
+├── colleagues/       ← generated per-person packages (often gitignored)
+├── docs/ INSTALL.md README.md …</pre>
+
+      <div class="readme-heat i18n-zh-only">
+        <h4>GitHub 上为什么容易「星多」或看起来吵？</h4>
+        <ul>
+          <li><strong>需求：</strong>同事调岗/离职后，知识散落在聊天记录和文档里——这类「交接焦虑」很容易引起共鸣；再加上 Claude Code、Agent Skills 这类宿主里能直接落地的单仓库方案，收藏和转发意愿会偏高。</li>
+          <li><strong>传播：</strong>多语言 README、徽章齐、还有系统设计向的 <a href="https://github.com/titanwings/colleague-skill/blob/main/colleague_skill.pdf" target="_blank" rel="noopener">PDF 长文</a>，降低「这是玩具吗」的疑虑；话题本身（复刻工作风格、隐私边界）也容易被二次讨论。</li>
+          <li><strong>摩擦：</strong>星标高≠你 5 分钟能跑通——飞书/企微/钉钉接入、权限和 <code>INSTALL</code> 步骤，都会拉低「顺手一试」的比例；<strong>Open issues</strong> 多有时正是卡在真实集成，而不是单纯口碑差。</li>
+          <li><strong>合规：</strong>IM 数据归属公司或个人、在职/离职后的权限假设，和 README 里的「顺路径」不一定一致；星多不代表法律或人事上没有坑。</li>
+        </ul>
+        <p style="margin:0.55rem 0 0;font-size:0.8rem;">页面右上角的数字是制作时的快照；README 里的 <a href="https://github.com/titanwings/colleague-skill#star-history" target="_blank" rel="noopener">Star History</a> 反映趋势，以当时点进 GitHub 为准。</p>
+      </div>
+      <div class="readme-heat i18n-en-only">
+        <h4>Why stars can jump (or issues feel noisy)</h4>
+        <ul>
+          <li><strong>Demand:</strong> Handover pain + chat/doc sprawl is relatable; a single-repo skill that runs in Claude Code / Agent Skills hosts is easy to bookmark and share.</li>
+          <li><strong>Distribution:</strong> Polished READMEs (i18n, badges) plus a serious <a href="https://github.com/titanwings/colleague-skill/blob/main/colleague_skill.pdf" target="_blank" rel="noopener">design PDF</a> reduce “toy repo” doubt; ethics/privacy angles get re-posted.</li>
+          <li><strong>Friction:</strong> High stars ≠ instant setup — IM connectors, tokens, and install steps deter casual tries; a busy issues list often means real integrations, not just “bad buzz”.</li>
+          <li><strong>Compliance:</strong> Corporate IM data + employment context matter; popularity doesn’t waive policy review.</li>
+        </ul>
+        <p style="margin:0.55rem 0 0;font-size:0.8rem;">Counts in the header are a snapshot; the README <a href="https://github.com/titanwings/colleague-skill#star-history" target="_blank" rel="noopener">Star History</a> shows trajectory on GitHub itself.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="pan-sim" role="tabpanel" hidden>
+      <p class="i18n-zh-only" style="color:var(--muted);font-size:0.88rem;margin:0 0 .75rem;">
+        下面是一条<strong>示意对话</strong>（用户 / Agent / 工具）。<strong>和组件路径的对应关系：</strong>开头几条大致是路径第 1～2 步（触发、录入）；出现 Bash 的那段对应第 3～5 步（采集与双线蒸馏、落盘）；最后的 <code>/daliu</code> 片段对应第 6 步（日常调用）。可按步或连续播放。
+      </p>
+      <p class="i18n-en-only" style="color:var(--muted);font-size:0.88rem;margin:0 0 .75rem;">
+        <strong>Map to the strip:</strong> early lines ≈ steps 1–2 (invoke + intake); Bash/tool lines ≈ 3–5 (collect, dual distill, write); the final <code>/daliu</code> thread ≈ step 6 (daily use). Step or auto-play.
+      </p>
+      <div class="sim-wrap">
+        <div class="sim-toolbar">
+          <span id="simProg">—</span>
+          <span>
+            <button type="button" class="tiny primary" id="simStep">下一条</button>
+            <button type="button" class="tiny" id="simPlayAll">全部播放</button>
+            <button type="button" class="tiny" id="simReset">重播</button>
+          </span>
+        </div>
+        <div class="sim-feed" id="simFeed"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="pan-qna" role="tabpanel" hidden>
+      <p class="i18n-zh-only" style="font-size:0.86rem;color:var(--muted);margin:0 0 1rem;padding:0.75rem 1rem;background:var(--bg-soft);border-radius:12px;border:1px dashed var(--border);">
+        以下内容从公开 <strong>README、SKILL、安装说明和社区讨论</strong> 整理而来，便于速览；若和官方说法不一致，以仓库与 Issue 为准。
+      </p>
+      <p class="i18n-en-only" style="font-size:0.86rem;color:var(--muted);margin:0 0 1rem;padding:0.75rem 1rem;background:var(--bg-soft);border-radius:12px;border:1px dashed var(--border);">
+        Notes from public <strong>README, SKILL, install docs, and community threads</strong>. If anything conflicts, trust the repo and maintainers.
+      </p>
+
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:0 0 .5rem;">一、放到任何 Agent Skill 仓库都会问的三件事</h2>
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:0 0 .5rem;">1) Generic questions (any skill-shaped repo)</h2>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;"><strong>Q</strong> 我第一次要输入什么，宿主才会走这个 Skill？<br/><strong>A</strong> 读根目录 <code>SKILL.md</code> 的 frontmatter、<code>name</code>、触发词与 allowed-tools。本仓创建流：<code>/create-colleague</code>；生成后日常用<strong>带斜杠的短名</strong>调用即可（文档里常写成 <code>/{slug}</code>，slug = 那位同事的代号）。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;"><strong>Q</strong> What do I type first?<br/><strong>A</strong> Root <code>SKILL.md</code>: triggers and tools. Here <code>/create-colleague</code>, then day-to-day <strong>slash handles</strong> (often notated <code>/{slug}</code>).</div>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;"><strong>Q</strong> 数据到底是 API 还是扫我电脑？<br/><strong>A</strong> 看 <code>tools/</code>：组合通常是 <strong>开放平台 REST</strong>、<strong>浏览器已登录会话</strong>（Playwright）、<strong>用户上传/导出文件</strong>；不是「偷偷全盘索引」这种主路径。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;"><strong>Q</strong> API or scanning my disk?<br/><strong>A</strong> Inspect <code>tools/</code>: REST + browser session + files you add — not covert full-disk indexing as the core story.</div>
+      <div class="surface i18n-zh-only" style="margin-bottom:0.75rem;"><strong>Q</strong> Work 和 Persona 为何拆开？<br/><strong>A</strong> README 运行顺序是 Persona 定调再 Work 执行；拆文件才能 <code>-work</code> / <code>-persona</code> 单独调用、单独迭代与纠正。</div>
+      <div class="surface i18n-en-only" style="margin-bottom:0.75rem;"><strong>Q</strong> Why split Work vs Persona?<br/><strong>A</strong> Runtime Persona → Work; split enables partial invoke and cleaner corrections.</div>
+
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">二、飞书三条路：择一，不是流水线串三层</h2>
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">2) Feishu: three modes (pick one)</h2>
+      <table class="src i18n-zh-only">
+        <tr><th>路径</th><th>脚本</th><th>本质</th><th>典型适用</th></tr>
+        <tr><td>API 采集</td><td><code>feishu_auto_collector.py</code></td><td>REST + token → JSON</td><td>应用已建、Bot 进群、scope 够</td></tr>
+        <tr><td>浏览器</td><td><code>feishu_browser.py</code></td><td>Playwright + 本机会话</td><td>内网文档、无应用权但能打开网页</td></tr>
+        <tr><td>MCP</td><td><code>feishu_mcp_client.py</code></td><td>MCP 暴露飞书能力</td><td>常与 API 能力重叠，差别在接入形态</td></tr>
+      </table>
+      <table class="src i18n-en-only">
+        <tr><th>Mode</th><th>Tool</th><th>Nature</th><th>When</th></tr>
+        <tr><td>API</td><td><code>feishu_auto_collector.py</code></td><td>REST + tokens</td><td>App + bot + scopes</td></tr>
+        <tr><td>Browser</td><td><code>feishu_browser.py</code></td><td>Logged-in scrape</td><td>Internal docs</td></tr>
+        <tr><td>MCP</td><td><code>feishu_mcp_client.py</code></td><td>MCP bridge</td><td>Often same APIs, different wire</td></tr>
+      </table>
+
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">三、常见场景里文档没写透的地方</h2>
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">3) Scenarios the readme skims</h2>
+      <details class="qa" open>
+        <summary><span class="i18n-zh-only">「我都离职了，没有飞书了，还能自动生成同事 Skill 吗？」</span><span class="i18n-en-only">I quit Feishu — can I still auto-build a colleague skill?</span></summary>
+        <p class="i18n-zh-only"><strong>核心矛盾：</strong>README 的顺路径更像<strong>「对方走、你还在」</strong>——企业 IM 仍在你的权限内。若你已离职，通常只能依赖<strong>离职前归档/导出/个人保存的副本</strong>，与「仍连租户 API 自动同步」不是同一假设。</p>
+        <p class="i18n-en-only"><strong>Core:</strong> Happy path assumes tenant access. Post-exit you rely on archives/exports you hold — not live corporate sync.</p>
+      </details>
+      <details class="qa">
+        <summary><span class="i18n-zh-only">「开放平台是不是就等于在网页上登录一下？」</span><span class="i18n-en-only">Is open-platform just “log in on the web”?</span></summary>
+        <p class="i18n-zh-only"><strong>核心区分：</strong>OAuth/token 是门票；真正拉消息/文档的是后续 <code>GET/POST</code>。Playwright 路线是用<strong>浏览器里已有登录态</strong>读页面——两条通路，合规与稳定性权衡不同。</p>
+        <p class="i18n-en-only"><strong>Core:</strong> Tokens gate REST; browser automation reuses a human session — different trade-offs.</p>
+      </details>
+
+      <h2 class="i18n-en-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">4) Real issues · reading notes</h2>
+      <h2 class="i18n-zh-only" style="font-size:1.05rem;margin:1.25rem 0 .5rem;">四、真实 Issue</h2>
+
+      <details class="qa" open>
+        <summary>#65 · <span class="i18n-zh-only">人际关系名单 / 多人物路由</span><span class="i18n-en-only">Relationship roster / routing</span></summary>
+        <p class="src-issue">open · <a href="https://github.com/titanwings/colleague-skill/issues/65" target="_blank" rel="noopener">issues/65</a></p>
+        <p class="i18n-zh-only"><strong>问题从哪来：</strong>群聊里多人插话时，希望模型知道「此刻学谁」。<strong>现有架构：</strong>一个 slug 对应一位同事的生成物；「自动认人」需要<strong>名单 + 路由策略</strong>，多半是产品层能力，而不是单改 prompt。<strong>怎么用 Issue：</strong>评估你是要「多位真人并行分身」还是「同一同事多种模式」——后者可用 <code>-work</code>/<code>-persona</code>；Issue 更贴近前者。</p>
+        <p class="i18n-en-only"><strong>Origin:</strong> Multi-speaker chats need roster routing. <strong>Architecture:</strong> one slug ≈ one colleague today; true routing is a product layer. <strong>Use:</strong> Many twins vs one colleague with modes — issue leans to the former.</p>
+      </details>
+      <details class="qa">
+        <summary>#64 / PR · SKILL.md <span class="i18n-zh-only">菜单 A–E 与章节标题错位</span><span class="i18n-en-only">menu vs heading drift</span></summary>
+        <p class="src-issue"><a href="https://github.com/titanwings/colleague-skill/pull/64" target="_blank" rel="noopener">PR #64</a></p>
+        <p class="i18n-zh-only">菜单上的 A–E 和章节标题若对不上，人会懵。以仓库根目录 <code>SKILL.md</code> 为准；你本地若仍不一致，可看 <a href="https://github.com/titanwings/colleague-skill/pull/64" target="_blank" rel="noopener">PR #64</a> 是否已合进你拉到的版本。</p>
+        <p class="i18n-en-only">Menu letters vs headings must match or trust breaks. Treat root <code>SKILL.md</code> as the product copy source; see <a href="https://github.com/titanwings/colleague-skill/pull/64" target="_blank" rel="noopener">PR #64</a> if your tree still drifts.</p>
+      </details>
+      <details class="qa">
+        <summary id="qaWechatSum"><span class="i18n-zh-only">「会不会读我微信底层 SQLite？」</span><span class="i18n-en-only">WeChat SQLite — what does README imply?</span></summary>
+        <p class="i18n-zh-only">README 把本地 SQLite 路径视为<strong>不稳定</strong>，更稳妥的是<strong>先导出再解析</strong>——不要默认「随时能静默读全库」。</p>
+        <p class="i18n-en-only">README treats local DB paths as flaky; export-first beats assuming quiet full extraction.</p>
+      </details>
+    </section>
+
+    <div class="note-foot">
+      <p class="i18n-zh-only"><strong>金样本</strong>（colleague-skill）· Demo 定稿页 · 右上统计为快照，与 GitHub 实时可能略有出入。</p>
+      <p class="i18n-en-only"><strong>Gold sample</strong> · snapshot stats may differ from live GitHub.</p>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  var STORAGE_THEME = "colleague-proto-theme";
+  var STORAGE_LANG = "colleague-proto-lang";
+
+  function getSystemDark() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function applyTheme(mode) {
+    var root = document.documentElement;
+    if (mode === "system") {
+      root.dataset.theme = getSystemDark() ? "dark" : "light";
+    } else {
+      root.dataset.theme = mode;
+    }
+  }
+
+  function readThemeSelect() {
+    try {
+      var v = localStorage.getItem(STORAGE_THEME) || "system";
+      if (v !== "system" && v !== "light" && v !== "dark") v = "system";
+      return v;
+    } catch (e) {
+      return "system";
+    }
+  }
+
+  function readLangSelect() {
+    try {
+      return localStorage.getItem(STORAGE_LANG) || "auto";
+    } catch (e) {
+      return "auto";
+    }
+  }
+
+  function detectLang() {
+    var nav = (navigator.language || "en").toLowerCase();
+    if (nav.indexOf("zh") === 0) return "zh-Hans";
+    return "en";
+  }
+
+  function applyLang(mode) {
+    var lang = mode === "auto" ? detectLang() : mode;
+    document.documentElement.lang = lang;
+    var zh = document.querySelectorAll(".i18n-zh-only");
+    var en = document.querySelectorAll(".i18n-en-only");
+    for (var i = 0; i < zh.length; i++) zh[i].style.display = lang === "zh-Hans" ? "" : "none";
+    for (var j = 0; j < en.length; j++) en[j].style.display = lang === "en" ? "" : "none";
+    refreshI18nStrings();
+  }
+
+  var selTheme = document.getElementById("selTheme");
+  var selLang = document.getElementById("selLang");
+  selTheme.value = readThemeSelect();
+  selLang.value = readLangSelect();
+
+  selTheme.addEventListener("change", function () {
+    try { localStorage.setItem(STORAGE_THEME, selTheme.value); } catch (e) {}
+    applyTheme(selTheme.value);
+  });
+  selLang.addEventListener("change", function () {
+    try { localStorage.setItem(STORAGE_LANG, selLang.value); } catch (e) {}
+    applyLang(selLang.value);
+  });
+
+  if (window.matchMedia) {
+    try {
+      var mqScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      function onSchemeChange() {
+        if (readThemeSelect() === "system") applyTheme("system");
+      }
+      if (typeof mqScheme.addEventListener === "function") {
+        mqScheme.addEventListener("change", onSchemeChange);
+      } else if (typeof mqScheme.addListener === "function") {
+        mqScheme.addListener(onSchemeChange);
+      }
+    } catch (e) {}
+  }
+
+  /** SVG 内 rect 的 parent 是 g；避免依赖 element.closest（部分环境对 SVG 支持不稳） */
+  function parentGroupEl(el) {
+    var n = el ? el.parentNode : null;
+    while (n && n.nodeName && String(n.nodeName).toLowerCase() !== "g") {
+      n = n.parentNode;
+    }
+    return n && n.id ? n : null;
+  }
+
+  /* —— Hero steps —— */
+  var H_STEPS = [
+    { h: { zh: "概览", en: "Overview" }, ux: { zh: { s: "", b: "点「下一步」或「自动播放」才会动；不会碰你的真实仓库。" }, en: { s: "", b: "Use Next or Auto; your real repo stays untouched." } }, z: "起始帧：右侧说明与图中高亮同步。", e: "Start: notes track highlights.", nodes: [], paths: [] },
+    { h: { zh: "触发", en: "Invoke" }, ux: { zh: { s: "创建入口那块亮起来了。", b: "对应你在宿主里输入的「新建同事」命令；SKILL 决定走创建还是别的工作流。" }, en: { s: "The “create” entry lights up.", b: "Your slash command; SKILL.md routes create vs other flows." } }, z: "/create-colleague 或自然语言；触发段对应 README/SKILL 约定。", e: "Slash or paraphrase; trigger block selects path.", nodes: ["g-slash"], paths: [] },
+    { h: { zh: "intake", en: "Intake" }, ux: { zh: { s: "「问你是谁、材料从哪来」这一块连上线了。", b: "像填表：花名、画像和 A–E 原材料菜单在这里定下——后面文件夹叫什么也受此影响。" }, en: { s: "Intake is wired: who + where data comes from.", b: "Name, bio, A–E menu — also shapes the colleague folder." } }, z: "三步问答 + 原材料菜单；文档菜单字和章节要对齐（参见 #64）。", e: "Three facts + source menu — keep labels consistent with SKILL.", nodes: ["g-slash", "g-intake"], paths: ["p1"] },
+    { h: { zh: "分叉", en: "Fork" }, ux: { zh: { s: "一条路在中间分成两岔。", b: "「怎么干活」和「怎么说话」分开提炼，才不会混成一锅粥。" }, en: { s: "The path splits in the middle.", b: "Work habits vs voice — distilled on parallel tracks." } }, z: "双轨分析再 merge，而不是单线 if-else。", e: "Parallel analyzers then merge.", nodes: ["g-slash", "g-intake", "g-split"], paths: ["p1", "p2"] },
+    { h: { zh: "双层蒸馏", en: "Dual distill" }, ux: { zh: { s: "左右两路同时变亮。", b: "两边在读同一批材料，各自总结：一边是规范与 CR 习惯，一边是口吻与相处方式。" }, en: { s: "Both branches glow.", b: "Same corpus → work norms on one side, tone/behavior on the other." } }, z: "Python 采数 + prompt 写 md；Work / Persona 分层。", e: "Tools fetch; prompts author markdown layers.", nodes: ["g-split", "g-work", "g-persona"], paths: ["p2", "p3a", "p3b"] },
+    { h: { zh: "落盘", en: "Write" }, ux: { zh: { s: "最后的「存盘」方块亮起来了。", b: "磁盘上真的出现一个文件夹：说明文档、人设稿、版本号——以后还能回滚。" }, en: { s: "The save block lights up.", b: "A real folder: docs, persona, versions — rollback possible." } }, z: "skill_writer → colleagues/代号/；含 work.md、persona、META、versions。", e: "skill_writer emits colleagues/{slug}/ tree.", nodes: ["g-work", "g-persona", "g-disk"], paths: ["p3a", "p3b", "p4a", "p4b", "p5"] },
+    { h: { zh: "日常调用", en: "Daily use" }, ux: { zh: { s: "以后输入带斜杠的短名，就像@那位同事。", b: "短名就是 slug（代号）。运行时先说话风格再干活套路——对应 Persona → Work。" }, en: { s: "Type /handle like paging that teammate.", b: "Handle = slug. Runtime Persona shapes tone, then Work runs." } }, z: "调用 /{slug}（及 -work / -persona）；与 README 命令表一致。", e: "Invoke /{slug} variants per README.", nodes: ["g-disk"], paths: ["p3a", "p3b", "p4a", "p4b", "p5"] }
+  ];
+
+  var heroIdx = 0;
+  var heroTimer = null;
+  var heroFirstTimeout = null;
+  function clearHeroAnim() {
+    if (heroTimer) {
+      clearInterval(heroTimer);
+      heroTimer = null;
+    }
+    if (heroFirstTimeout) {
+      clearTimeout(heroFirstTimeout);
+      heroFirstTimeout = null;
+    }
+  }
+  var heroPill = document.getElementById("heroPill");
+  var annoH = document.getElementById("annoH");
+  var annoHoodText = document.getElementById("annoHoodText");
+  var annoZ = document.getElementById("annoZ");
+  var annoE = document.getElementById("annoE");
+
+  function stopHeroPlayUI() {
+    clearHeroAnim();
+    var hp = document.getElementById("heroPlay");
+    if (hp) hp.setAttribute("aria-pressed", "false");
+  }
+
+  function setPathOn(id, on) {
+    var el = document.getElementById(id);
+    if (el) el.classList.toggle("on", on);
+  }
+
+  function syncSvgI18n() {
+    var zh = document.documentElement.lang === "zh-Hans";
+    var capL = document.getElementById("vizRailCapL");
+    var capR = document.getElementById("vizRailCapR");
+    if (capL) capL.textContent = zh ? "录入" : "INTAKE";
+    if (capR) capR.textContent = zh ? "蒸馏" : "DISTILL";
+    var fk = document.getElementById("svgForkLbl");
+    if (fk) fk.textContent = zh ? "分叉" : "fork";
+    var ws = document.getElementById("svgWorkSub");
+    if (ws) ws.textContent = zh ? "分析→生成" : "analyzer→builder";
+    var ps = document.getElementById("svgPersonaSub");
+    if (ps) ps.textContent = zh ? "五层人设" : "5 layers";
+    var li = document.getElementById("lblIntake");
+    if (li) li.textContent = zh ? "录入 · A–E" : "intake · A–E";
+  }
+
+  function applyHero() {
+    syncSvgI18n();
+    if (!annoH || !annoZ || !annoE || !heroPill) return;
+    var s = H_STEPS[heroIdx];
+    var isZh = document.documentElement.lang === "zh-Hans";
+    annoH.textContent = isZh ? s.h.zh : s.h.en;
+    var u = s.ux || { zh: { s: "", b: "" }, en: { s: "", b: "" } };
+    if (annoHoodText) {
+      var hb = isZh ? u.zh.b : u.en.b;
+      if ((hb || "").indexOf("<code>") >= 0 || (hb || "").indexOf("<strong>") >= 0) {
+        annoHoodText.innerHTML = hb;
+      } else {
+        annoHoodText.textContent = hb;
+      }
+    }
+    annoZ.textContent = s.z;
+    annoE.textContent = s.e;
+    heroPill.textContent = heroIdx + " / " + (H_STEPS.length - 1);
+
+    var allG = document.querySelectorAll("[data-node]");
+    for (var i = 0; i < allG.length; i++) {
+      var box = allG[i];
+      var pg = parentGroupEl(box);
+      var gid = pg ? pg.id : "";
+      box.classList.toggle("on", s.nodes.indexOf(gid) >= 0);
+    }
+    var pathIds = ["p1", "p2", "p3a", "p3b", "p4a", "p4b", "p5"];
+    for (var p = 0; p < pathIds.length; p++) {
+      setPathOn(pathIds[p], false);
+    }
+    for (var q = 0; q < s.paths.length; q++) {
+      setPathOn(s.paths[q], true);
+    }
+  }
+
+  function heroAutoTick() {
+    if (heroIdx >= H_STEPS.length - 1) {
+      stopHeroPlayUI();
+      return;
+    }
+    heroIdx++;
+    applyHero();
+    if (heroIdx >= H_STEPS.length - 1) {
+      stopHeroPlayUI();
+    }
+  }
+
+  function heroNext() {
+    if (heroTimer || heroFirstTimeout) {
+      stopHeroPlayUI();
+    }
+    if (heroIdx < H_STEPS.length - 1) { heroIdx++; applyHero(); }
+  }
+  function heroPrev() {
+    if (heroTimer || heroFirstTimeout) {
+      stopHeroPlayUI();
+    }
+    if (heroIdx > 0) { heroIdx--; applyHero(); }
+  }
+  document.getElementById("heroNext").onclick = heroNext;
+  document.getElementById("heroPrev").onclick = heroPrev;
+  document.getElementById("heroReset").onclick = function () {
+    stopHeroPlayUI();
+    heroIdx = 0;
+    applyHero();
+  };
+  document.getElementById("heroPlay").onclick = function () {
+    var hp = document.getElementById("heroPlay");
+    if (heroTimer || heroFirstTimeout) {
+      stopHeroPlayUI();
+      return;
+    }
+    if (heroIdx >= H_STEPS.length - 1) {
+      heroIdx = 0;
+      applyHero();
+    }
+    if (hp) hp.setAttribute("aria-pressed", "true");
+    var tickMs = 2200;
+    heroFirstTimeout = setTimeout(function () {
+      heroFirstTimeout = null;
+      heroAutoTick();
+      heroTimer = setInterval(heroAutoTick, tickMs);
+    }, 150);
+  };
+
+  /* —— Simulator (independent stepped messages) —— */
+  var SIM = [
+    { r: "u", t: { zh: "/create-colleague", en: "/create-colleague" } },
+    { r: "a", t: { zh: "好的。先确认三件事：① 花名/代号 ② 公司·职级·岗位·性别（可跳过）③ 性格画像（MBTI、标签、企业文化等）。", en: "Three quick facts: name, role line (skippable), persona tags." } },
+    { r: "u", t: { zh: "代号「大刘」，字节 2-1 后端，INTJ，甩锅高手，CR 很严。", en: "Slug daliu, L7 backend, INTJ, blame-shifter, strict CR." } },
+    { r: "a", t: { zh: "原材料怎么提供？A 飞书自动采集（推荐）B 钉钉 C 飞书链接 D 上传文件 E 粘贴。你也可以跳过，仅凭描述生成。", en: "Pick A–E sources or skip and generate from bio only." } },
+    { r: "u", t: { zh: "选 A，姓名「大刘」。", en: "A — name Daliu." } },
+    { r: "t", t: { zh: "Bash: feishu_auto_collector.py --name 大刘 → 产出 knowledge/ 下的消息与文档摘要（示意）。", en: "Bash: feishu_auto_collector.py --name … → knowledge/ extracts (illustrative)." } },
+    { r: "a", t: { zh: "work_analyzer：从语料抽「接口规范、幂等、错误码习惯」；persona_analyzer：抽 Layer0–4 行为与口吻。", en: "work_analyzer + persona_analyzer run on the corpus." } },
+    { r: "t", t: { zh: "skill_writer.py --action create — 写入 colleagues/daliu/（work.md, persona.md, SKILL.md, meta.json）。", en: "skill_writer.py create → colleagues/daliu/ tree." } },
+    { r: "a", t: { zh: "完成。可用 /daliu 调用完整人格；/daliu-work 仅工作能力；/daliu-persona 仅性格。需要我再帮你进化一版吗？", en: "Done. Invoke /daliu full — or work-/persona-only variants." } },
+    { r: "u", t: { zh: "/daliu 这个接口帮我 review 一下。", en: "/daliu review this API design." } },
+    { r: "a", t: { zh: "等等，impact 是什么？背景没说清。（看完后）这里有 N+1，改掉。返回统一 {code,message,data}，别问为什么，团队规范。", en: "Impact? Context missing. (After read) Fix N+1; wrap with {code,message,data} — team norm." } }
+  ];
+  var simShown = 0;
+  var simPlayTimer = null;
+  var simFeed = document.getElementById("simFeed");
+  var simProg = document.getElementById("simProg");
+
+  function simLabel(r) {
+    var zh = document.documentElement.lang === "zh-Hans";
+    if (r === "u") return zh ? "用户" : "User";
+    if (r === "t") return zh ? "工具 / Bash" : "Tool";
+    return "Agent";
+  }
+
+  function simUpdateProg() {
+    if (!simProg) return;
+    var zh = document.documentElement.lang === "zh-Hans";
+    simProg.textContent = (zh ? "已展示 " : "Shown ") + simShown + " / " + SIM.length;
+  }
+
+  function appendSimBubble(index, softMotion) {
+    if (!simFeed || index < 0 || index >= SIM.length) return;
+    var row = SIM[index];
+    var zh = document.documentElement.lang === "zh-Hans";
+    var div = document.createElement("div");
+    div.className = "bubble " + (row.r === "u" ? "u" : row.r === "t" ? "t" : "a");
+    if (softMotion) div.classList.add("bubble-soft");
+    div.innerHTML = "<div class=\"who\">" + simLabel(row.r) + "</div>" + (zh ? row.t.zh : row.t.en);
+    simFeed.appendChild(div);
+  }
+
+  function renderSimFull() {
+    if (!simFeed) return;
+    simFeed.innerHTML = "";
+    for (var i = 0; i < simShown; i++) {
+      appendSimBubble(i, false);
+    }
+    simUpdateProg();
+    simFeed.scrollTop = simFeed.scrollHeight;
+  }
+
+  function renderSimAppendLatest(softMotion) {
+    if (!simFeed || simShown < 1) return;
+    appendSimBubble(simShown - 1, softMotion);
+    simUpdateProg();
+    simFeed.scrollTop = simFeed.scrollHeight;
+  }
+
+  document.getElementById("simStep").onclick = function () {
+    if (simShown < SIM.length) {
+      simShown++;
+      renderSimAppendLatest(false);
+    }
+  };
+  document.getElementById("simReset").onclick = function () {
+    if (simPlayTimer) { clearInterval(simPlayTimer); simPlayTimer = null; }
+    simShown = 0;
+    renderSimFull();
+  };
+  document.getElementById("simPlayAll").onclick = function () {
+    if (simPlayTimer) {
+      clearInterval(simPlayTimer);
+      simPlayTimer = null;
+      return;
+    }
+    if (simShown >= SIM.length) {
+      simShown = 0;
+      renderSimFull();
+    }
+    simPlayTimer = setInterval(function () {
+      if (simShown >= SIM.length) {
+        clearInterval(simPlayTimer);
+        simPlayTimer = null;
+        return;
+      }
+      simShown++;
+      renderSimAppendLatest(true);
+    }, 700);
+  };
+
+  /* Tabs */
+  function tabTo(id) {
+    var tabs = document.querySelectorAll(".tab");
+    var pans = document.querySelectorAll(".panel");
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].dataset.tab === id;
+      tabs[i].classList.toggle("on", on);
+      tabs[i].setAttribute("aria-selected", on ? "true" : "false");
+    }
+    for (var j = 0; j < pans.length; j++) {
+      pans[j].classList.remove("on");
+      pans[j].hidden = true;
+    }
+    var pan = document.getElementById("pan-" + id);
+    if (pan) {
+      pan.hidden = false;
+      pan.classList.add("on");
+    }
+  }
+  var tabBtns = document.querySelectorAll(".tab");
+  for (var tb = 0; tb < tabBtns.length; tb++) {
+    (function (btn) {
+      btn.addEventListener("click", function () { tabTo(btn.getAttribute("data-tab")); });
+    })(tabBtns[tb]);
+  }
+
+  function refreshI18nStrings() {
+    var zh = document.documentElement.lang === "zh-Hans";
+    document.getElementById("tabLearn").textContent = zh ? "学习" : "Learn";
+    document.getElementById("tabSim").textContent = zh ? "模拟器" : "Simulator";
+    document.getElementById("tabQna").textContent = zh ? "深度探索" : "Deep dive";
+    var st = document.getElementById("simStep");
+    var pa = document.getElementById("simPlayAll");
+    var rs = document.getElementById("simReset");
+    if (st) st.textContent = zh ? "下一条" : "Step";
+    if (pa) pa.textContent = zh ? "全部播放" : "Play all";
+    if (rs) rs.textContent = zh ? "重播" : "Reset";
+    applyHero();
+    renderSimFull();
+  }
+
+  /* 必须在 simFeed / heroIdx 等就绪之后再跑首屏，否则会抛错导致整段脚本失效、页面无法点击 */
+  applyTheme(selTheme.value);
+  applyLang(selLang.value === "auto" ? "auto" : selLang.value);
+})();
+  </script>
