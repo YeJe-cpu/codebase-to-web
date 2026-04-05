@@ -12,19 +12,19 @@ English：[README.md](README.md) · 仓库：[YeJe-cpu/web-learning-github](http
 
 ## 演示和生成的页面里有什么
 
-下面以 [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) 做成的单页示范为例（文件 [`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)）。**三张图对应页面上三块主要区域**，不是整页录像；同一文件内可切换 **English / 中文**。
+下面以 [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) 做成的单页示范为例（文件 [`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)）。**三张媒体编号：1 = 静态截图；2、3 = 动图。** 图 **1** 覆盖视觉最上方：项目名称、头像、**Star**、简介等，并带到 **组件路径** 的半截画面；图 **2** 为 **组件路径** 动图；图 **3** 为 **模拟器** 动图。同一示范页内可切换 **English / 中文**。
 
-![页面顶部：仓库信息与阅读引导](assets/demo-zh-hero.png)
+![图1·静态：页顶项目信息与简介，及组件路径上半截](assets/demo-zh-hero.png)
 
-*对应 **Hero + GitHub 信息条**：哪个仓库、安装提示、建议的阅读顺序。*
+*素材标号 **1**（PNG）：视觉最上方——项目名称、头像、Star、简介等，并带到 **组件路径** 区块的**半截**画面。*
 
-![组件路径：SVG 流程与右侧步进说明](assets/demo-zh-component-path.gif)
+![图2·动图：组件路径步进演示](assets/demo-zh-component-path.gif)
 
-*对应 **组件路径** 区块：流程图按步点亮，配合控制条与右侧「这一步在干什么」。*
+*素材标号 **2**（GIF）：**组件路径** 整块——流程步进、控制条与右侧说明。*
 
-![模拟器：分步对话气泡](assets/demo-zh-simulator.gif)
+![图3·动图：模拟器 Tab 演示](assets/demo-zh-simulator.gif)
 
-*对应 **模拟器** Tab：用对话气泡演示装好后在宿主里大概如何交互。*
+*素材标号 **3**（GIF）：**模拟器** Tab——分步气泡、装好后在宿主里大致如何往下聊。*
 
 <table>
 <colgroup><col style="width:11%"><col style="width:24%"><col style="width:65%"></colgroup>

@@ -12,19 +12,19 @@ An **agent skill** for **Cursor, Claude Code, Windsurf, OpenClaw**, and similar 
 
 ## Demo & what the generated page contains
 
-Below, a single-page example built from [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) ([`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)). **Three images = three main regions** of the page, not a full-page recording; **English / 中文** live in the **same file**.
+Below, a single-page example built from [**titanwings/colleague-skill**](https://github.com/titanwings/colleague-skill) ([`web/colleague-skill-prototype-gold.html`](web/colleague-skill-prototype-gold.html)). Media layout: **(1)** a **static PNG** of the top of the page—project title, avatar, stars, blurb, **plus the upper half of the component-path strip**; **(2)–(3)** are **GIFs** for **component path** and **Simulator** interactions. **English / 中文** in the **same file**.
 
-![Top of page: repo info and reading guidance](assets/demo-en-hero.png)
+![Fig.1 static — top: project meta + intro + top half of component path](assets/demo-en-hero.png)
 
-*Maps to **Hero + GitHub bar**: which repo, install hint, suggested reading order.*
+*Asset **1** (PNG): top of the viewport—name, avatar, stars, intro, and a **partial** view into the **component path** area.*
 
-![Component path: SVG flow and step-by-step notes](assets/demo-en-component-path.gif)
+![Fig.2 GIF — component path walkthrough](assets/demo-en-component-path.gif)
 
-*Maps to the **component path** block: the flow lights step-by-step with controls and the “what this step does” side pane.*
+*Asset **2** (GIF): full **component path** strip—stepping, controls, side notes.*
 
-![Simulator: stepped chat bubbles](assets/demo-en-simulator.gif)
+![Fig.3 GIF — Simulator tab](assets/demo-en-simulator.gif)
 
-*Maps to the **Simulator** tab: bubbles show roughly how interaction in the host might go after install.*
+*Asset **3** (GIF): **Simulator** tab—stepped bubbles for post-install chat flow.*
 
 <table>
 <colgroup><col style="width:11%"><col style="width:24%"><col style="width:65%"></colgroup>
